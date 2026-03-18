@@ -1,0 +1,117 @@
+{
+  "task_id": "GB_001",
+  "title": "Map NUTRITION_SUMMARY to daily_nutrition_summary",
+  "split": "gamebus",
+  "difficulty": "easy",
+  "source_family": "gamebus_nutrition_summary",
+  "target_entity": "daily_nutrition_summary",
+  "task_text": "Create one canonical nutrition summary JSON object from one GameBus NUTRITION_SUMMARY record.",
+  "source_schema": {
+    "type": "object",
+    "properties": {
+      "X_DATE": {
+        "type": "string",
+        "description": "Source timestamp"
+      },
+      "X_ACTIVITY_ID": {
+        "type": [
+          "integer",
+          "string"
+        ]
+      },
+      "AGGREGATION_LEVEL": {
+        "type": "string",
+        "enum": [
+          "DAILY",
+          "WEEKLY",
+          "MONTHLY"
+        ]
+      },
+      "SUMMARY_SCORE": {
+        "type": "string"
+      },
+      "CARBS_CONFORMANCE": {
+        "type": "string"
+      },
+      "FAT_CONFORMANCE": {
+        "type": "string"
+      },
+      "FIBER_CONFORMANCE": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "X_DATE",
+      "X_ACTIVITY_ID",
+      "AGGREGATION_LEVEL",
+      "SUMMARY_SCORE",
+      "CARBS_CONFORMANCE",
+      "FAT_CONFORMANCE",
+      "FIBER_CONFORMANCE"
+    ],
+    "title": "GameBusNutritionSummaryRecord"
+  },
+  "target_schema": {
+    "type": "object",
+    "properties": {
+      "user_id": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "source_activity_id": {
+        "type": "integer"
+      },
+      "date": {
+        "type": "string",
+        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      "aggregation_level": {
+        "type": "string"
+      },
+      "summary_score": {
+        "type": "integer"
+      },
+      "carbs_conformance": {
+        "type": "integer"
+      },
+      "fat_conformance": {
+        "type": "integer"
+      },
+      "fiber_conformance": {
+        "type": "integer"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "source_activity_id",
+      "date",
+      "aggregation_level",
+      "summary_score",
+      "carbs_conformance",
+      "fat_conformance",
+      "fiber_conformance"
+    ],
+    "title": "DailyNutritionSummary"
+  },
+  "fixture_refs": {
+    "input": "benchmark/fixtures/gamebus/GB_001_input.json",
+    "expected": "benchmark/fixtures/gamebus/GB_001_expected.json"
+  },
+  "gold_refs": {
+    "matches": "benchmark/gold/matches/GB_001_matches.json",
+    "plan": "benchmark/gold/plans/GB_001_plan.json",
+    "invariants": "benchmark/gold/invariants/GB_001_invariants.json"
+  },
+  "tags": [
+    "gamebus",
+    "flatten",
+    "casting",
+    "date-normalization"
+  ],
+  "notes": [
+    "GameBus-derived task; fixtures are sanitized/synthetic."
+  ]
+}

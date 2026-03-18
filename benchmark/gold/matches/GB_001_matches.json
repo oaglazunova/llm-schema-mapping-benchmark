@@ -1,0 +1,37 @@
+[
+  {
+    "target_field": "source_activity_id",
+    "source_path": "$.X_ACTIVITY_ID",
+    "relation": "exact"
+  },
+  {
+    "target_field": "date",
+    "source_path": "$.X_DATE",
+    "relation": "transform:truncate_date"
+  },
+  {
+    "target_field": "aggregation_level",
+    "source_path": "$.AGGREGATION_LEVEL",
+    "relation": "exact"
+  },
+  {
+    "target_field": "summary_score",
+    "source_path": "$.SUMMARY_SCORE",
+    "relation": "transform:cast_integer"
+  },
+  {
+    "target_field": "carbs_conformance",
+    "source_path": "$.CARBS_CONFORMANCE",
+    "relation": "transform:cast_integer"
+  },
+  {
+    "target_field": "fat_conformance",
+    "source_path": "$.FAT_CONFORMANCE",
+    "relation": "transform:cast_integer"
+  },
+  {
+    "target_field": "fiber_conformance",
+    "source_path": "$.FIBER_CONFORMANCE",
+    "relation": "transform:cast_integer"
+  }
+]

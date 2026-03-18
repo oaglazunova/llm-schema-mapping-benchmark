@@ -1,0 +1,32 @@
+[
+  {
+    "target_field": "event_time",
+    "source_path": "$.X_DATE",
+    "relation": "transform:parse_datetime"
+  },
+  {
+    "target_field": "source_activity_id",
+    "source_path": "$.X_ACTIVITY_ID",
+    "relation": "transform:cast_integer"
+  },
+  {
+    "target_field": "challenge_id",
+    "source_path": "$.FOR_CHALLENGE",
+    "relation": "transform:cast_integer"
+  },
+  {
+    "target_field": "challenge_rule_id",
+    "source_path": "$.CHALLENGE_RULE",
+    "relation": "transform:cast_integer"
+  },
+  {
+    "target_field": "points",
+    "source_path": "$.NUMBER_OF_POINTS",
+    "relation": "transform:cast_integer"
+  },
+  {
+    "target_field": "trigger_activity_id",
+    "source_path": "$.ACTIVITY",
+    "relation": "transform:cast_integer"
+  }
+]

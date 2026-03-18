@@ -1,0 +1,13 @@
+{
+  "records": [
+    {
+      "X_DATE": "2025-10-04 16:12:08",
+      "X_ACTIVITY_ID": 718984,
+      "APP": "healthyw8.gamebus.eu",
+      "SESSION": "sess-abc123",
+      "UID": "506",
+      "FOR_CAMPAIGN": "HW8_YA_HB",
+      "URI": "/account"
+    }
+  ]
+}

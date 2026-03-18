@@ -1,0 +1,17 @@
+[
+  {
+    "type": "field_type",
+    "field": "date",
+    "expect": "date-string"
+  },
+  {
+    "type": "field_type",
+    "field": "summary_score",
+    "expect": "integer"
+  },
+  {
+    "type": "range",
+    "field": "summary_score",
+    "min": 0
+  }
+]

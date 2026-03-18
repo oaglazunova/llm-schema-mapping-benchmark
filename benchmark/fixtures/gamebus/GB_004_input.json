@@ -1,0 +1,10 @@
+{
+  "records": [
+    {
+      "X_DATE": "2025-04-11 16:32:37",
+      "X_ACTIVITY_ID": 101363,
+      "FOR_CAMPAIGN": "HW8_YA_HB",
+      "DESCRIPTION": "[{\"tk\":\"data-sharing\",\"condition\":\"Data sharing consent\",\"accepted\":true},{\"tk\":\"terms-conditions\",\"condition\":\"Terms and conditions\",\"accepted\":true},{\"tk\":\"reminders\",\"condition\":\"Receive reminders\",\"accepted\":false}]"
+    }
+  ]
+}

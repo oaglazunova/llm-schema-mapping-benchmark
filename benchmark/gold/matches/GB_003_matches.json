@@ -1,0 +1,37 @@
+[
+  {
+    "target_field": "event_time",
+    "source_path": "$.X_DATE",
+    "relation": "transform:parse_datetime"
+  },
+  {
+    "target_field": "source_activity_id",
+    "source_path": "$.X_ACTIVITY_ID",
+    "relation": "transform:cast_integer"
+  },
+  {
+    "target_field": "app",
+    "source_path": "$.APP",
+    "relation": "exact"
+  },
+  {
+    "target_field": "session_id",
+    "source_path": "$.SESSION",
+    "relation": "exact"
+  },
+  {
+    "target_field": "user_external_id",
+    "source_path": "$.UID",
+    "relation": "exact"
+  },
+  {
+    "target_field": "campaign",
+    "source_path": "$.FOR_CAMPAIGN",
+    "relation": "exact"
+  },
+  {
+    "target_field": "uri",
+    "source_path": "$.URI",
+    "relation": "exact"
+  }
+]

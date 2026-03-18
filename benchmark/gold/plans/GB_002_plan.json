@@ -1,0 +1,49 @@
+{
+  "plan_id": "GB_002_gold",
+  "task_id": "GB_002",
+  "target_entity": "daily_activity_summary",
+  "field_mappings": [
+    {
+      "target_field": "source_activity_id",
+      "operation": "cast_integer",
+      "source_paths": [
+        "$.X_ACTIVITY_ID"
+      ]
+    },
+    {
+      "target_field": "date",
+      "operation": "truncate_date",
+      "source_paths": [
+        "$.X_DATE"
+      ]
+    },
+    {
+      "target_field": "steps_sum",
+      "operation": "cast_integer",
+      "source_paths": [
+        "$.STEPS_SUM"
+      ]
+    },
+    {
+      "target_field": "distance_sum_m",
+      "operation": "cast_number",
+      "source_paths": [
+        "$.DISTANCE_SUM"
+      ]
+    },
+    {
+      "target_field": "pa_cal_sum_kcal",
+      "operation": "cast_integer",
+      "source_paths": [
+        "$.PA_CAL_SUM"
+      ]
+    }
+  ],
+  "joins": [],
+  "filters": [],
+  "aggregations": [],
+  "assumptions": [
+    "Source values are already daily aggregates."
+  ],
+  "confidence": 1.0
+}

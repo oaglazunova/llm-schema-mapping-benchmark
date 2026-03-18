@@ -1,0 +1,29 @@
+{
+  "records": [
+    {
+      "consent_time": "2025-04-11T16:32:37",
+      "source_activity_id": 101363,
+      "campaign": "HW8_YA_HB",
+      "consent_items": [
+        {
+          "code": "data-sharing",
+          "condition_text": "Data sharing consent",
+          "accepted": true
+        },
+        {
+          "code": "terms-conditions",
+          "condition_text": "Terms and conditions",
+          "accepted": true
+        },
+        {
+          "code": "reminders",
+          "condition_text": "Receive reminders",
+          "accepted": false
+        }
+      ],
+      "all_required_accepted": false,
+      "accepted_count": 2,
+      "item_count": 3
+    }
+  ]
+}

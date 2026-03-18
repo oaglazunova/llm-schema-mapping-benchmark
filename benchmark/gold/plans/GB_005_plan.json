@@ -1,0 +1,57 @@
+{
+  "plan_id": "GB_005_gold",
+  "task_id": "GB_005",
+  "target_entity": "general_survey_profile",
+  "field_mappings": [
+    {
+      "target_field": "survey_time",
+      "operation": "parse_datetime",
+      "source_paths": [
+        "$.X_DATE"
+      ]
+    },
+    {
+      "target_field": "source_activity_id",
+      "operation": "cast_integer",
+      "source_paths": [
+        "$.X_ACTIVITY_ID"
+      ]
+    },
+    {
+      "target_field": "raw_pairs",
+      "operation": "copy",
+      "source_paths": [
+        "$.DESCRIPTION"
+      ]
+    },
+    {
+      "target_field": "gender",
+      "operation": "extract_kv_value",
+      "source_paths": [
+        "$.DESCRIPTION"
+      ],
+      "parameters": {
+        "key": "gender",
+        "delimiter": ":"
+      }
+    },
+    {
+      "target_field": "age",
+      "operation": "extract_kv_value_cast_integer",
+      "source_paths": [
+        "$.DESCRIPTION"
+      ],
+      "parameters": {
+        "key": "age",
+        "delimiter": ":"
+      }
+    }
+  ],
+  "joins": [],
+  "filters": [],
+  "aggregations": [],
+  "assumptions": [
+    "DESCRIPTION is an array of key:value strings."
+  ],
+  "confidence": 1.0
+}

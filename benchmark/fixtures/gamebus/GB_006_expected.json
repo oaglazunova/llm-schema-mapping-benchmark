@@ -1,0 +1,12 @@
+{
+  "records": [
+    {
+      "event_time": "2025-08-20T19:31:15",
+      "source_activity_id": 689361,
+      "challenge_id": 3985,
+      "challenge_rule_id": 10594,
+      "points": 6,
+      "trigger_activity_id": 689360
+    }
+  ]
+}

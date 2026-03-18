@@ -1,0 +1,113 @@
+{
+  "task_id": "GB_004",
+  "title": "Map CONSENT to consent_record",
+  "split": "gamebus",
+  "difficulty": "medium",
+  "source_family": "gamebus_consent",
+  "target_entity": "consent_record",
+  "task_text": "Create one canonical consent record JSON object by parsing the DESCRIPTION JSON string and deriving summary fields.",
+  "source_schema": {
+    "type": "object",
+    "properties": {
+      "X_DATE": {
+        "type": "string"
+      },
+      "X_ACTIVITY_ID": {
+        "type": [
+          "integer",
+          "string"
+        ]
+      },
+      "FOR_CAMPAIGN": {
+        "type": "string"
+      },
+      "DESCRIPTION": {
+        "type": "string",
+        "description": "JSON-encoded array of consent items"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "X_DATE",
+      "X_ACTIVITY_ID",
+      "FOR_CAMPAIGN",
+      "DESCRIPTION"
+    ],
+    "title": "GameBusConsentRecord"
+  },
+  "target_schema": {
+    "type": "object",
+    "properties": {
+      "consent_time": {
+        "type": "string"
+      },
+      "source_activity_id": {
+        "type": "integer"
+      },
+      "campaign": {
+        "type": "string"
+      },
+      "consent_items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string"
+            },
+            "condition_text": {
+              "type": "string"
+            },
+            "accepted": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "code",
+            "condition_text",
+            "accepted"
+          ]
+        }
+      },
+      "all_required_accepted": {
+        "type": "boolean"
+      },
+      "accepted_count": {
+        "type": "integer"
+      },
+      "item_count": {
+        "type": "integer"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "consent_time",
+      "source_activity_id",
+      "campaign",
+      "consent_items",
+      "all_required_accepted",
+      "accepted_count",
+      "item_count"
+    ],
+    "title": "ConsentRecord"
+  },
+  "fixture_refs": {
+    "input": "benchmark/fixtures/gamebus/GB_004_input.json",
+    "expected": "benchmark/fixtures/gamebus/GB_004_expected.json"
+  },
+  "gold_refs": {
+    "matches": "benchmark/gold/matches/GB_004_matches.json",
+    "plan": "benchmark/gold/plans/GB_004_plan.json",
+    "invariants": "benchmark/gold/invariants/GB_004_invariants.json"
+  },
+  "tags": [
+    "gamebus",
+    "embedded-json",
+    "consent",
+    "boolean-aggregation"
+  ],
+  "notes": [
+    "GameBus-derived task; fixtures are sanitized/synthetic."
+  ]
+}

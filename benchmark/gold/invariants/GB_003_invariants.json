@@ -1,0 +1,16 @@
+[
+  {
+    "type": "field_type",
+    "field": "event_time",
+    "expect": "datetime-string"
+  },
+  {
+    "type": "prefix",
+    "field": "uri",
+    "value": "/"
+  },
+  {
+    "type": "non_empty",
+    "field": "session_id"
+  }
+]

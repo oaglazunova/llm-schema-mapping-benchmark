@@ -1,0 +1,13 @@
+{
+  "records": [
+    {
+      "source_activity_id": 715815,
+      "date": "2025-09-30",
+      "aggregation_level": "DAILY",
+      "summary_score": 78,
+      "carbs_conformance": 80,
+      "fat_conformance": 76,
+      "fiber_conformance": 65
+    }
+  ]
+}

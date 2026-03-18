@@ -1,0 +1,14 @@
+{
+  "records": [
+    {
+      "survey_time": "2025-05-28T23:42:53",
+      "source_activity_id": 335218,
+      "gender": "female",
+      "age": 23,
+      "raw_pairs": [
+        "gender:female",
+        "age:23"
+      ]
+    }
+  ]
+}

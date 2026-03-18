@@ -1,0 +1,247 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/mapping_plan_v1.schema.json",
+  "title": "SchemaMappingPlanV1",
+  "type": "object",
+  "required": [
+    "plan_id",
+    "task_id",
+    "target_entity",
+    "field_mappings",
+    "joins",
+    "filters",
+    "aggregations",
+    "assumptions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "plan_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_entity": {
+      "type": "string",
+      "minLength": 1
+    },
+    "field_mappings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/FieldMapping"
+      }
+    },
+    "joins": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/JoinSpec"
+      }
+    },
+    "filters": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/FilterSpec"
+      }
+    },
+    "aggregations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/AggregationSpec"
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    }
+  },
+  "$defs": {
+    "FieldMapping": {
+      "type": "object",
+      "required": [
+        "target_field",
+        "operation",
+        "source_paths"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "target_field": {
+          "type": "string"
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+  "copy",
+  "rename",
+  "cast_string",
+  "cast_integer",
+            "cast_number",
+            "cast_boolean",
+            "parse_date",
+            "parse_datetime",
+            "truncate_date",
+            "normalize_enum",
+            "normalize_boolean",
+            "concat",
+            "split",
+            "derive_arithmetic",
+            "default_value",
+            "coalesce",
+            "latest_value",
+            "parse_json_array",
+            "parse_json_array_map_fields",
+            "parse_json_object",
+            "parse_pythonish_object",
+            "extract_kv_value",
+            "extract_kv_value_cast_integer",
+            "extract_object_field",
+            "extract_array_field"
+          ]
+        },
+        "source_paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "required": {
+          "type": "boolean",
+          "default": true
+        }
+      }
+    },
+    "JoinSpec": {
+      "type": "object",
+      "required": [
+        "left_path",
+        "right_path",
+        "left_key",
+        "right_key",
+        "join_type"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "left_path": {
+          "type": "string"
+        },
+        "right_path": {
+          "type": "string"
+        },
+        "left_key": {
+          "type": "string"
+        },
+        "right_key": {
+          "type": "string"
+        },
+        "join_type": {
+          "type": "string",
+          "enum": [
+            "inner",
+            "left"
+          ]
+        }
+      }
+    },
+    "FilterSpec": {
+      "type": "object",
+      "required": [
+        "path",
+        "operator",
+        "value"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "operator": {
+          "type": "string",
+          "enum": [
+            "eq",
+            "neq",
+            "gt",
+            "gte",
+            "lt",
+            "lte",
+            "in",
+            "not_in",
+            "exists",
+            "not_exists"
+          ]
+        },
+        "value": {}
+      }
+    },
+    "AggregationSpec": {
+      "type": "object",
+      "required": [
+        "target_field",
+        "function"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "target_field": {
+          "type": "string"
+        },
+        "function": {
+          "type": "string",
+          "enum": [
+            "count",
+            "sum",
+            "avg",
+            "min",
+            "max",
+            "latest",
+            "count_true",
+            "all_true",
+            "distinct_count",
+            "first"
+          ]
+        },
+        "source_path": {
+          "type": "string"
+        },
+        "source_paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "group_by": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "source_path"
+          ]
+        },
+        {
+          "required": [
+            "source_paths"
+          ]
+        }
+      ]
+    }
+  }
+}

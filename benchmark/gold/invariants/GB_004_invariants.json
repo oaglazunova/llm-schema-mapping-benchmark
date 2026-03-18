@@ -1,0 +1,16 @@
+[
+  {
+    "type": "field_type",
+    "field": "consent_items",
+    "expect": "array"
+  },
+  {
+    "type": "formula",
+    "expr": "accepted_count <= item_count"
+  },
+  {
+    "type": "field_type",
+    "field": "all_required_accepted",
+    "expect": "boolean"
+  }
+]

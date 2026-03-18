@@ -1,0 +1,27 @@
+[
+  {
+    "target_field": "source_activity_id",
+    "source_path": "$.X_ACTIVITY_ID",
+    "relation": "exact"
+  },
+  {
+    "target_field": "date",
+    "source_path": "$.X_DATE",
+    "relation": "transform:truncate_date"
+  },
+  {
+    "target_field": "steps_sum",
+    "source_path": "$.STEPS_SUM",
+    "relation": "transform:cast_integer"
+  },
+  {
+    "target_field": "distance_sum_m",
+    "source_path": "$.DISTANCE_SUM",
+    "relation": "transform:cast_number"
+  },
+  {
+    "target_field": "pa_cal_sum_kcal",
+    "source_path": "$.PA_CAL_SUM",
+    "relation": "transform:cast_integer"
+  }
+]

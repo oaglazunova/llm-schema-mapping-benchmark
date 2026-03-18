@@ -1,0 +1,56 @@
+{
+  "plan_id": "GB_006_gold",
+  "task_id": "GB_006",
+  "target_entity": "points_event",
+  "field_mappings": [
+    {
+      "target_field": "event_time",
+      "operation": "parse_datetime",
+      "source_paths": [
+        "$.X_DATE"
+      ]
+    },
+    {
+      "target_field": "source_activity_id",
+      "operation": "cast_integer",
+      "source_paths": [
+        "$.X_ACTIVITY_ID"
+      ]
+    },
+    {
+      "target_field": "challenge_id",
+      "operation": "cast_integer",
+      "source_paths": [
+        "$.FOR_CHALLENGE"
+      ]
+    },
+    {
+      "target_field": "challenge_rule_id",
+      "operation": "cast_integer",
+      "source_paths": [
+        "$.CHALLENGE_RULE"
+      ]
+    },
+    {
+      "target_field": "points",
+      "operation": "cast_integer",
+      "source_paths": [
+        "$.NUMBER_OF_POINTS"
+      ]
+    },
+    {
+      "target_field": "trigger_activity_id",
+      "operation": "cast_integer",
+      "source_paths": [
+        "$.ACTIVITY"
+      ]
+    }
+  ],
+  "joins": [],
+  "filters": [],
+  "aggregations": [],
+  "assumptions": [
+    "Each source record is one points-award event."
+  ],
+  "confidence": 1.0
+}

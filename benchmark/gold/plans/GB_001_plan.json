@@ -1,0 +1,63 @@
+{
+  "plan_id": "GB_001_gold",
+  "task_id": "GB_001",
+  "target_entity": "daily_nutrition_summary",
+  "field_mappings": [
+    {
+      "target_field": "source_activity_id",
+      "operation": "cast_integer",
+      "source_paths": [
+        "$.X_ACTIVITY_ID"
+      ]
+    },
+    {
+      "target_field": "date",
+      "operation": "truncate_date",
+      "source_paths": [
+        "$.X_DATE"
+      ]
+    },
+    {
+      "target_field": "aggregation_level",
+      "operation": "copy",
+      "source_paths": [
+        "$.AGGREGATION_LEVEL"
+      ]
+    },
+    {
+      "target_field": "summary_score",
+      "operation": "cast_integer",
+      "source_paths": [
+        "$.SUMMARY_SCORE"
+      ]
+    },
+    {
+      "target_field": "carbs_conformance",
+      "operation": "cast_integer",
+      "source_paths": [
+        "$.CARBS_CONFORMANCE"
+      ]
+    },
+    {
+      "target_field": "fat_conformance",
+      "operation": "cast_integer",
+      "source_paths": [
+        "$.FAT_CONFORMANCE"
+      ]
+    },
+    {
+      "target_field": "fiber_conformance",
+      "operation": "cast_integer",
+      "source_paths": [
+        "$.FIBER_CONFORMANCE"
+      ]
+    }
+  ],
+  "joins": [],
+  "filters": [],
+  "aggregations": [],
+  "assumptions": [
+    "One source record becomes one target record."
+  ],
+  "confidence": 1.0
+}

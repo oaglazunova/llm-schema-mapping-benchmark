@@ -1,0 +1,63 @@
+{
+  "plan_id": "GB_003_gold",
+  "task_id": "GB_003",
+  "target_entity": "navigation_event",
+  "field_mappings": [
+    {
+      "target_field": "event_time",
+      "operation": "parse_datetime",
+      "source_paths": [
+        "$.X_DATE"
+      ]
+    },
+    {
+      "target_field": "source_activity_id",
+      "operation": "cast_integer",
+      "source_paths": [
+        "$.X_ACTIVITY_ID"
+      ]
+    },
+    {
+      "target_field": "app",
+      "operation": "copy",
+      "source_paths": [
+        "$.APP"
+      ]
+    },
+    {
+      "target_field": "session_id",
+      "operation": "copy",
+      "source_paths": [
+        "$.SESSION"
+      ]
+    },
+    {
+      "target_field": "user_external_id",
+      "operation": "copy",
+      "source_paths": [
+        "$.UID"
+      ]
+    },
+    {
+      "target_field": "campaign",
+      "operation": "copy",
+      "source_paths": [
+        "$.FOR_CAMPAIGN"
+      ]
+    },
+    {
+      "target_field": "uri",
+      "operation": "copy",
+      "source_paths": [
+        "$.URI"
+      ]
+    }
+  ],
+  "joins": [],
+  "filters": [],
+  "aggregations": [],
+  "assumptions": [
+    "One source row is one navigation event."
+  ],
+  "confidence": 1.0
+}
