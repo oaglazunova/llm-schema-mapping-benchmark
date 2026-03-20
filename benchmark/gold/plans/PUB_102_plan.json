@@ -1,0 +1,67 @@
+{
+  "plan_id": "PUB_102_gold",
+  "task_id": "PUB_102",
+  "target_entity": "general_survey_profile",
+  "field_mappings": [
+    {
+      "target_field": "survey_time",
+      "operation": "parse_datetime",
+      "source_paths": [
+        "$.authored"
+      ]
+    },
+    {
+      "target_field": "source_activity_id",
+      "operation": "copy",
+      "source_paths": [
+        "$.id"
+      ]
+    },
+    {
+      "target_field": "gender",
+      "operation": "extract_array_field",
+      "source_paths": [
+        "$.item"
+      ],
+      "parameters": {
+        "match_field": "linkId",
+        "match_value": "gender",
+        "nested_array_field": "answer",
+        "nested_index": 0,
+        "value_field": "valueString"
+      }
+    },
+    {
+      "target_field": "age",
+      "operation": "extract_array_field",
+      "source_paths": [
+        "$.item"
+      ],
+      "parameters": {
+        "match_field": "linkId",
+        "match_value": "age",
+        "nested_array_field": "answer",
+        "nested_index": 0,
+        "value_field": "valueInteger"
+      }
+    },
+    {
+      "target_field": "raw_pairs",
+      "operation": "default_value",
+      "source_paths": [],
+      "parameters": {
+        "value": [
+          "gender:female",
+          "age:23"
+        ]
+      }
+    }
+  ],
+  "joins": [],
+  "filters": [],
+  "aggregations": [],
+  "assumptions": [
+    "raw_pairs is a benchmark convenience field mirroring the GameBus survey style."
+  ],
+  "confidence": 1.0
+}

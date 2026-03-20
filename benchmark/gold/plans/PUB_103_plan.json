@@ -1,0 +1,62 @@
+{
+  "plan_id": "PUB_103_gold",
+  "task_id": "PUB_103",
+  "target_entity": "daily_activity_summary",
+  "field_mappings": [
+    {
+      "target_field": "source_activity_id",
+      "operation": "copy",
+      "source_paths": [
+        "$.id"
+      ]
+    },
+    {
+      "target_field": "date",
+      "operation": "truncate_date",
+      "source_paths": [
+        "$.effectiveDateTime"
+      ]
+    },
+    {
+      "target_field": "steps_sum",
+      "operation": "extract_array_field",
+      "source_paths": [
+        "$.component"
+      ],
+      "parameters": {
+        "match_field": "code.text",
+        "match_value": "steps_sum",
+        "value_field": "valueInteger"
+      }
+    },
+    {
+      "target_field": "distance_sum_m",
+      "operation": "extract_array_field",
+      "source_paths": [
+        "$.component"
+      ],
+      "parameters": {
+        "match_field": "code.text",
+        "match_value": "distance_sum_m",
+        "value_field": "valueDecimal"
+      }
+    },
+    {
+      "target_field": "pa_cal_sum_kcal",
+      "operation": "extract_array_field",
+      "source_paths": [
+        "$.component"
+      ],
+      "parameters": {
+        "match_field": "code.text",
+        "match_value": "pa_cal_sum_kcal",
+        "value_field": "valueInteger"
+      }
+    }
+  ],
+  "joins": [],
+  "filters": [],
+  "aggregations": [],
+  "assumptions": [],
+  "confidence": 1.0
+}

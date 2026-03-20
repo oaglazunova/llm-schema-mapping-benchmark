@@ -1,0 +1,11 @@
+{
+  "records": [
+    {
+      "source_activity_id": "obs-day-001",
+      "date": "2026-01-16",
+      "steps_sum": 1384,
+      "distance_sum_m": 1028.328125,
+      "pa_cal_sum_kcal": 50
+    }
+  ]
+}

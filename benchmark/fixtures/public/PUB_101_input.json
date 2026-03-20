@@ -1,0 +1,23 @@
+{
+  "records": [
+    {
+      "resourceType": "Patient",
+      "id": "pat-001",
+      "gender": "female",
+      "birthDate": "1993-04-15",
+      "name": [
+        {
+          "family": "Doe",
+          "given": [
+            "Jane"
+          ]
+        }
+      ],
+      "address": [
+        {
+          "country": "NL"
+        }
+      ]
+    }
+  ]
+}

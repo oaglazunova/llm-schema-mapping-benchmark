@@ -1,0 +1,32 @@
+[
+  {
+    "target_field": "player_external_id",
+    "source_path": "$.id",
+    "relation": "exact"
+  },
+  {
+    "target_field": "first_name",
+    "source_path": "$.name[0].given[0]",
+    "relation": "exact"
+  },
+  {
+    "target_field": "last_name",
+    "source_path": "$.name[0].family",
+    "relation": "exact"
+  },
+  {
+    "target_field": "gender",
+    "source_path": "$.gender",
+    "relation": "exact"
+  },
+  {
+    "target_field": "birth_date",
+    "source_path": "$.birthDate",
+    "relation": "exact"
+  },
+  {
+    "target_field": "country",
+    "source_path": "$.address[0].country",
+    "relation": "exact"
+  }
+]

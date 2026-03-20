@@ -1,0 +1,27 @@
+[
+  {
+    "target_field": "source_activity_id",
+    "source_path": "$.id",
+    "relation": "exact"
+  },
+  {
+    "target_field": "date",
+    "source_path": "$.effectiveDateTime",
+    "relation": "transform:truncate_date"
+  },
+  {
+    "target_field": "steps_sum",
+    "source_path": "$.component[*]",
+    "relation": "transform:extract_array_field(code.text=steps_sum)"
+  },
+  {
+    "target_field": "distance_sum_m",
+    "source_path": "$.component[*]",
+    "relation": "transform:extract_array_field(code.text=distance_sum_m)"
+  },
+  {
+    "target_field": "pa_cal_sum_kcal",
+    "source_path": "$.component[*]",
+    "relation": "transform:extract_array_field(code.text=pa_cal_sum_kcal)"
+  }
+]

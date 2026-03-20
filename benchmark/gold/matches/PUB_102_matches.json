@@ -1,0 +1,27 @@
+[
+  {
+    "target_field": "survey_time",
+    "source_path": "$.authored",
+    "relation": "exact"
+  },
+  {
+    "target_field": "source_activity_id",
+    "source_path": "$.id",
+    "relation": "exact"
+  },
+  {
+    "target_field": "gender",
+    "source_path": "$.item[*]",
+    "relation": "transform:extract_array_field(linkId=gender)"
+  },
+  {
+    "target_field": "age",
+    "source_path": "$.item[*]",
+    "relation": "transform:extract_array_field(linkId=age)"
+  },
+  {
+    "target_field": "raw_pairs",
+    "source_path": "$.item[*]",
+    "relation": "derived"
+  }
+]

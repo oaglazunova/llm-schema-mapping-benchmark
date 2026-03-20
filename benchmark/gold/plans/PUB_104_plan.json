@@ -1,0 +1,86 @@
+{
+  "plan_id": "PUB_104_gold",
+  "task_id": "PUB_104",
+  "target_entity": "daily_nutrition_summary",
+  "field_mappings": [
+    {
+      "target_field": "source_activity_id",
+      "operation": "copy",
+      "source_paths": [
+        "$.id"
+      ]
+    },
+    {
+      "target_field": "date",
+      "operation": "truncate_date",
+      "source_paths": [
+        "$.effectiveDateTime"
+      ]
+    },
+    {
+      "target_field": "aggregation_level",
+      "operation": "extract_array_field",
+      "source_paths": [
+        "$.component"
+      ],
+      "parameters": {
+        "match_field": "code.text",
+        "match_value": "aggregation_level",
+        "value_field": "valueString"
+      }
+    },
+    {
+      "target_field": "summary_score",
+      "operation": "extract_array_field",
+      "source_paths": [
+        "$.component"
+      ],
+      "parameters": {
+        "match_field": "code.text",
+        "match_value": "summary_score",
+        "value_field": "valueInteger"
+      }
+    },
+    {
+      "target_field": "carbs_conformance",
+      "operation": "extract_array_field",
+      "source_paths": [
+        "$.component"
+      ],
+      "parameters": {
+        "match_field": "code.text",
+        "match_value": "carbs_conformance",
+        "value_field": "valueInteger"
+      }
+    },
+    {
+      "target_field": "fat_conformance",
+      "operation": "extract_array_field",
+      "source_paths": [
+        "$.component"
+      ],
+      "parameters": {
+        "match_field": "code.text",
+        "match_value": "fat_conformance",
+        "value_field": "valueInteger"
+      }
+    },
+    {
+      "target_field": "fiber_conformance",
+      "operation": "extract_array_field",
+      "source_paths": [
+        "$.component"
+      ],
+      "parameters": {
+        "match_field": "code.text",
+        "match_value": "fiber_conformance",
+        "value_field": "valueInteger"
+      }
+    }
+  ],
+  "joins": [],
+  "filters": [],
+  "aggregations": [],
+  "assumptions": [],
+  "confidence": 1.0
+}

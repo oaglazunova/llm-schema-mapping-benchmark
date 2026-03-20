@@ -1,0 +1,13 @@
+{
+  "records": [
+    {
+      "source_activity_id": "obs-nutri-001",
+      "date": "2026-01-16",
+      "aggregation_level": "DAILY",
+      "summary_score": 78,
+      "carbs_conformance": 80,
+      "fat_conformance": 76,
+      "fiber_conformance": 65
+    }
+  ]
+}

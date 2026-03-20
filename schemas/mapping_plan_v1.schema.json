@@ -61,6 +61,10 @@
       "type": "number",
       "minimum": 0,
       "maximum": 1
+    },
+    "group_by_paths": {
+      "type": "array",
+      "items": { "type": "string" }
     }
   },
   "$defs": {

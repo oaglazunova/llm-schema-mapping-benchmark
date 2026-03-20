@@ -1,0 +1,37 @@
+[
+  {
+    "target_field": "source_activity_id",
+    "source_path": "$.id",
+    "relation": "exact"
+  },
+  {
+    "target_field": "date",
+    "source_path": "$.effectiveDateTime",
+    "relation": "transform:truncate_date"
+  },
+  {
+    "target_field": "aggregation_level",
+    "source_path": "$.component[*]",
+    "relation": "transform:extract_array_field(code.text=aggregation_level)"
+  },
+  {
+    "target_field": "summary_score",
+    "source_path": "$.component[*]",
+    "relation": "transform:extract_array_field(code.text=summary_score)"
+  },
+  {
+    "target_field": "carbs_conformance",
+    "source_path": "$.component[*]",
+    "relation": "transform:extract_array_field(code.text=carbs_conformance)"
+  },
+  {
+    "target_field": "fat_conformance",
+    "source_path": "$.component[*]",
+    "relation": "transform:extract_array_field(code.text=fat_conformance)"
+  },
+  {
+    "target_field": "fiber_conformance",
+    "source_path": "$.component[*]",
+    "relation": "transform:extract_array_field(code.text=fiber_conformance)"
+  }
+]

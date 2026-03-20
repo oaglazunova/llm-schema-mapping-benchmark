@@ -1,0 +1,26 @@
+{
+  "name": "public_anchor_v1",
+  "version": "0.1.0",
+  "tasks": [
+    "benchmark/tasks/public/PUB_101_task.json",
+    "benchmark/tasks/public/PUB_102_task.json",
+    "benchmark/tasks/public/PUB_103_task.json",
+    "benchmark/tasks/public/PUB_104_task.json"
+  ],
+  "splits": {
+    "easy": [
+      "PUB_101"
+    ],
+    "medium": [
+      "PUB_102",
+      "PUB_103",
+      "PUB_104"
+    ],
+    "hard": []
+  },
+  "notes": [
+    "Public anchor split.",
+    "Currently contains FHIR-to-GameBus interoperability tasks.",
+    "Generic OpenAPI-style public tasks can be added later without changing this builder."
+  ]
+}

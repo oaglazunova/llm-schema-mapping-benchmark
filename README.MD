@@ -1,23 +1,3 @@
-Good. Then the next file to improve is:
-
-```text
-README.MD
-```
-
-This should stop being just a placeholder and become a **working entrypoint** for the repo.
-
-You want the README to do four jobs:
-
-1. explain **what this project is**
-2. explain **what already works**
-3. explain **how to run it**
-4. explain **what is planned next**
-
----
-
-# Put this into `README.MD`
-
-````md
 # LSMBench
 
 **LSMBench** is a benchmark framework for **JSON-to-JSON LLM schema mapping**.

@@ -1,0 +1,12 @@
+[
+  {
+    "type": "range",
+    "field": "summary_score",
+    "min": 0
+  },
+  {
+    "type": "field_type",
+    "field": "aggregation_level",
+    "expect": "string"
+  }
+]

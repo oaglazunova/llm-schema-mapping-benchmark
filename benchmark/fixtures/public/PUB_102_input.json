@@ -1,0 +1,29 @@
+{
+  "records": [
+    {
+      "resourceType": "QuestionnaireResponse",
+      "id": "qr-001",
+      "authored": "2026-01-15T08:30:00Z",
+      "item": [
+        {
+          "linkId": "gender",
+          "text": "Gender",
+          "answer": [
+            {
+              "valueString": "female"
+            }
+          ]
+        },
+        {
+          "linkId": "age",
+          "text": "Age",
+          "answer": [
+            {
+              "valueInteger": 23
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

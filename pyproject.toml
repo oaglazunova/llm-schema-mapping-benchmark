@@ -8,6 +8,10 @@ version = "0.1.0"
 description = "Starter artifacts for a JSON-to-JSON LLM schema mapping benchmark"
 requires-python = ">=3.11"
 
+dependencies = [
+  "jsonschema>=4.23.0"
+]
+
 [tool.setuptools]
 package-dir = {"" = "src"}
 

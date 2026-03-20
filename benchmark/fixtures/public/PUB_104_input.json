@@ -1,0 +1,41 @@
+{
+  "records": [
+    {
+      "resourceType": "Observation",
+      "id": "obs-nutri-001",
+      "effectiveDateTime": "2026-01-16T22:00:00Z",
+      "component": [
+        {
+          "code": {
+            "text": "aggregation_level"
+          },
+          "valueString": "DAILY"
+        },
+        {
+          "code": {
+            "text": "summary_score"
+          },
+          "valueInteger": 78
+        },
+        {
+          "code": {
+            "text": "carbs_conformance"
+          },
+          "valueInteger": 80
+        },
+        {
+          "code": {
+            "text": "fat_conformance"
+          },
+          "valueInteger": 76
+        },
+        {
+          "code": {
+            "text": "fiber_conformance"
+          },
+          "valueInteger": 65
+        }
+      ]
+    }
+  ]
+}

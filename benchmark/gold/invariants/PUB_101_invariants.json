@@ -1,0 +1,11 @@
+[
+  {
+    "type": "field_type",
+    "field": "birth_date",
+    "expect": "date-string"
+  },
+  {
+    "type": "non_empty",
+    "field": "player_external_id"
+  }
+]

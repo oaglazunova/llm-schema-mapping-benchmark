@@ -1,0 +1,29 @@
+{
+  "records": [
+    {
+      "resourceType": "Observation",
+      "id": "obs-day-001",
+      "effectiveDateTime": "2026-01-16T22:00:00Z",
+      "component": [
+        {
+          "code": {
+            "text": "steps_sum"
+          },
+          "valueInteger": 1384
+        },
+        {
+          "code": {
+            "text": "distance_sum_m"
+          },
+          "valueDecimal": 1028.328125
+        },
+        {
+          "code": {
+            "text": "pa_cal_sum_kcal"
+          },
+          "valueInteger": 50
+        }
+      ]
+    }
+  ]
+}

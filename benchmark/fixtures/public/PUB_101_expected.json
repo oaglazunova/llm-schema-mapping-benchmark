@@ -1,0 +1,12 @@
+{
+  "records": [
+    {
+      "player_external_id": "pat-001",
+      "first_name": "Jane",
+      "last_name": "Doe",
+      "gender": "female",
+      "birth_date": "1993-04-15",
+      "country": "NL"
+    }
+  ]
+}

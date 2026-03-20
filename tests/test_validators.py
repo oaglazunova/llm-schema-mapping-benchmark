@@ -226,3 +226,52 @@ def test_gb004_produces_canonical_consent_item_keys() -> None:
     assert "accepted" in first_item
     assert "tk" not in first_item
     assert "condition" not in first_item
+
+
+from lsmbench.benchmark.task_loader import (
+    load_gold,
+    load_tasks_from_task_set,
+)
+from lsmbench.validators import (
+    validate_plan,
+    validate_references,
+    validate_task,
+)
+
+
+def test_all_tasks_pass_task_schema():
+    tasks = load_tasks_from_task_set("pilot_v1")
+    failures = []
+
+    for task in tasks:
+        report = validate_task(task)
+        if not report["valid"]:
+            failures.append((task["task_id"], report["errors"]))
+
+    assert not failures, f"Task schema validation failures: {failures}"
+
+
+def test_all_gold_plans_pass_plan_schema():
+    tasks = load_tasks_from_task_set("pilot_v1")
+    failures = []
+
+    for task in tasks:
+        plan = load_gold(task, "plan")
+        report = validate_plan(plan)
+        if not report["valid"]:
+            failures.append((task["task_id"], report["errors"]))
+
+    assert not failures, f"Plan schema validation failures: {failures}"
+
+
+def test_all_gold_plans_pass_reference_validation():
+    tasks = load_tasks_from_task_set("pilot_v1")
+    failures = []
+
+    for task in tasks:
+        plan = load_gold(task, "plan")
+        report = validate_references(task, plan)
+        if not report["valid"]:
+            failures.append((task["task_id"], report["errors"]))
+
+    assert not failures, f"Reference validation failures: {failures}"
