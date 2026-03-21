@@ -1,0 +1,37 @@
+[
+  {
+    "target_field": "order_id",
+    "source_path": "$.orders.id",
+    "relation": "exact"
+  },
+  {
+    "target_field": "customer_id",
+    "source_path": "$.orders.customer_id",
+    "relation": "exact"
+  },
+  {
+    "target_field": "customer_email",
+    "source_path": "$.customers.email",
+    "relation": "exact:left_join"
+  },
+  {
+    "target_field": "customer_country",
+    "source_path": "$.customers.country",
+    "relation": "exact:left_join"
+  },
+  {
+    "target_field": "customer_tier",
+    "source_path": "$.customers.tier",
+    "relation": "exact:left_join"
+  },
+  {
+    "target_field": "order_status",
+    "source_path": "$.orders.status",
+    "relation": "exact"
+  },
+  {
+    "target_field": "total_amount",
+    "source_path": "$.orders.total_amount",
+    "relation": "exact"
+  }
+]

@@ -5,7 +5,9 @@
     "benchmark/tasks/public/PUB_101_task.json",
     "benchmark/tasks/public/PUB_102_task.json",
     "benchmark/tasks/public/PUB_103_task.json",
-    "benchmark/tasks/public/PUB_104_task.json"
+    "benchmark/tasks/public/PUB_104_task.json",
+    "benchmark/tasks/public/PUB_105_task.json",
+    "benchmark/tasks/public/PUB_106_task.json"
   ],
   "splits": {
     "easy": [
@@ -14,7 +16,9 @@
     "medium": [
       "PUB_102",
       "PUB_103",
-      "PUB_104"
+      "PUB_104",
+      "PUB_105",
+      "PUB_106"
     ],
     "hard": []
   },

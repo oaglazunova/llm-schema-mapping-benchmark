@@ -1,0 +1,40 @@
+{
+  "records": [
+    {
+      "orders": [
+        {
+          "id": "ord-001",
+          "customer_id": "cust-1",
+          "status": "paid",
+          "total_amount": 24.0
+        },
+        {
+          "id": "ord-002",
+          "customer_id": "cust-2",
+          "status": "pending",
+          "total_amount": 11.5
+        },
+        {
+          "id": "ord-003",
+          "customer_id": "cust-9",
+          "status": "paid",
+          "total_amount": 8.0
+        }
+      ],
+      "customers": [
+        {
+          "id": "cust-1",
+          "email": "a@example.org",
+          "country": "NL",
+          "tier": "gold"
+        },
+        {
+          "id": "cust-2",
+          "email": "b@example.org",
+          "country": "DE",
+          "tier": "silver"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "records": [
+    {
+      "customer_id": "cust-1",
+      "currency": "EUR",
+      "payment_count": 2,
+      "total_amount_minor": 2000.0,
+      "first_payment_time": "2026-02-13T10:00:00Z",
+      "last_payment_time": "2026-02-13T11:15:00Z"
+    },
+    {
+      "customer_id": "cust-2",
+      "currency": "EUR",
+      "payment_count": 1,
+      "total_amount_minor": 500.0,
+      "first_payment_time": "2026-02-13T14:05:00Z",
+      "last_payment_time": "2026-02-13T14:05:00Z"
+    }
+  ]
+}

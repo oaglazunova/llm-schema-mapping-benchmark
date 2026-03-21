@@ -1,0 +1,21 @@
+[
+  {
+    "type": "non_empty",
+    "field": "customer_id"
+  },
+  {
+    "type": "field_type",
+    "field": "currency",
+    "expect": "string"
+  },
+  {
+    "type": "range",
+    "field": "payment_count",
+    "min": 1
+  },
+  {
+    "type": "range",
+    "field": "total_amount_minor",
+    "min": 0
+  }
+]

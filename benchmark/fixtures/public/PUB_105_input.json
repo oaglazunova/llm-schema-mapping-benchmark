@@ -1,0 +1,28 @@
+{
+  "records": [
+    {
+      "event_id": "pay-001",
+      "customer_id": "cust-1",
+      "currency": "EUR",
+      "status": "succeeded",
+      "created_at": "2026-02-13T10:00:00Z",
+      "amount_minor": 1200
+    },
+    {
+      "event_id": "pay-002",
+      "customer_id": "cust-1",
+      "currency": "EUR",
+      "status": "succeeded",
+      "created_at": "2026-02-13T11:15:00Z",
+      "amount_minor": 800
+    },
+    {
+      "event_id": "pay-003",
+      "customer_id": "cust-2",
+      "currency": "EUR",
+      "status": "failed",
+      "created_at": "2026-02-13T14:05:00Z",
+      "amount_minor": 500
+    }
+  ]
+}

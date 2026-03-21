@@ -18,11 +18,11 @@ def test_load_tasks_from_pilot():
 
     # GameBus tasks
     assert "GB_001" in task_ids
-    assert "GB_006" in task_ids
+    assert "GB_007" in task_ids
 
     # Public tasks
     assert "PUB_101" in task_ids
-    assert "PUB_104" in task_ids
+    assert "PUB_106" in task_ids
 
 
 def test_registry_lookup():
@@ -41,8 +41,8 @@ def test_registry_filters():
     gamebus_tasks = registry.by_split("gamebus")
     public_tasks = registry.by_split("public")
 
-    assert len(gamebus_tasks) >= 6
-    assert len(public_tasks) >= 4
+    assert len(gamebus_tasks) >= 7
+    assert len(public_tasks) >= 6
 
     easy_tasks = registry.by_difficulty("easy")
     assert len(easy_tasks) > 0

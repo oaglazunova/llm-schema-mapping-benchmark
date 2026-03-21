@@ -1,0 +1,54 @@
+{
+  "plan_id": "PUB_105_gold",
+  "task_id": "PUB_105",
+  "target_entity": "customer_payment_summary",
+  "group_by_paths": [
+    "$.customer_id"
+  ],
+  "field_mappings": [
+    {
+      "target_field": "customer_id",
+      "operation": "copy",
+      "source_paths": [
+        "$.customer_id"
+      ]
+    },
+    {
+      "target_field": "currency",
+      "operation": "copy",
+      "source_paths": [
+        "$.currency"
+      ]
+    }
+  ],
+  "joins": [],
+  "filters": [],
+  "aggregations": [
+    {
+      "target_field": "payment_count",
+      "function": "count",
+      "source_path": "$.event_id"
+    },
+    {
+      "target_field": "total_amount_minor",
+      "function": "sum",
+      "source_path": "$.amount_minor"
+    },
+    {
+      "target_field": "first_payment_time",
+      "function": "first",
+      "source_path": "$.created_at"
+    },
+    {
+      "target_field": "last_payment_time",
+      "function": "latest",
+      "source_path": "$.created_at"
+    }
+  ],
+  "assumptions": [
+    "Records are grouped by customer_id.",
+    "Within a group, input order reflects event order.",
+    "currency is read from the first record in the group."
+  ],
+  "confidence": 1.0
+}

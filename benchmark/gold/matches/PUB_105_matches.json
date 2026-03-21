@@ -1,0 +1,32 @@
+[
+  {
+    "target_field": "customer_id",
+    "source_path": "$.customer_id",
+    "relation": "group_key"
+  },
+  {
+    "target_field": "currency",
+    "source_path": "$.currency",
+    "relation": "exact:first_record_in_group"
+  },
+  {
+    "target_field": "payment_count",
+    "source_path": "$.event_id",
+    "relation": "aggregate:count"
+  },
+  {
+    "target_field": "total_amount_minor",
+    "source_path": "$.amount_minor",
+    "relation": "aggregate:sum"
+  },
+  {
+    "target_field": "first_payment_time",
+    "source_path": "$.created_at",
+    "relation": "aggregate:first"
+  },
+  {
+    "target_field": "last_payment_time",
+    "source_path": "$.created_at",
+    "relation": "aggregate:latest"
+  }
+]

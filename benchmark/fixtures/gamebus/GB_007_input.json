@@ -1,0 +1,40 @@
+{
+  "records": [
+    {
+      "X_DATE": "2025-10-04 16:12:08",
+      "X_ACTIVITY_ID": 718984,
+      "APP": "healthyw8.gamebus.eu",
+      "SESSION": "sess-1",
+      "UID": "506",
+      "FOR_CAMPAIGN": "HW8_YA_HB",
+      "URI": "/account"
+    },
+    {
+      "X_DATE": "2025-10-04 16:13:10",
+      "X_ACTIVITY_ID": 718985,
+      "APP": "healthyw8.gamebus.eu",
+      "SESSION": "sess-1",
+      "UID": "506",
+      "FOR_CAMPAIGN": "HW8_YA_HB",
+      "URI": "/dashboard"
+    },
+    {
+      "X_DATE": "2025-10-04 16:14:00",
+      "X_ACTIVITY_ID": 718986,
+      "APP": "healthyw8.gamebus.eu",
+      "SESSION": "sess-1",
+      "UID": "506",
+      "FOR_CAMPAIGN": "HW8_YA_HB",
+      "URI": "/account"
+    },
+    {
+      "X_DATE": "2025-10-04 18:00:00",
+      "X_ACTIVITY_ID": 718990,
+      "APP": "healthyw8.gamebus.eu",
+      "SESSION": "sess-2",
+      "UID": "506",
+      "FOR_CAMPAIGN": "HW8_YA_HB",
+      "URI": "/home"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "type": "non_empty",
+    "field": "order_id"
+  },
+  {
+    "type": "non_empty",
+    "field": "customer_id"
+  },
+  {
+    "type": "field_type",
+    "field": "order_status",
+    "expect": "string"
+  },
+  {
+    "type": "field_type",
+    "field": "total_amount",
+    "expect": "number"
+  }
+]

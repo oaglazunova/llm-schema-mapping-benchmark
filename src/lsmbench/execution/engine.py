@@ -6,6 +6,7 @@ from typing import Any
 from lsmbench.execution.aggregations import apply_aggregation, apply_aggregation_to_records
 from lsmbench.execution.filters import record_passes_filters
 from lsmbench.execution.json_path import resolve_one
+from lsmbench.execution.joins import materialize_single_join
 from lsmbench.execution.operations import apply_operation
 
 
@@ -24,11 +25,8 @@ def execute_plan_on_record(
     - field_mappings
     - filters
     - aggregations
-    - no joins yet
+    - no joins inside this function
     """
-    if plan.get("joins"):
-        raise NotImplementedError("Joins are not implemented in the execution engine yet.")
-
     context = deepcopy(record)
     output: dict[str, Any] = {}
 
@@ -79,9 +77,6 @@ def execute_plan_on_group(
     if not records:
         return None
 
-    if plan.get("joins"):
-        raise NotImplementedError("Joins are not implemented in the execution engine yet.")
-
     first_record = records[0]
     context = deepcopy(first_record)
     output: dict[str, Any] = {}
@@ -123,26 +118,51 @@ def execute_plan_on_fixture(
     plan: dict[str, Any],
 ) -> dict[str, Any]:
     records = input_fixture.get("records", [])
+    joins = plan.get("joins", [])
     group_by_paths = plan.get("group_by_paths", [])
 
-    # non-grouped mode
-    if not group_by_paths:
+    # We keep the first join implementation deliberately small:
+    # - at most one join
+    # - no joins + grouping together yet
+    if joins and group_by_paths:
+        raise NotImplementedError("Joins combined with group_by_paths are not implemented yet.")
+
+    if len(joins) > 1:
+        raise NotImplementedError("Only one join spec is supported in the current engine.")
+
+    # Join mode
+    if joins:
         outputs = []
-        for record in records:
-            produced = execute_plan_on_record(record, plan)
-            if produced is not None:
-                outputs.append(produced)
+        join_spec = joins[0]
+
+        for bundle_record in records:
+            joined_rows = materialize_single_join(bundle_record, join_spec)
+            for joined_row in joined_rows:
+                produced = execute_plan_on_record(joined_row, plan)
+                if produced is not None:
+                    outputs.append(produced)
+
         return {"records": outputs}
 
-    # grouped mode
-    grouped: dict[tuple[Any, ...], list[dict[str, Any]]] = {}
-    for record in records:
-        key = _build_group_key(record, group_by_paths)
-        grouped.setdefault(key, []).append(record)
+    # Grouped mode
+    if group_by_paths:
+        grouped: dict[tuple[Any, ...], list[dict[str, Any]]] = {}
+        for record in records:
+            key = _build_group_key(record, group_by_paths)
+            grouped.setdefault(key, []).append(record)
 
+        outputs = []
+        for _, group_records in grouped.items():
+            produced = execute_plan_on_group(group_records, plan)
+            if produced is not None:
+                outputs.append(produced)
+
+        return {"records": outputs}
+
+    # Plain record-wise mode
     outputs = []
-    for _, group_records in grouped.items():
-        produced = execute_plan_on_group(group_records, plan)
+    for record in records:
+        produced = execute_plan_on_record(record, plan)
         if produced is not None:
             outputs.append(produced)
 

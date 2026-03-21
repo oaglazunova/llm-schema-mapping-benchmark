@@ -1,0 +1,119 @@
+{
+  "task_id": "GB_007",
+  "title": "Map NAVIGATE_APP events to navigation_session_summary",
+  "split": "gamebus",
+  "difficulty": "hard",
+  "source_family": "gamebus_navigate_app_session_rollup",
+  "target_entity": "navigation_session_summary",
+  "task_text": "Create one canonical navigation_session_summary JSON object per SESSION from a bundle of NAVIGATE_APP events.",
+  "source_schema": {
+    "title": "GameBusNavigateAppRecord",
+    "type": "object",
+    "properties": {
+      "X_DATE": {
+        "type": "string",
+        "description": "Source timestamp"
+      },
+      "X_ACTIVITY_ID": {
+        "type": [
+          "integer",
+          "string"
+        ]
+      },
+      "APP": {
+        "type": "string"
+      },
+      "SESSION": {
+        "type": "string"
+      },
+      "UID": {
+        "type": "string"
+      },
+      "FOR_CAMPAIGN": {
+        "type": "string"
+      },
+      "URI": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "X_DATE",
+      "X_ACTIVITY_ID",
+      "APP",
+      "SESSION",
+      "UID",
+      "FOR_CAMPAIGN",
+      "URI"
+    ],
+    "additionalProperties": false
+  },
+  "target_schema": {
+    "title": "NavigationSessionSummary",
+    "type": "object",
+    "properties": {
+      "session_id": {
+        "type": "string"
+      },
+      "user_external_id": {
+        "type": "string"
+      },
+      "app": {
+        "type": "string"
+      },
+      "campaign": {
+        "type": "string"
+      },
+      "session_start_time": {
+        "type": "string"
+      },
+      "session_end_time": {
+        "type": "string"
+      },
+      "page_visit_count": {
+        "type": "integer"
+      },
+      "first_uri": {
+        "type": "string"
+      },
+      "last_uri": {
+        "type": "string"
+      },
+      "distinct_uri_count": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "session_id",
+      "user_external_id",
+      "app",
+      "campaign",
+      "session_start_time",
+      "session_end_time",
+      "page_visit_count",
+      "first_uri",
+      "last_uri",
+      "distinct_uri_count"
+    ],
+    "additionalProperties": false
+  },
+  "fixture_refs": {
+    "input": "benchmark/fixtures/gamebus/GB_007_input.json",
+    "expected": "benchmark/fixtures/gamebus/GB_007_expected.json"
+  },
+  "gold_refs": {
+    "matches": "benchmark/gold/matches/GB_007_matches.json",
+    "plan": "benchmark/gold/plans/GB_007_plan.json",
+    "invariants": "benchmark/gold/invariants/GB_007_invariants.json"
+  },
+  "tags": [
+    "gamebus",
+    "session-rollup",
+    "grouped-execution",
+    "navigation",
+    "aggregation"
+  ],
+  "notes": [
+    "GameBus-derived grouped task.",
+    "This is the first grouped execution benchmark task in the pilot."
+  ]
+}

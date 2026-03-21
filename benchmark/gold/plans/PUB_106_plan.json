@@ -1,0 +1,72 @@
+{
+  "plan_id": "PUB_106_gold",
+  "task_id": "PUB_106",
+  "target_entity": "order_with_customer",
+  "field_mappings": [
+    {
+      "target_field": "order_id",
+      "operation": "copy",
+      "source_paths": [
+        "$.orders.id"
+      ]
+    },
+    {
+      "target_field": "customer_id",
+      "operation": "copy",
+      "source_paths": [
+        "$.orders.customer_id"
+      ]
+    },
+    {
+      "target_field": "customer_email",
+      "operation": "copy",
+      "source_paths": [
+        "$.customers.email"
+      ]
+    },
+    {
+      "target_field": "customer_country",
+      "operation": "copy",
+      "source_paths": [
+        "$.customers.country"
+      ]
+    },
+    {
+      "target_field": "customer_tier",
+      "operation": "copy",
+      "source_paths": [
+        "$.customers.tier"
+      ]
+    },
+    {
+      "target_field": "order_status",
+      "operation": "copy",
+      "source_paths": [
+        "$.orders.status"
+      ]
+    },
+    {
+      "target_field": "total_amount",
+      "operation": "copy",
+      "source_paths": [
+        "$.orders.total_amount"
+      ]
+    }
+  ],
+  "joins": [
+    {
+      "left_path": "$.orders",
+      "right_path": "$.customers",
+      "left_key": "customer_id",
+      "right_key": "id",
+      "join_type": "left"
+    }
+  ],
+  "filters": [],
+  "aggregations": [],
+  "assumptions": [
+    "Orders are joined to customers by customer_id = id.",
+    "A missing customer row should still preserve the order via left join."
+  ],
+  "confidence": 1.0
+}

@@ -1,0 +1,28 @@
+{
+  "records": [
+    {
+      "session_id": "sess-1",
+      "user_external_id": "506",
+      "app": "healthyw8.gamebus.eu",
+      "campaign": "HW8_YA_HB",
+      "session_start_time": "2025-10-04 16:12:08",
+      "session_end_time": "2025-10-04 16:14:00",
+      "page_visit_count": 3,
+      "first_uri": "/account",
+      "last_uri": "/account",
+      "distinct_uri_count": 2
+    },
+    {
+      "session_id": "sess-2",
+      "user_external_id": "506",
+      "app": "healthyw8.gamebus.eu",
+      "campaign": "HW8_YA_HB",
+      "session_start_time": "2025-10-04 18:00:00",
+      "session_end_time": "2025-10-04 18:00:00",
+      "page_visit_count": 1,
+      "first_uri": "/home",
+      "last_uri": "/home",
+      "distinct_uri_count": 1
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "type": "non_empty",
+    "field": "session_id"
+  },
+  {
+    "type": "range",
+    "field": "page_visit_count",
+    "min": 1
+  },
+  {
+    "type": "range",
+    "field": "distinct_uri_count",
+    "min": 1
+  },
+  {
+    "type": "field_type",
+    "field": "app",
+    "expect": "string"
+  },
+  {
+    "type": "field_type",
+    "field": "campaign",
+    "expect": "string"
+  }
+]
