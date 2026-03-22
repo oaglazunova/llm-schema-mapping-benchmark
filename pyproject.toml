@@ -23,3 +23,4 @@ testpaths = ["tests"]
 
 [project.scripts]
 validate-one-task = "lsmbench.cli:main"
+profile-gamebus-descriptor = "lsmbench.sources.gamebus.profile_gamebus_descriptor_cli:main"
