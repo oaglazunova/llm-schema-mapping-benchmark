@@ -1,17 +1,8 @@
-[
-  {
-    "type": "field_type",
-    "field": "date",
-    "expect": "date-string"
-  },
-  {
-    "type": "field_type",
-    "field": "summary_score",
-    "expect": "integer"
-  },
-  {
-    "type": "range",
-    "field": "summary_score",
-    "min": 0
-  }
-]
+{
+  "task_id": "GB_001",
+  "invariants": [
+    "date is normalized to YYYY-MM-DD",
+    "summary_score is an integer",
+    "aggregation_level is one of DAILY or WEEKLY"
+  ]
+}

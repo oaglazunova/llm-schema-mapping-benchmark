@@ -1,0 +1,37 @@
+[
+  {
+    "X_DATE": "2025-06-04 00:59:59",
+    "X_ACTIVITY_ID": 1026583,
+    "STEPS_SUM": "1384",
+    "DISTANCE_SUM": "1028.328125",
+    "PA_CAL_SUM": "50"
+  },
+  {
+    "X_DATE": "2025-06-03 00:59:59",
+    "X_ACTIVITY_ID": 1026582,
+    "STEPS_SUM": "3566",
+    "DISTANCE_SUM": "2671.640625",
+    "PA_CAL_SUM": "126"
+  },
+  {
+    "X_DATE": "2025-06-02 00:59:59",
+    "X_ACTIVITY_ID": 1026581,
+    "STEPS_SUM": "20425",
+    "DISTANCE_SUM": "14995.25",
+    "PA_CAL_SUM": "727"
+  },
+  {
+    "X_DATE": "2025-06-01 00:59:59",
+    "X_ACTIVITY_ID": 1026580,
+    "STEPS_SUM": "8196",
+    "DISTANCE_SUM": "6045.453125",
+    "PA_CAL_SUM": "290"
+  },
+  {
+    "X_DATE": "2025-05-31 00:59:59",
+    "X_ACTIVITY_ID": 1026579,
+    "STEPS_SUM": "18604",
+    "DISTANCE_SUM": "13646.8984375",
+    "PA_CAL_SUM": "653"
+  }
+]

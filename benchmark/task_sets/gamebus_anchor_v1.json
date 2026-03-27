@@ -1,31 +1,15 @@
 {
   "name": "gamebus_anchor_v1",
-  "version": "0.1.0",
-  "tasks": [
-    "benchmark/tasks/gamebus/GB_001_task.json",
-    "benchmark/tasks/gamebus/GB_002_task.json",
-    "benchmark/tasks/gamebus/GB_003_task.json",
-    "benchmark/tasks/gamebus/GB_004_task.json",
-    "benchmark/tasks/gamebus/GB_005_task.json",
-    "benchmark/tasks/gamebus/GB_006_task.json",
-    "benchmark/tasks/gamebus/GB_007_task.json"
+  "description": "First semi-real GameBus anchor split",
+  "task_ids": [
+    "GB_001",
+    "GB_002",
+    "GB_003",
+    "GB_004",
+    "GB_005",
+    "GB_006"
   ],
-  "splits": {
-    "easy": [
-      "GB_001",
-      "GB_002",
-      "GB_003"
-    ],
-    "medium": [
-      "GB_004",
-      "GB_005",
-      "GB_006"
-    ],
-    "hard": [
-      "GB_007"
-    ]
-  },
-  "notes": [
-    "Sanitized GameBus-derived anchor split for pilot benchmark."
+  "optional_task_ids": [
+    "GB_007"
   ]
 }

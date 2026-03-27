@@ -1,11 +1,11 @@
 {
-  "plan_id": "GB_002_gold",
+  "plan_id": "GB_002_PLAN",
   "task_id": "GB_002",
   "target_entity": "daily_activity_summary",
   "field_mappings": [
     {
       "target_field": "source_activity_id",
-      "operation": "cast_integer",
+      "operation": "copy",
       "source_paths": [
         "$.X_ACTIVITY_ID"
       ]
@@ -43,7 +43,7 @@
   "filters": [],
   "aggregations": [],
   "assumptions": [
-    "Source values are already daily aggregates."
+    "Auto-generated from known descriptor template."
   ],
   "confidence": 1.0
 }

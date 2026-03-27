@@ -1,11 +1,11 @@
 {
-  "plan_id": "GB_001_gold",
+  "plan_id": "GB_001_PLAN",
   "task_id": "GB_001",
   "target_entity": "daily_nutrition_summary",
   "field_mappings": [
     {
       "target_field": "source_activity_id",
-      "operation": "cast_integer",
+      "operation": "copy",
       "source_paths": [
         "$.X_ACTIVITY_ID"
       ]
@@ -57,7 +57,7 @@
   "filters": [],
   "aggregations": [],
   "assumptions": [
-    "One source record becomes one target record."
+    "Auto-generated from known descriptor template."
   ],
   "confidence": 1.0
 }

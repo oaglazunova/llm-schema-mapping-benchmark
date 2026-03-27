@@ -1,113 +1,126 @@
 {
   "task_id": "GB_004",
   "title": "Map CONSENT to consent_record",
-  "split": "gamebus",
   "difficulty": "medium",
-  "source_family": "gamebus_consent",
+  "source_family": "gamebus",
+  "descriptor_name": "consent",
   "target_entity": "consent_record",
-  "task_text": "Create one canonical consent record JSON object by parsing the DESCRIPTION JSON string and deriving summary fields.",
+  "benchmark_family_hint": "embedded_json_parsing",
+  "task_text": "Parse the JSON string in DESCRIPTION and produce a normalized consent record.",
   "source_schema": {
-    "type": "object",
-    "properties": {
-      "X_DATE": {
-        "type": "string"
+    "descriptor_name": "consent",
+    "top_level_type": "list",
+    "record_count": 1,
+    "field_count": 4,
+    "benchmark_family_hint": "embedded_json_parsing",
+    "fields": [
+      {
+        "name": "DESCRIPTION",
+        "raw_type_counts": {
+          "str": 1
+        },
+        "logical_type_hints": [
+          "json_array_string"
+        ],
+        "recommended_operations": [
+          "copy",
+          "parse_json_array"
+        ],
+        "examples": [
+          "[{\"tk\":\"data-sharing\",\"condition\":\"Ich gebe die Erlaubnis zur Verwendung meiner Informationen in wissenschaftlichen Datenanalysen und trage so zur Forschung bei\",\"accepted\":true},{\"tk\":\"terms-conditions-data\",\"condition\":\"Ich habe die Allgemeinen Geschäftsbedingungen gelesen und stimme der Analyse meiner persönlichen Daten zu.\",\"accepted\":true},{\"tk\":\"terms-conditions\",\"condition\":\"Ich akzeptiere die Allgemeinen Geschäftsbedingungen\",\"accepted\":true}]"
+        ],
+        "null_count": 0
       },
-      "X_ACTIVITY_ID": {
-        "type": [
-          "integer",
-          "string"
-        ]
+      {
+        "name": "FOR_CAMPAIGN",
+        "raw_type_counts": {
+          "str": 1
+        },
+        "logical_type_hints": [],
+        "recommended_operations": [
+          "copy"
+        ],
+        "examples": [
+          "HW8_YA_HB"
+        ],
+        "null_count": 0
       },
-      "FOR_CAMPAIGN": {
-        "type": "string"
+      {
+        "name": "X_ACTIVITY_ID",
+        "raw_type_counts": {
+          "int": 1
+        },
+        "logical_type_hints": [],
+        "recommended_operations": [
+          "copy"
+        ],
+        "examples": [
+          101363
+        ],
+        "null_count": 0
       },
-      "DESCRIPTION": {
-        "type": "string",
-        "description": "JSON-encoded array of consent items"
+      {
+        "name": "X_DATE",
+        "raw_type_counts": {
+          "str": 1
+        },
+        "logical_type_hints": [
+          "datetime_string"
+        ],
+        "recommended_operations": [
+          "copy",
+          "parse_datetime",
+          "truncate_date"
+        ],
+        "examples": [
+          "2025-04-11 16:32:37"
+        ],
+        "null_count": 0
       }
-    },
-    "additionalProperties": false,
-    "required": [
-      "X_DATE",
-      "X_ACTIVITY_ID",
-      "FOR_CAMPAIGN",
-      "DESCRIPTION"
-    ],
-    "title": "GameBusConsentRecord"
+    ]
   },
   "target_schema": {
-    "type": "object",
-    "properties": {
-      "consent_time": {
-        "type": "string"
+    "target_entity": "consent_record",
+    "fields": [
+      {
+        "name": "consent_time",
+        "type": "datetime",
+        "required": true
       },
-      "source_activity_id": {
-        "type": "integer"
+      {
+        "name": "source_activity_id",
+        "type": "integer",
+        "required": true
       },
-      "campaign": {
-        "type": "string"
+      {
+        "name": "campaign",
+        "type": "string",
+        "required": true
       },
-      "consent_items": {
+      {
+        "name": "consent_items",
         "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "code": {
-              "type": "string"
-            },
-            "condition_text": {
-              "type": "string"
-            },
-            "accepted": {
-              "type": "boolean"
-            }
-          },
-          "additionalProperties": false,
-          "required": [
-            "code",
-            "condition_text",
-            "accepted"
-          ]
-        }
+        "required": true
       },
-      "all_required_accepted": {
-        "type": "boolean"
+      {
+        "name": "accepted_count",
+        "type": "integer",
+        "required": true
       },
-      "accepted_count": {
-        "type": "integer"
+      {
+        "name": "item_count",
+        "type": "integer",
+        "required": true
       },
-      "item_count": {
-        "type": "integer"
+      {
+        "name": "all_required_accepted",
+        "type": "boolean",
+        "required": true
       }
-    },
-    "additionalProperties": false,
-    "required": [
-      "consent_time",
-      "source_activity_id",
-      "campaign",
-      "consent_items",
-      "all_required_accepted",
-      "accepted_count",
-      "item_count"
-    ],
-    "title": "ConsentRecord"
+    ]
   },
-  "fixture_refs": {
-    "input": "benchmark/fixtures/gamebus/GB_004_input.json",
-    "expected": "benchmark/fixtures/gamebus/GB_004_expected.json"
-  },
-  "gold_refs": {
-    "matches": "benchmark/gold/matches/GB_004_matches.json",
-    "plan": "benchmark/gold/plans/GB_004_plan.json",
-    "invariants": "benchmark/gold/invariants/GB_004_invariants.json"
-  },
-  "tags": [
-    "gamebus",
-    "embedded-json",
-    "consent",
-    "boolean-aggregation"
-  ],
   "notes": [
-    "GameBus-derived task; fixtures are sanitized/synthetic."
+    "Auto-generated from descriptor profile. Review before release.",
+    "Fixtures are samples only. Expected outputs may still need manual refinement."
   ]
 }

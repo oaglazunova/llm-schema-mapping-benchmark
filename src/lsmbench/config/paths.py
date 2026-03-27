@@ -20,6 +20,15 @@ FIXTURES_DIR = BENCHMARK_DIR / "fixtures"
 GOLD_DIR = BENCHMARK_DIR / "gold"
 RUNS_DIR = PROJECT_ROOT / "runs"
 
+GAMEBUS_TASKS_DIR = TASKS_DIR / "gamebus"
+GAMEBUS_FIXTURES_DIR = FIXTURES_DIR / "gamebus"
+
+GOLD_MATCHES_DIR = GOLD_DIR / "matches"
+GOLD_PLANS_DIR = GOLD_DIR / "plans"
+GOLD_INVARIANTS_DIR = GOLD_DIR / "invariants"
+
+TASK_SETS_DIR = BENCHMARK_DIR / "task_sets"
+
 
 def ensure_dir(path: Path) -> Path:
     path.mkdir(parents=True, exist_ok=True)

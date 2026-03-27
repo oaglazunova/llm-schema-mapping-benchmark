@@ -1,0 +1,27 @@
+[
+  {
+    "X_DATE": "2025-06-03 17:03:06",
+    "X_ACTIVITY_ID": 910593,
+    "ACTIVITY_TYPE": "{'src':'p','ts':1748962986832,'type':'NOT_MOVING','speed':0,'steps':135606,'walks':132555,'runs':80,'freq':0,'distance':100582.6484375,'cals':4789.4599609375}"
+  },
+  {
+    "X_DATE": "2025-06-03 17:00:27",
+    "X_ACTIVITY_ID": 910592,
+    "ACTIVITY_TYPE": "{'src':'p','ts':1748962827106,'type':'NOT_MOVING','speed':0,'steps':135606,'walks':132555,'runs':80,'freq':0,'distance':100582.6484375,'cals':4789.4599609375}"
+  },
+  {
+    "X_DATE": "2025-06-03 16:57:27",
+    "X_ACTIVITY_ID": 910591,
+    "ACTIVITY_TYPE": "{'src':'p','ts':1748962647761,'type':'NOT_MOVING','speed':0,'steps':135606,'walks':132555,'runs':80,'freq':0,'distance':100582.6484375,'cals':4789.4599609375}"
+  },
+  {
+    "X_DATE": "2025-06-03 16:55:01",
+    "X_ACTIVITY_ID": 910590,
+    "ACTIVITY_TYPE": "{'src':'p','ts':1748962501188,'type':'NOT_MOVING','speed':0,'steps':135606,'walks':132555,'runs':80,'freq':0,'distance':100582.6484375,'cals':4789.4599609375}"
+  },
+  {
+    "X_DATE": "2025-06-03 16:53:34",
+    "X_ACTIVITY_ID": 910589,
+    "ACTIVITY_TYPE": "{'src':'p','ts':1748962414815,'type':'NOT_MOVING','speed':0,'steps':135606,'walks':132555,'runs':80,'freq':0,'distance':100582.6484375,'cals':4789.4599609375}"
+  }
+]

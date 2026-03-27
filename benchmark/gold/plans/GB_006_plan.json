@@ -1,5 +1,5 @@
 {
-  "plan_id": "GB_006_gold",
+  "plan_id": "GB_006_PLAN",
   "task_id": "GB_006",
   "target_entity": "points_event",
   "field_mappings": [
@@ -12,7 +12,7 @@
     },
     {
       "target_field": "source_activity_id",
-      "operation": "cast_integer",
+      "operation": "copy",
       "source_paths": [
         "$.X_ACTIVITY_ID"
       ]
@@ -50,7 +50,7 @@
   "filters": [],
   "aggregations": [],
   "assumptions": [
-    "Each source record is one points-award event."
+    "Auto-generated from known descriptor template."
   ],
   "confidence": 1.0
 }

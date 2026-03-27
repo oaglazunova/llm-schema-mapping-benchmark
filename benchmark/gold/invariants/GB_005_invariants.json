@@ -1,17 +1,7 @@
-[
-  {
-    "type": "field_type",
-    "field": "raw_pairs",
-    "expect": "array"
-  },
-  {
-    "type": "field_type",
-    "field": "age",
-    "expect": "integer-or-null"
-  },
-  {
-    "type": "field_type",
-    "field": "gender",
-    "expect": "string-or-null"
-  }
-]
+{
+  "task_id": "GB_005",
+  "invariants": [
+    "age is integer when present",
+    "raw_pairs preserves original DESCRIPTION"
+  ]
+}

@@ -1,27 +1,37 @@
 [
   {
     "target_field": "survey_time",
-    "source_path": "$.X_DATE",
-    "relation": "transform:parse_datetime"
+    "source_paths": [
+      "$.X_DATE"
+    ],
+    "operation": "parse_datetime"
   },
   {
     "target_field": "source_activity_id",
-    "source_path": "$.X_ACTIVITY_ID",
-    "relation": "transform:cast_integer"
+    "source_paths": [
+      "$.X_ACTIVITY_ID"
+    ],
+    "operation": "copy"
   },
   {
     "target_field": "raw_pairs",
-    "source_path": "$.DESCRIPTION",
-    "relation": "exact"
+    "source_paths": [
+      "$.DESCRIPTION"
+    ],
+    "operation": "copy"
   },
   {
     "target_field": "gender",
-    "source_path": "$.DESCRIPTION",
-    "relation": "transform:extract_kv_value(key=gender)"
+    "source_paths": [
+      "$.DESCRIPTION"
+    ],
+    "operation": "extract_kv_value"
   },
   {
     "target_field": "age",
-    "source_path": "$.DESCRIPTION",
-    "relation": "transform:extract_kv_value_cast_integer(key=age)"
+    "source_paths": [
+      "$.DESCRIPTION"
+    ],
+    "operation": "extract_kv_value_cast_integer"
   }
 ]

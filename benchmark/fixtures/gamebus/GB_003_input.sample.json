@@ -1,0 +1,47 @@
+[
+  {
+    "X_DATE": "2025-10-04 16:12:08",
+    "X_ACTIVITY_ID": 718984,
+    "APP": "healthyw8.gamebus.eu",
+    "SESSION": "s6ydj-mgccqnyx",
+    "UID": "506",
+    "FOR_CAMPAIGN": "HW8_YA_HB",
+    "URI": "/account"
+  },
+  {
+    "X_DATE": "2025-10-04 16:12:01",
+    "X_ACTIVITY_ID": 718983,
+    "APP": "healthyw8.gamebus.eu",
+    "SESSION": "s6ydj-mgccqnyx",
+    "UID": "506",
+    "FOR_CAMPAIGN": "HW8_YA_HB",
+    "URI": "/error/waves"
+  },
+  {
+    "X_DATE": "2025-08-20 19:31:23",
+    "X_ACTIVITY_ID": 689365,
+    "APP": "healthyw8.gamebus.eu",
+    "SESSION": "jajbu-mek905ng",
+    "UID": "506",
+    "FOR_CAMPAIGN": "HW8_YA_HB",
+    "URI": "/viz/level?p=1925"
+  },
+  {
+    "X_DATE": "2025-08-20 19:31:19",
+    "X_ACTIVITY_ID": 689364,
+    "APP": "healthyw8.gamebus.eu",
+    "SESSION": "jajbu-mek905ng",
+    "UID": "506",
+    "FOR_CAMPAIGN": "HW8_YA_HB",
+    "URI": "/viz/level?p=1926"
+  },
+  {
+    "X_DATE": "2025-08-20 19:31:18",
+    "X_ACTIVITY_ID": 689363,
+    "APP": "healthyw8.gamebus.eu",
+    "SESSION": "jajbu-mek905ng",
+    "UID": "506",
+    "FOR_CAMPAIGN": "HW8_YA_HB",
+    "URI": "/viz/rewards?p=1927"
+  }
+]
