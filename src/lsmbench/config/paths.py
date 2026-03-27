@@ -6,14 +6,19 @@ PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
 BENCHMARK_DIR = PROJECT_ROOT / "benchmark"
 DATA_DIR = PROJECT_ROOT / "data"
+
 RAW_PRIVATE_DIR = DATA_DIR / "raw_private"
 INTERIM_PRIVATE_DIR = DATA_DIR / "interim_private"
+PUBLIC_CACHE_DIR = DATA_DIR / "public_cache"
+
+GAMEBUS_RAW_DIR = RAW_PRIVATE_DIR / "gamebus"
 DESCRIPTOR_PROFILES_DIR = INTERIM_PRIVATE_DIR / "descriptor_profiles"
 
 SCHEMAS_DIR = PROJECT_ROOT / "schemas"
 TASKS_DIR = BENCHMARK_DIR / "tasks"
 FIXTURES_DIR = BENCHMARK_DIR / "fixtures"
 GOLD_DIR = BENCHMARK_DIR / "gold"
+RUNS_DIR = PROJECT_ROOT / "runs"
 
 
 def ensure_dir(path: Path) -> Path:
