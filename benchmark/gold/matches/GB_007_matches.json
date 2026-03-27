@@ -1,52 +1,30 @@
 [
   {
-    "target_field": "session_id",
-    "source_path": "$.SESSION",
-    "relation": "group_key"
+    "target_field": "event_time",
+    "source_paths": [
+      "$.X_DATE"
+    ],
+    "operation": "parse_datetime"
   },
   {
-    "target_field": "user_external_id",
-    "source_path": "$.UID",
-    "relation": "exact:first_record_in_group"
+    "target_field": "source_activity_id",
+    "source_paths": [
+      "$.X_ACTIVITY_ID"
+    ],
+    "operation": "copy"
   },
   {
-    "target_field": "app",
-    "source_path": "$.APP",
-    "relation": "exact:first_record_in_group"
+    "target_field": "activity_type_raw",
+    "source_paths": [
+      "$.ACTIVITY_TYPE"
+    ],
+    "operation": "copy"
   },
   {
-    "target_field": "campaign",
-    "source_path": "$.FOR_CAMPAIGN",
-    "relation": "exact:first_record_in_group"
-  },
-  {
-    "target_field": "session_start_time",
-    "source_path": "$.X_DATE",
-    "relation": "aggregate:first"
-  },
-  {
-    "target_field": "session_end_time",
-    "source_path": "$.X_DATE",
-    "relation": "aggregate:latest"
-  },
-  {
-    "target_field": "page_visit_count",
-    "source_path": "$.URI",
-    "relation": "aggregate:count"
-  },
-  {
-    "target_field": "first_uri",
-    "source_path": "$.URI",
-    "relation": "aggregate:first"
-  },
-  {
-    "target_field": "last_uri",
-    "source_path": "$.URI",
-    "relation": "aggregate:latest"
-  },
-  {
-    "target_field": "distinct_uri_count",
-    "source_path": "$.URI",
-    "relation": "aggregate:distinct_count"
+    "target_field": "activity_type_obj",
+    "source_paths": [
+      "$.ACTIVITY_TYPE"
+    ],
+    "operation": "parse_pythonish_object"
   }
 ]

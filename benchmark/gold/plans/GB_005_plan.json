@@ -1,5 +1,5 @@
 {
-  "plan_id": "GB_005_gold",
+  "plan_id": "GB_005_PLAN",
   "task_id": "GB_005",
   "target_entity": "general_survey_profile",
   "field_mappings": [
@@ -12,7 +12,7 @@
     },
     {
       "target_field": "source_activity_id",
-      "operation": "cast_integer",
+      "operation": "copy",
       "source_paths": [
         "$.X_ACTIVITY_ID"
       ]
@@ -51,7 +51,7 @@
   "filters": [],
   "aggregations": [],
   "assumptions": [
-    "DESCRIPTION is an array of key:value strings."
+    "Auto-generated from known descriptor template."
   ],
   "confidence": 1.0
 }

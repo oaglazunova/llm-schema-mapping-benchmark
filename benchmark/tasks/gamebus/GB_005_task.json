@@ -1,90 +1,110 @@
 {
   "task_id": "GB_005",
   "title": "Map GENERAL_SURVEY to general_survey_profile",
-  "split": "gamebus",
   "difficulty": "medium",
-  "source_family": "gamebus_general_survey",
+  "source_family": "gamebus",
+  "descriptor_name": "general_survey",
   "target_entity": "general_survey_profile",
-  "task_text": "Create one canonical general survey profile JSON object by parsing key:value strings in DESCRIPTION.",
+  "benchmark_family_hint": "kv_text_normalization",
+  "task_text": "Extract typed fields such as gender and age from DESCRIPTION key:value arrays.",
   "source_schema": {
-    "type": "object",
-    "properties": {
-      "X_DATE": {
-        "type": "string"
+    "descriptor_name": "general_survey",
+    "top_level_type": "list",
+    "record_count": 3,
+    "field_count": 3,
+    "benchmark_family_hint": "kv_text_normalization",
+    "fields": [
+      {
+        "name": "DESCRIPTION",
+        "raw_type_counts": {
+          "list": 3
+        },
+        "logical_type_hints": [
+          "kv_array"
+        ],
+        "recommended_operations": [
+          "copy",
+          "extract_kv_value",
+          "extract_kv_value_cast_integer"
+        ],
+        "examples": [
+          [
+            "gender:female",
+            "age:23"
+          ]
+        ],
+        "null_count": 0
       },
-      "X_ACTIVITY_ID": {
-        "type": [
-          "integer",
-          "string"
-        ]
+      {
+        "name": "X_ACTIVITY_ID",
+        "raw_type_counts": {
+          "int": 3
+        },
+        "logical_type_hints": [],
+        "recommended_operations": [
+          "copy"
+        ],
+        "examples": [
+          335218,
+          102420,
+          101364
+        ],
+        "null_count": 0
       },
-      "DESCRIPTION": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
+      {
+        "name": "X_DATE",
+        "raw_type_counts": {
+          "str": 3
+        },
+        "logical_type_hints": [
+          "datetime_string"
+        ],
+        "recommended_operations": [
+          "copy",
+          "parse_datetime",
+          "truncate_date"
+        ],
+        "examples": [
+          "2025-05-28 23:42:53",
+          "2025-04-11 23:31:08",
+          "2025-04-11 16:33:03"
+        ],
+        "null_count": 0
       }
-    },
-    "additionalProperties": false,
-    "required": [
-      "X_DATE",
-      "X_ACTIVITY_ID",
-      "DESCRIPTION"
-    ],
-    "title": "GameBusGeneralSurveyRecord"
+    ]
   },
   "target_schema": {
-    "type": "object",
-    "properties": {
-      "survey_time": {
-        "type": "string"
+    "target_entity": "general_survey_profile",
+    "fields": [
+      {
+        "name": "survey_time",
+        "type": "datetime",
+        "required": true
       },
-      "source_activity_id": {
-        "type": "integer"
+      {
+        "name": "source_activity_id",
+        "type": "integer",
+        "required": true
       },
-      "gender": {
-        "type": [
-          "string",
-          "null"
-        ]
+      {
+        "name": "gender",
+        "type": "string",
+        "required": false
       },
-      "age": {
-        "type": [
-          "integer",
-          "null"
-        ]
+      {
+        "name": "age",
+        "type": "integer",
+        "required": false
       },
-      "raw_pairs": {
+      {
+        "name": "raw_pairs",
         "type": "array",
-        "items": {
-          "type": "string"
-        }
+        "required": true
       }
-    },
-    "additionalProperties": false,
-    "required": [
-      "survey_time",
-      "source_activity_id",
-      "raw_pairs"
-    ],
-    "title": "GeneralSurveyProfile"
+    ]
   },
-  "fixture_refs": {
-    "input": "benchmark/fixtures/gamebus/GB_005_input.json",
-    "expected": "benchmark/fixtures/gamebus/GB_005_expected.json"
-  },
-  "gold_refs": {
-    "matches": "benchmark/gold/matches/GB_005_matches.json",
-    "plan": "benchmark/gold/plans/GB_005_plan.json",
-    "invariants": "benchmark/gold/invariants/GB_005_invariants.json"
-  },
-  "tags": [
-    "gamebus",
-    "key-value-text",
-    "semi-structured",
-    "type-extraction"
-  ],
   "notes": [
-    "GameBus-derived task; fixtures are sanitized/synthetic."
+    "Auto-generated from descriptor profile. Review before release.",
+    "Fixtures are samples only. Expected outputs may still need manual refinement."
   ]
 }

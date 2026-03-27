@@ -1,26 +1,7 @@
-[
-  {
-    "type": "non_empty",
-    "field": "session_id"
-  },
-  {
-    "type": "range",
-    "field": "page_visit_count",
-    "min": 1
-  },
-  {
-    "type": "range",
-    "field": "distinct_uri_count",
-    "min": 1
-  },
-  {
-    "type": "field_type",
-    "field": "app",
-    "expect": "string"
-  },
-  {
-    "type": "field_type",
-    "field": "campaign",
-    "expect": "string"
-  }
-]
+{
+  "task_id": "GB_007",
+  "invariants": [
+    "activity_type_obj is either null or an object",
+    "event_time parses as datetime"
+  ]
+}

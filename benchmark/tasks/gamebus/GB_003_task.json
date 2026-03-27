@@ -1,104 +1,191 @@
 {
   "task_id": "GB_003",
   "title": "Map NAVIGATE_APP to navigation_event",
-  "split": "gamebus",
   "difficulty": "easy",
-  "source_family": "gamebus_navigate_app",
+  "source_family": "gamebus",
+  "descriptor_name": "navigate_app",
   "target_entity": "navigation_event",
-  "task_text": "Create one canonical navigation event JSON object from one GameBus NAVIGATE_APP record.",
+  "benchmark_family_hint": "event_log_or_session_rollup",
+  "task_text": "Map one NAVIGATE_APP event into one normalized navigation_event object.",
   "source_schema": {
-    "type": "object",
-    "properties": {
-      "X_DATE": {
-        "type": "string"
+    "descriptor_name": "navigate_app",
+    "top_level_type": "list",
+    "record_count": 1726,
+    "field_count": 7,
+    "benchmark_family_hint": "event_log_or_session_rollup",
+    "fields": [
+      {
+        "name": "APP",
+        "raw_type_counts": {
+          "str": 1726
+        },
+        "logical_type_hints": [
+          "enum_like"
+        ],
+        "recommended_operations": [
+          "copy",
+          "normalize_enum"
+        ],
+        "examples": [
+          "healthyw8.gamebus.eu"
+        ],
+        "null_count": 0
       },
-      "X_ACTIVITY_ID": {
-        "type": [
-          "integer",
-          "string"
-        ]
+      {
+        "name": "FOR_CAMPAIGN",
+        "raw_type_counts": {
+          "str": 1726
+        },
+        "logical_type_hints": [
+          "enum_like"
+        ],
+        "recommended_operations": [
+          "copy",
+          "normalize_enum"
+        ],
+        "examples": [
+          "HW8_YA_HB"
+        ],
+        "null_count": 0
       },
-      "APP": {
-        "type": "string"
+      {
+        "name": "SESSION",
+        "raw_type_counts": {
+          "str": 1726
+        },
+        "logical_type_hints": [],
+        "recommended_operations": [
+          "copy"
+        ],
+        "examples": [
+          "s6ydj-mgccqnyx",
+          "jajbu-mek905ng",
+          "ghw7p-mdlj3b6o",
+          "dildz-mdkxnafm",
+          "cwoei-mdhecu7v"
+        ],
+        "null_count": 0
       },
-      "SESSION": {
-        "type": "string"
+      {
+        "name": "UID",
+        "raw_type_counts": {
+          "str": 1726
+        },
+        "logical_type_hints": [
+          "integer_string",
+          "numeric_string"
+        ],
+        "recommended_operations": [
+          "copy",
+          "cast_integer"
+        ],
+        "examples": [
+          "506"
+        ],
+        "null_count": 0
       },
-      "UID": {
-        "type": "string"
+      {
+        "name": "URI",
+        "raw_type_counts": {
+          "str": 1726
+        },
+        "logical_type_hints": [],
+        "recommended_operations": [
+          "copy"
+        ],
+        "examples": [
+          "/account",
+          "/error/waves",
+          "/viz/level?p=1925",
+          "/viz/level?p=1926",
+          "/viz/rewards?p=1927"
+        ],
+        "null_count": 0
       },
-      "FOR_CAMPAIGN": {
-        "type": "string"
+      {
+        "name": "X_ACTIVITY_ID",
+        "raw_type_counts": {
+          "int": 1726
+        },
+        "logical_type_hints": [],
+        "recommended_operations": [
+          "copy"
+        ],
+        "examples": [
+          718984,
+          718983,
+          689365,
+          689364,
+          689363
+        ],
+        "null_count": 0
       },
-      "URI": {
-        "type": "string"
+      {
+        "name": "X_DATE",
+        "raw_type_counts": {
+          "str": 1726
+        },
+        "logical_type_hints": [
+          "datetime_string"
+        ],
+        "recommended_operations": [
+          "copy",
+          "parse_datetime",
+          "truncate_date"
+        ],
+        "examples": [
+          "2025-10-04 16:12:08",
+          "2025-10-04 16:12:01",
+          "2025-08-20 19:31:23",
+          "2025-08-20 19:31:19",
+          "2025-08-20 19:31:18"
+        ],
+        "null_count": 0
       }
-    },
-    "additionalProperties": false,
-    "required": [
-      "X_DATE",
-      "X_ACTIVITY_ID",
-      "APP",
-      "SESSION",
-      "UID",
-      "FOR_CAMPAIGN",
-      "URI"
-    ],
-    "title": "GameBusNavigateAppRecord"
+    ]
   },
   "target_schema": {
-    "type": "object",
-    "properties": {
-      "event_time": {
-        "type": "string"
+    "target_entity": "navigation_event",
+    "fields": [
+      {
+        "name": "event_time",
+        "type": "datetime",
+        "required": true
       },
-      "source_activity_id": {
-        "type": "integer"
+      {
+        "name": "source_activity_id",
+        "type": "integer",
+        "required": true
       },
-      "app": {
-        "type": "string"
+      {
+        "name": "app",
+        "type": "string",
+        "required": true
       },
-      "session_id": {
-        "type": "string"
+      {
+        "name": "session_id",
+        "type": "string",
+        "required": true
       },
-      "user_external_id": {
-        "type": "string"
+      {
+        "name": "user_external_id",
+        "type": "string",
+        "required": true
       },
-      "campaign": {
-        "type": "string"
+      {
+        "name": "campaign",
+        "type": "string",
+        "required": false
       },
-      "uri": {
-        "type": "string"
+      {
+        "name": "uri",
+        "type": "string",
+        "required": true
       }
-    },
-    "additionalProperties": false,
-    "required": [
-      "event_time",
-      "source_activity_id",
-      "app",
-      "session_id",
-      "user_external_id",
-      "campaign",
-      "uri"
-    ],
-    "title": "NavigationEvent"
+    ]
   },
-  "fixture_refs": {
-    "input": "benchmark/fixtures/gamebus/GB_003_input.json",
-    "expected": "benchmark/fixtures/gamebus/GB_003_expected.json"
-  },
-  "gold_refs": {
-    "matches": "benchmark/gold/matches/GB_003_matches.json",
-    "plan": "benchmark/gold/plans/GB_003_plan.json",
-    "invariants": "benchmark/gold/invariants/GB_003_invariants.json"
-  },
-  "tags": [
-    "gamebus",
-    "event",
-    "session-metadata",
-    "datetime"
-  ],
   "notes": [
-    "GameBus-derived task; fixtures are sanitized/synthetic."
+    "Auto-generated from descriptor profile. Review before release.",
+    "Fixtures are samples only. Expected outputs may still need manual refinement."
   ]
 }

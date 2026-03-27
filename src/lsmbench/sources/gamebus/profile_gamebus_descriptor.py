@@ -151,11 +151,12 @@ def _looks_like_kv_array(value: Any) -> bool:
 
 def _logical_type_hints(values: list[Any]) -> list[str]:
     hints: set[str] = set()
-
     non_null = [v for v in values if v is not None]
+
     if not non_null:
         return []
 
+    # Strong type signals first
     if all(isinstance(v, str) and _looks_like_datetime_string(v) for v in non_null):
         hints.add("datetime_string")
 
@@ -177,7 +178,30 @@ def _logical_type_hints(values: list[Any]) -> list[str]:
     if all(_looks_like_kv_array(v) for v in non_null):
         hints.add("kv_array")
 
-    if len(set(map(_safe_hashable, non_null))) <= 12 and all(not isinstance(v, (dict, list)) for v in non_null):
+    # Much stricter enum detection
+    # Only if:
+    # - not numeric/datetime/embedded-structure
+    # - enough observations
+    # - low distinct count relative to total
+    protected = {
+        "datetime_string",
+        "integer_string",
+        "numeric_string",
+        "json_array_string",
+        "json_object_string",
+        "pythonish_object_string",
+        "kv_array",
+    }
+
+    distinct_non_null = len({_safe_hashable(v) for v in non_null})
+    total_non_null = len(non_null)
+
+    if (
+        not (hints & protected)
+        and total_non_null >= 8
+        and distinct_non_null <= min(12, max(3, total_non_null // 4))
+        and all(not isinstance(v, (dict, list)) for v in non_null)
+    ):
         hints.add("enum_like")
 
     return sorted(hints)
@@ -185,47 +209,42 @@ def _logical_type_hints(values: list[Any]) -> list[str]:
 
 def _recommended_operations(field_name: str, hints: Iterable[str], raw_type_counts: Counter) -> list[str]:
     ops: list[str] = []
-
     hints = set(hints)
 
+    # Prefer strong semantic parsing/casting hints first
     if "datetime_string" in hints:
         if field_name.upper().endswith("DATE") or field_name.upper().startswith("X_DATE"):
-            ops += ["parse_datetime", "truncate_date"]
+            ops += ["copy", "parse_datetime", "truncate_date"]
         else:
-            ops += ["parse_datetime"]
+            ops += ["copy", "parse_datetime"]
+        return ops
 
     if "integer_string" in hints:
-        ops += ["cast_integer"]
+        return ["copy", "cast_integer"]
 
-    if "numeric_string" in hints and "integer_string" not in hints:
-        ops += ["cast_number"]
-
-    if "enum_like" in hints:
-        ops += ["normalize_enum"]
+    if "numeric_string" in hints:
+        return ["copy", "cast_number"]
 
     if "json_array_string" in hints:
-        ops += ["parse_json_array"]
+        return ["copy", "parse_json_array"]
 
     if "json_object_string" in hints:
-        ops += ["parse_json_object"]
+        return ["copy", "parse_json_object"]
 
     if "pythonish_object_string" in hints:
-        ops += ["parse_pythonish_object"]
+        return ["copy", "parse_pythonish_object"]
 
     if "kv_array" in hints:
-        ops += ["extract_kv_value", "extract_kv_value_cast_integer"]
+        return ["copy", "extract_kv_value", "extract_kv_value_cast_integer"]
+
+    # Only suggest enum normalization if no stronger interpretation exists
+    if "enum_like" in hints:
+        return ["copy", "normalize_enum"]
 
     if raw_type_counts.get("int", 0) > 0 or raw_type_counts.get("float", 0) > 0 or raw_type_counts.get("str", 0) > 0:
-        ops = ["copy"] + ops
+        return ["copy"]
 
-    # de-duplicate but preserve order
-    out = []
-    seen = set()
-    for op in ops:
-        if op not in seen:
-            seen.add(op)
-            out.append(op)
-    return out
+    return []
 
 
 def _safe_hashable(value: Any) -> Any:

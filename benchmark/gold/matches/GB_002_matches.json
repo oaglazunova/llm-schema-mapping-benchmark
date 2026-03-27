@@ -1,27 +1,37 @@
 [
   {
     "target_field": "source_activity_id",
-    "source_path": "$.X_ACTIVITY_ID",
-    "relation": "exact"
+    "source_paths": [
+      "$.X_ACTIVITY_ID"
+    ],
+    "operation": "copy"
   },
   {
     "target_field": "date",
-    "source_path": "$.X_DATE",
-    "relation": "transform:truncate_date"
+    "source_paths": [
+      "$.X_DATE"
+    ],
+    "operation": "truncate_date"
   },
   {
     "target_field": "steps_sum",
-    "source_path": "$.STEPS_SUM",
-    "relation": "transform:cast_integer"
+    "source_paths": [
+      "$.STEPS_SUM"
+    ],
+    "operation": "cast_integer"
   },
   {
     "target_field": "distance_sum_m",
-    "source_path": "$.DISTANCE_SUM",
-    "relation": "transform:cast_number"
+    "source_paths": [
+      "$.DISTANCE_SUM"
+    ],
+    "operation": "cast_number"
   },
   {
     "target_field": "pa_cal_sum_kcal",
-    "source_path": "$.PA_CAL_SUM",
-    "relation": "transform:cast_integer"
+    "source_paths": [
+      "$.PA_CAL_SUM"
+    ],
+    "operation": "cast_integer"
   }
 ]

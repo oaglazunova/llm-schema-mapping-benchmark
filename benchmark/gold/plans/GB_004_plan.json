@@ -1,5 +1,5 @@
 {
-  "plan_id": "GB_004_gold",
+  "plan_id": "GB_004_PLAN",
   "task_id": "GB_004",
   "target_entity": "consent_record",
   "field_mappings": [
@@ -12,7 +12,7 @@
     },
     {
       "target_field": "source_activity_id",
-      "operation": "cast_integer",
+      "operation": "copy",
       "source_paths": [
         "$.X_ACTIVITY_ID"
       ]
@@ -26,15 +26,10 @@
     },
     {
       "target_field": "consent_items",
-      "operation": "parse_json_array_map_fields",
-      "source_paths": ["$.DESCRIPTION"],
-      "parameters": {
-        "field_map": {
-          "tk": "code",
-          "condition": "condition_text",
-          "accepted": "accepted"
-        }
-      }
+      "operation": "parse_json_array",
+      "source_paths": [
+        "$.DESCRIPTION"
+      ]
     }
   ],
   "joins": [],
@@ -57,7 +52,7 @@
     }
   ],
   "assumptions": [
-    "DESCRIPTION is valid JSON encoded as a string."
+    "Auto-generated from known descriptor template."
   ],
   "confidence": 1.0
 }

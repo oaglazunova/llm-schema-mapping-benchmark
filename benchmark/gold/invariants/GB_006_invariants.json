@@ -1,17 +1,7 @@
-[
-  {
-    "type": "range",
-    "field": "points",
-    "min": 1
-  },
-  {
-    "type": "field_type",
-    "field": "challenge_id",
-    "expect": "integer"
-  },
-  {
-    "type": "field_type",
-    "field": "trigger_activity_id",
-    "expect": "integer"
-  }
-]
+{
+  "task_id": "GB_006",
+  "invariants": [
+    "points > 0",
+    "all id fields are integers"
+  ]
+}

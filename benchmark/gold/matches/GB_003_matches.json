@@ -1,37 +1,51 @@
 [
   {
     "target_field": "event_time",
-    "source_path": "$.X_DATE",
-    "relation": "transform:parse_datetime"
+    "source_paths": [
+      "$.X_DATE"
+    ],
+    "operation": "parse_datetime"
   },
   {
     "target_field": "source_activity_id",
-    "source_path": "$.X_ACTIVITY_ID",
-    "relation": "transform:cast_integer"
+    "source_paths": [
+      "$.X_ACTIVITY_ID"
+    ],
+    "operation": "copy"
   },
   {
     "target_field": "app",
-    "source_path": "$.APP",
-    "relation": "exact"
+    "source_paths": [
+      "$.APP"
+    ],
+    "operation": "copy"
   },
   {
     "target_field": "session_id",
-    "source_path": "$.SESSION",
-    "relation": "exact"
+    "source_paths": [
+      "$.SESSION"
+    ],
+    "operation": "copy"
   },
   {
     "target_field": "user_external_id",
-    "source_path": "$.UID",
-    "relation": "exact"
+    "source_paths": [
+      "$.UID"
+    ],
+    "operation": "copy"
   },
   {
     "target_field": "campaign",
-    "source_path": "$.FOR_CAMPAIGN",
-    "relation": "exact"
+    "source_paths": [
+      "$.FOR_CAMPAIGN"
+    ],
+    "operation": "copy"
   },
   {
     "target_field": "uri",
-    "source_path": "$.URI",
-    "relation": "exact"
+    "source_paths": [
+      "$.URI"
+    ],
+    "operation": "copy"
   }
 ]

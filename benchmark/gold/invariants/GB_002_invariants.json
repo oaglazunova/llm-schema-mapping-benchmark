@@ -1,17 +1,8 @@
-[
-  {
-    "type": "field_type",
-    "field": "steps_sum",
-    "expect": "integer"
-  },
-  {
-    "type": "range",
-    "field": "steps_sum",
-    "min": 0
-  },
-  {
-    "type": "range",
-    "field": "distance_sum_m",
-    "min": 0
-  }
-]
+{
+  "task_id": "GB_002",
+  "invariants": [
+    "steps_sum >= 0",
+    "distance_sum_m >= 0",
+    "pa_cal_sum_kcal >= 0"
+  ]
+}

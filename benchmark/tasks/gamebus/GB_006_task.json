@@ -1,96 +1,186 @@
 {
   "task_id": "GB_006",
   "title": "Map SCORE_GAMEBUS_POINTS to points_event",
-  "split": "gamebus",
   "difficulty": "medium",
-  "source_family": "gamebus_score_gamebus_points",
+  "source_family": "gamebus",
+  "descriptor_name": "score_gamebus_points",
   "target_entity": "points_event",
-  "task_text": "Create one canonical points event JSON object from one GameBus SCORE_GAMEBUS_POINTS record.",
+  "benchmark_family_hint": "flat_descriptor_normalization",
+  "task_text": "Normalize a GameBus points-award event into a canonical points_event object.",
   "source_schema": {
-    "type": "object",
-    "properties": {
-      "X_DATE": {
-        "type": "string"
+    "descriptor_name": "score_gamebus_points",
+    "top_level_type": "list",
+    "record_count": 247,
+    "field_count": 6,
+    "benchmark_family_hint": "flat_descriptor_normalization",
+    "fields": [
+      {
+        "name": "ACTIVITY",
+        "raw_type_counts": {
+          "str": 247
+        },
+        "logical_type_hints": [
+          "integer_string",
+          "numeric_string"
+        ],
+        "recommended_operations": [
+          "copy",
+          "cast_integer"
+        ],
+        "examples": [
+          "689360",
+          "662913",
+          "662903",
+          "657383",
+          "657141"
+        ],
+        "null_count": 0
       },
-      "X_ACTIVITY_ID": {
-        "type": [
-          "integer",
-          "string"
-        ]
+      {
+        "name": "CHALLENGE_RULE",
+        "raw_type_counts": {
+          "str": 247
+        },
+        "logical_type_hints": [
+          "integer_string",
+          "numeric_string"
+        ],
+        "recommended_operations": [
+          "copy",
+          "cast_integer"
+        ],
+        "examples": [
+          "10594",
+          "10593",
+          "10543",
+          "10545",
+          "10564"
+        ],
+        "null_count": 0
       },
-      "FOR_CHALLENGE": {
-        "type": "string"
+      {
+        "name": "FOR_CHALLENGE",
+        "raw_type_counts": {
+          "str": 247
+        },
+        "logical_type_hints": [
+          "integer_string",
+          "numeric_string"
+        ],
+        "recommended_operations": [
+          "copy",
+          "cast_integer"
+        ],
+        "examples": [
+          "3985",
+          "3976",
+          "3980",
+          "3975",
+          "3981"
+        ],
+        "null_count": 0
       },
-      "CHALLENGE_RULE": {
-        "type": "string"
+      {
+        "name": "NUMBER_OF_POINTS",
+        "raw_type_counts": {
+          "str": 247
+        },
+        "logical_type_hints": [
+          "integer_string",
+          "numeric_string"
+        ],
+        "recommended_operations": [
+          "copy",
+          "cast_integer"
+        ],
+        "examples": [
+          "6",
+          "4",
+          "15",
+          "30",
+          "8"
+        ],
+        "null_count": 0
       },
-      "NUMBER_OF_POINTS": {
-        "type": "string"
+      {
+        "name": "X_ACTIVITY_ID",
+        "raw_type_counts": {
+          "int": 247
+        },
+        "logical_type_hints": [],
+        "recommended_operations": [
+          "copy"
+        ],
+        "examples": [
+          689361,
+          662914,
+          662904,
+          657386,
+          657142
+        ],
+        "null_count": 0
       },
-      "ACTIVITY": {
-        "type": "string"
+      {
+        "name": "X_DATE",
+        "raw_type_counts": {
+          "str": 247
+        },
+        "logical_type_hints": [
+          "datetime_string"
+        ],
+        "recommended_operations": [
+          "copy",
+          "parse_datetime",
+          "truncate_date"
+        ],
+        "examples": [
+          "2025-08-20 19:31:15",
+          "2025-07-23 21:18:22",
+          "2025-07-23 21:17:56",
+          "2025-07-21 01:01:32",
+          "2025-07-20 23:44:50"
+        ],
+        "null_count": 0
       }
-    },
-    "additionalProperties": false,
-    "required": [
-      "X_DATE",
-      "X_ACTIVITY_ID",
-      "FOR_CHALLENGE",
-      "CHALLENGE_RULE",
-      "NUMBER_OF_POINTS",
-      "ACTIVITY"
-    ],
-    "title": "GameBusScorePointsRecord"
+    ]
   },
   "target_schema": {
-    "type": "object",
-    "properties": {
-      "event_time": {
-        "type": "string"
+    "target_entity": "points_event",
+    "fields": [
+      {
+        "name": "event_time",
+        "type": "datetime",
+        "required": true
       },
-      "source_activity_id": {
-        "type": "integer"
+      {
+        "name": "source_activity_id",
+        "type": "integer",
+        "required": true
       },
-      "challenge_id": {
-        "type": "integer"
+      {
+        "name": "challenge_id",
+        "type": "integer",
+        "required": true
       },
-      "challenge_rule_id": {
-        "type": "integer"
+      {
+        "name": "challenge_rule_id",
+        "type": "integer",
+        "required": true
       },
-      "points": {
-        "type": "integer"
+      {
+        "name": "points",
+        "type": "integer",
+        "required": true
       },
-      "trigger_activity_id": {
-        "type": "integer"
+      {
+        "name": "trigger_activity_id",
+        "type": "integer",
+        "required": true
       }
-    },
-    "additionalProperties": false,
-    "required": [
-      "event_time",
-      "source_activity_id",
-      "challenge_id",
-      "challenge_rule_id",
-      "points",
-      "trigger_activity_id"
-    ],
-    "title": "PointsEvent"
+    ]
   },
-  "fixture_refs": {
-    "input": "benchmark/fixtures/gamebus/GB_006_input.json",
-    "expected": "benchmark/fixtures/gamebus/GB_006_expected.json"
-  },
-  "gold_refs": {
-    "matches": "benchmark/gold/matches/GB_006_matches.json",
-    "plan": "benchmark/gold/plans/GB_006_plan.json",
-    "invariants": "benchmark/gold/invariants/GB_006_invariants.json"
-  },
-  "tags": [
-    "gamebus",
-    "points",
-    "reward-event",
-    "casting"
-  ],
   "notes": [
-    "GameBus-derived task; fixtures are sanitized/synthetic."
+    "Auto-generated from descriptor profile. Review before release.",
+    "Fixtures are samples only. Expected outputs may still need manual refinement."
   ]
 }

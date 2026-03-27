@@ -1,78 +1,42 @@
 {
-  "plan_id": "GB_007_gold",
+  "plan_id": "GB_007_PLAN",
   "task_id": "GB_007",
-  "target_entity": "navigation_session_summary",
-  "group_by_paths": [
-    "$.SESSION"
-  ],
+  "target_entity": "sensor_activity_detail",
   "field_mappings": [
     {
-      "target_field": "session_id",
-      "operation": "copy",
+      "target_field": "event_time",
+      "operation": "parse_datetime",
       "source_paths": [
-        "$.SESSION"
+        "$.X_DATE"
       ]
     },
     {
-      "target_field": "user_external_id",
+      "target_field": "source_activity_id",
       "operation": "copy",
       "source_paths": [
-        "$.UID"
+        "$.X_ACTIVITY_ID"
       ]
     },
     {
-      "target_field": "app",
+      "target_field": "activity_type_raw",
       "operation": "copy",
       "source_paths": [
-        "$.APP"
+        "$.ACTIVITY_TYPE"
       ]
     },
     {
-      "target_field": "campaign",
-      "operation": "copy",
+      "target_field": "activity_type_obj",
+      "operation": "parse_pythonish_object",
       "source_paths": [
-        "$.FOR_CAMPAIGN"
+        "$.ACTIVITY_TYPE"
       ]
     }
   ],
   "joins": [],
   "filters": [],
-  "aggregations": [
-    {
-      "target_field": "session_start_time",
-      "function": "first",
-      "source_path": "$.X_DATE"
-    },
-    {
-      "target_field": "session_end_time",
-      "function": "latest",
-      "source_path": "$.X_DATE"
-    },
-    {
-      "target_field": "page_visit_count",
-      "function": "count",
-      "source_path": "$.URI"
-    },
-    {
-      "target_field": "first_uri",
-      "function": "first",
-      "source_path": "$.URI"
-    },
-    {
-      "target_field": "last_uri",
-      "function": "latest",
-      "source_path": "$.URI"
-    },
-    {
-      "target_field": "distinct_uri_count",
-      "function": "distinct_count",
-      "source_path": "$.URI"
-    }
-  ],
+  "aggregations": [],
   "assumptions": [
-    "Records are grouped by SESSION.",
-    "Within a group, input order reflects event order.",
-    "Field mappings read from the first record in the group."
+    "Auto-generated from known descriptor template."
   ],
   "confidence": 1.0
 }
