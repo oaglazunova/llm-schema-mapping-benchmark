@@ -1,15 +1,34 @@
 {
   "name": "gamebus_anchor_v1",
   "description": "First semi-real GameBus anchor split",
-  "task_ids": [
-    "GB_001",
-    "GB_002",
-    "GB_003",
-    "GB_004",
-    "GB_005",
-    "GB_006"
-  ],
-  "optional_task_ids": [
-    "GB_007"
+  "tasks": [
+    {
+      "task_id": "GB_001",
+      "evaluation_mode": "exact"
+    },
+    {
+      "task_id": "GB_002",
+      "evaluation_mode": "exact"
+    },
+    {
+      "task_id": "GB_003",
+      "evaluation_mode": "exact"
+    },
+    {
+      "task_id": "GB_004",
+      "evaluation_mode": "exact"
+    },
+    {
+      "task_id": "GB_005",
+      "evaluation_mode": "invariants"
+    },
+    {
+      "task_id": "GB_006",
+      "evaluation_mode": "exact"
+    },
+    {
+      "task_id": "GB_007",
+      "evaluation_mode": "invariants"
+    }
   ]
 }

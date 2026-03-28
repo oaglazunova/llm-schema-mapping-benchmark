@@ -1,0 +1,47 @@
+[
+  {
+    "event_time": "2025-10-04 16:12:08",
+    "source_activity_id": 718984,
+    "app": "healthyw8.gamebus.eu",
+    "session_id": "s6ydj-mgccqnyx",
+    "user_external_id": "506",
+    "campaign": "HW8_YA_HB",
+    "uri": "/account"
+  },
+  {
+    "event_time": "2025-10-04 16:12:01",
+    "source_activity_id": 718983,
+    "app": "healthyw8.gamebus.eu",
+    "session_id": "s6ydj-mgccqnyx",
+    "user_external_id": "506",
+    "campaign": "HW8_YA_HB",
+    "uri": "/error/waves"
+  },
+  {
+    "event_time": "2025-08-20 19:31:23",
+    "source_activity_id": 689365,
+    "app": "healthyw8.gamebus.eu",
+    "session_id": "jajbu-mek905ng",
+    "user_external_id": "506",
+    "campaign": "HW8_YA_HB",
+    "uri": "/viz/level?p=1925"
+  },
+  {
+    "event_time": "2025-08-20 19:31:19",
+    "source_activity_id": 689364,
+    "app": "healthyw8.gamebus.eu",
+    "session_id": "jajbu-mek905ng",
+    "user_external_id": "506",
+    "campaign": "HW8_YA_HB",
+    "uri": "/viz/level?p=1926"
+  },
+  {
+    "event_time": "2025-08-20 19:31:18",
+    "source_activity_id": 689363,
+    "app": "healthyw8.gamebus.eu",
+    "session_id": "jajbu-mek905ng",
+    "user_external_id": "506",
+    "campaign": "HW8_YA_HB",
+    "uri": "/viz/rewards?p=1927"
+  }
+]

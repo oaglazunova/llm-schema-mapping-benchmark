@@ -43,8 +43,9 @@ KNOWN_DESCRIPTOR_SPECS: dict[str, dict[str, Any]] = {
         "invariants": [
             "date is normalized to YYYY-MM-DD",
             "summary_score is an integer",
-            "aggregation_level is one of DAILY or WEEKLY",
+            "aggregation_level is one of DAILY or WEEKLY or MONTHLY",
         ],
+        "tags": ["gamebus", "nutrition", "summary", "flat_descriptor_normalization"],
     },
     "day_aggregate": {
         "task_id": "GB_002",
@@ -72,6 +73,7 @@ KNOWN_DESCRIPTOR_SPECS: dict[str, dict[str, Any]] = {
             "distance_sum_m >= 0",
             "pa_cal_sum_kcal >= 0",
         ],
+        "tags": ["gamebus", "activity", "aggregate", "flat_descriptor_normalization"],
     },
     "navigate_app": {
         "task_id": "GB_003",
@@ -103,6 +105,7 @@ KNOWN_DESCRIPTOR_SPECS: dict[str, dict[str, Any]] = {
             "session_id is non-empty",
             "uri is non-empty",
         ],
+        "tags": ["gamebus", "navigation", "event", "event_log_or_session_rollup"],
     },
     "consent": {
         "task_id": "GB_004",
@@ -126,27 +129,16 @@ KNOWN_DESCRIPTOR_SPECS: dict[str, dict[str, Any]] = {
             {"target_field": "consent_items", "operation": "parse_json_array", "source_paths": ["$.DESCRIPTION"]},
         ],
         "aggregations": [
-            {
-                "target_field": "accepted_count",
-                "function": "count_true",
-                "source_path": "$.consent_items[*].accepted",
-            },
-            {
-                "target_field": "item_count",
-                "function": "count",
-                "source_path": "$.consent_items[*]",
-            },
-            {
-                "target_field": "all_required_accepted",
-                "function": "all_true",
-                "source_path": "$.consent_items[*].accepted",
-            },
+            {"target_field": "accepted_count", "function": "count_true", "source_path": "$.consent_items[*].accepted"},
+            {"target_field": "item_count", "function": "count", "source_path": "$.consent_items[*]"},
+            {"target_field": "all_required_accepted", "function": "all_true", "source_path": "$.consent_items[*].accepted"},
         ],
         "invariants": [
             "consent_items is a non-empty array",
             "accepted_count <= item_count",
             "all_required_accepted is boolean",
         ],
+        "tags": ["gamebus", "consent", "embedded_json_parsing"],
     },
     "general_survey": {
         "task_id": "GB_005",
@@ -183,6 +175,7 @@ KNOWN_DESCRIPTOR_SPECS: dict[str, dict[str, Any]] = {
             "age is integer when present",
             "raw_pairs preserves original DESCRIPTION",
         ],
+        "tags": ["gamebus", "survey", "kv_text_normalization"],
     },
     "score_gamebus_points": {
         "task_id": "GB_006",
@@ -211,6 +204,7 @@ KNOWN_DESCRIPTOR_SPECS: dict[str, dict[str, Any]] = {
             "points > 0",
             "all id fields are integers",
         ],
+        "tags": ["gamebus", "points", "reward", "flat_descriptor_normalization"],
     },
     "tizen(detail)": {
         "task_id": "GB_007",
@@ -235,6 +229,7 @@ KNOWN_DESCRIPTOR_SPECS: dict[str, dict[str, Any]] = {
             "activity_type_obj is either null or an object",
             "event_time parses as datetime",
         ],
+        "tags": ["gamebus", "tizen", "sensor", "semi_structured_sensor_detail"],
     },
 }
 
@@ -304,7 +299,7 @@ def _build_generic_spec(profile: dict[str, Any]) -> dict[str, Any]:
         )
 
     return {
-        "task_id": "GB_TODO",
+        "task_id": "GB_999",
         "title": f"Map {descriptor_name} to {target_entity}",
         "difficulty": "medium",
         "target_entity": target_entity,
@@ -313,6 +308,7 @@ def _build_generic_spec(profile: dict[str, Any]) -> dict[str, Any]:
         "mappings": mappings,
         "aggregations": [],
         "invariants": [],
+        "tags": ["gamebus", "auto_scaffold", descriptor_name],
     }
 
 
@@ -322,7 +318,6 @@ def build_task_bundle_from_profile(profile_path: str | Path) -> dict[str, Path]:
 
     descriptor_name = profile["descriptor_name"]
     spec = KNOWN_DESCRIPTOR_SPECS.get(descriptor_name, _build_generic_spec(profile))
-
     task_id = spec["task_id"]
 
     ensure_dir(GAMEBUS_TASKS_DIR)
@@ -333,6 +328,7 @@ def build_task_bundle_from_profile(profile_path: str | Path) -> dict[str, Path]:
 
     source_schema = {
         "descriptor_name": descriptor_name,
+        "source_file": profile["source_file"],
         "top_level_type": profile["top_level_type"],
         "record_count": profile["record_count"],
         "field_count": profile["field_count"],
@@ -345,22 +341,36 @@ def build_task_bundle_from_profile(profile_path: str | Path) -> dict[str, Path]:
         "fields": spec["target_fields"],
     }
 
+    fixture_input_rel = f"benchmark/fixtures/gamebus/{task_id}_input.sample.json"
+    fixture_expected_rel = f"benchmark/fixtures/gamebus/{task_id}_expected.sample.json"
+    matches_rel = f"benchmark/gold/matches/{task_id}_matches.json"
+    plan_rel = f"benchmark/gold/plans/{task_id}_plan.json"
+    invariants_rel = f"benchmark/gold/invariants/{task_id}_invariants.json"
+
     task_payload = {
         "task_id": task_id,
         "title": spec["title"],
+        "split": "gamebus",
         "difficulty": spec["difficulty"],
         "source_family": "gamebus",
-        "source_file": profile["source_file"],
-        "descriptor_name": descriptor_name,
         "target_entity": spec["target_entity"],
-        "benchmark_family_hint": profile["benchmark_family_hint"],
         "task_text": spec["task_text"],
         "source_schema": source_schema,
         "target_schema": target_schema,
+        "fixture_refs": {
+            "input": fixture_input_rel,
+            "expected": fixture_expected_rel,
+        },
+        "gold_refs": {
+            "matches": matches_rel,
+            "plan": plan_rel,
+            "invariants": invariants_rel,
+        },
+        "tags": spec["tags"],
         "notes": [
             "Auto-generated from descriptor profile. Review before release.",
-            "Fixtures are samples only. Expected outputs may still need manual refinement."
-        ]
+            "Fixtures are samples only. Expected outputs may still need manual refinement.",
+        ],
     }
 
     gold_matches = [
@@ -392,18 +402,26 @@ def build_task_bundle_from_profile(profile_path: str | Path) -> dict[str, Path]:
     raw_records = _load_raw_source_records(profile["source_file"])
     fixture_sample = raw_records[: min(5, len(raw_records))]
 
+    expected_placeholder = {
+        "task_id": task_id,
+        "status": "placeholder",
+        "note": "Populate expected outputs manually or generate via trusted gold execution later."
+    }
+
     task_path = GAMEBUS_TASKS_DIR / f"{task_id}_task.json"
     matches_path = GOLD_MATCHES_DIR / f"{task_id}_matches.json"
     plan_path = GOLD_PLANS_DIR / f"{task_id}_plan.json"
     invariants_path = GOLD_INVARIANTS_DIR / f"{task_id}_invariants.json"
-    fixture_path = GAMEBUS_FIXTURES_DIR / f"{task_id}_input.sample.json"
+    fixture_input_path = GAMEBUS_FIXTURES_DIR / f"{task_id}_input.sample.json"
+    fixture_expected_path = GAMEBUS_FIXTURES_DIR / f"{task_id}_expected.sample.json"
 
     for path, payload in [
         (task_path, task_payload),
         (matches_path, gold_matches),
         (plan_path, gold_plan),
         (invariants_path, invariants),
-        (fixture_path, fixture_sample),
+        (fixture_input_path, fixture_sample),
+        (fixture_expected_path, expected_placeholder),
     ]:
         with open(path, "w", encoding="utf-8") as f:
             json.dump(payload, f, indent=2, ensure_ascii=False)
@@ -413,5 +431,6 @@ def build_task_bundle_from_profile(profile_path: str | Path) -> dict[str, Path]:
         "matches": matches_path,
         "plan": plan_path,
         "invariants": invariants_path,
-        "fixture": fixture_path,
+        "fixture_input": fixture_input_path,
+        "fixture_expected": fixture_expected_path,
     }

@@ -3,6 +3,6 @@
   "invariants": [
     "date is normalized to YYYY-MM-DD",
     "summary_score is an integer",
-    "aggregation_level is one of DAILY or WEEKLY"
+    "aggregation_level is one of DAILY or WEEKLY or MONTHLY"
   ]
 }

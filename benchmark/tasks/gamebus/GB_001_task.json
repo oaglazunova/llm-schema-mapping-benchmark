@@ -1,14 +1,14 @@
 {
   "task_id": "GB_001",
   "title": "Map NUTRITION_SUMMARY to daily_nutrition_summary",
+  "split": "gamebus",
   "difficulty": "easy",
   "source_family": "gamebus",
-  "descriptor_name": "nutrition_summary",
   "target_entity": "daily_nutrition_summary",
-  "benchmark_family_hint": "flat_descriptor_normalization",
   "task_text": "Map one GameBus NUTRITION_SUMMARY record into one normalized daily nutrition summary object.",
   "source_schema": {
     "descriptor_name": "nutrition_summary",
+    "source_file": "C:\\Users\\sonok\\Documents\\Github\\llm-schema-mapping-benchmark\\data\\raw_private\\gamebus\\player_451_nutrition_summary.json",
     "top_level_type": "list",
     "record_count": 209,
     "field_count": 7,
@@ -202,6 +202,21 @@
       }
     ]
   },
+  "fixture_refs": {
+    "input": "benchmark/fixtures/gamebus/GB_001_input.sample.json",
+    "expected": "benchmark/fixtures/gamebus/GB_001_expected.sample.json"
+  },
+  "gold_refs": {
+    "matches": "benchmark/gold/matches/GB_001_matches.json",
+    "plan": "benchmark/gold/plans/GB_001_plan.json",
+    "invariants": "benchmark/gold/invariants/GB_001_invariants.json"
+  },
+  "tags": [
+    "gamebus",
+    "nutrition",
+    "summary",
+    "flat_descriptor_normalization"
+  ],
   "notes": [
     "Auto-generated from descriptor profile. Review before release.",
     "Fixtures are samples only. Expected outputs may still need manual refinement."

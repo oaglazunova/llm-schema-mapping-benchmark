@@ -1,0 +1,42 @@
+[
+  {
+    "event_time": "2025-08-20 19:31:15",
+    "source_activity_id": 689361,
+    "challenge_id": 3985,
+    "challenge_rule_id": 10594,
+    "points": 6,
+    "trigger_activity_id": 689360
+  },
+  {
+    "event_time": "2025-07-23 21:18:22",
+    "source_activity_id": 662914,
+    "challenge_id": 3985,
+    "challenge_rule_id": 10593,
+    "points": 4,
+    "trigger_activity_id": 662913
+  },
+  {
+    "event_time": "2025-07-23 21:17:56",
+    "source_activity_id": 662904,
+    "challenge_id": 3976,
+    "challenge_rule_id": 10543,
+    "points": 15,
+    "trigger_activity_id": 662903
+  },
+  {
+    "event_time": "2025-07-21 01:01:32",
+    "source_activity_id": 657386,
+    "challenge_id": 3976,
+    "challenge_rule_id": 10545,
+    "points": 30,
+    "trigger_activity_id": 657383
+  },
+  {
+    "event_time": "2025-07-20 23:44:50",
+    "source_activity_id": 657142,
+    "challenge_id": 3985,
+    "challenge_rule_id": 10594,
+    "points": 6,
+    "trigger_activity_id": 657141
+  }
+]

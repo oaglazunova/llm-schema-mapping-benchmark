@@ -1,14 +1,14 @@
 {
   "task_id": "GB_002",
   "title": "Map DAY_AGGREGATE to daily_activity_summary",
+  "split": "gamebus",
   "difficulty": "easy",
   "source_family": "gamebus",
-  "descriptor_name": "day_aggregate",
   "target_entity": "daily_activity_summary",
-  "benchmark_family_hint": "flat_descriptor_normalization",
   "task_text": "Map one GameBus DAY_AGGREGATE record into one normalized daily activity summary object.",
   "source_schema": {
     "descriptor_name": "day_aggregate",
+    "source_file": "C:\\Users\\sonok\\Documents\\Github\\llm-schema-mapping-benchmark\\data\\raw_private\\gamebus\\player_449_day_aggregate.json",
     "top_level_type": "list",
     "record_count": 83,
     "field_count": 5,
@@ -151,6 +151,21 @@
       }
     ]
   },
+  "fixture_refs": {
+    "input": "benchmark/fixtures/gamebus/GB_002_input.sample.json",
+    "expected": "benchmark/fixtures/gamebus/GB_002_expected.sample.json"
+  },
+  "gold_refs": {
+    "matches": "benchmark/gold/matches/GB_002_matches.json",
+    "plan": "benchmark/gold/plans/GB_002_plan.json",
+    "invariants": "benchmark/gold/invariants/GB_002_invariants.json"
+  },
+  "tags": [
+    "gamebus",
+    "activity",
+    "aggregate",
+    "flat_descriptor_normalization"
+  ],
   "notes": [
     "Auto-generated from descriptor profile. Review before release.",
     "Fixtures are samples only. Expected outputs may still need manual refinement."

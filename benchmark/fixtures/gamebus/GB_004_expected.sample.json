@@ -1,0 +1,27 @@
+[
+  {
+    "consent_time": "2025-04-11 16:32:37",
+    "source_activity_id": 101363,
+    "campaign": "HW8_YA_HB",
+    "consent_items": [
+      {
+        "tk": "data-sharing",
+        "condition": "Ich gebe die Erlaubnis zur Verwendung meiner Informationen in wissenschaftlichen Datenanalysen und trage so zur Forschung bei",
+        "accepted": true
+      },
+      {
+        "tk": "terms-conditions-data",
+        "condition": "Ich habe die Allgemeinen Geschäftsbedingungen gelesen und stimme der Analyse meiner persönlichen Daten zu.",
+        "accepted": true
+      },
+      {
+        "tk": "terms-conditions",
+        "condition": "Ich akzeptiere die Allgemeinen Geschäftsbedingungen",
+        "accepted": true
+      }
+    ],
+    "accepted_count": 3,
+    "item_count": 3,
+    "all_required_accepted": true
+  }
+]

@@ -1,14 +1,14 @@
 {
   "task_id": "GB_005",
   "title": "Map GENERAL_SURVEY to general_survey_profile",
+  "split": "gamebus",
   "difficulty": "medium",
   "source_family": "gamebus",
-  "descriptor_name": "general_survey",
   "target_entity": "general_survey_profile",
-  "benchmark_family_hint": "kv_text_normalization",
   "task_text": "Extract typed fields such as gender and age from DESCRIPTION key:value arrays.",
   "source_schema": {
     "descriptor_name": "general_survey",
+    "source_file": "C:\\Users\\sonok\\Documents\\Github\\llm-schema-mapping-benchmark\\data\\raw_private\\gamebus\\player_502_general_survey.json",
     "top_level_type": "list",
     "record_count": 3,
     "field_count": 3,
@@ -103,6 +103,20 @@
       }
     ]
   },
+  "fixture_refs": {
+    "input": "benchmark/fixtures/gamebus/GB_005_input.sample.json",
+    "expected": "benchmark/fixtures/gamebus/GB_005_expected.sample.json"
+  },
+  "gold_refs": {
+    "matches": "benchmark/gold/matches/GB_005_matches.json",
+    "plan": "benchmark/gold/plans/GB_005_plan.json",
+    "invariants": "benchmark/gold/invariants/GB_005_invariants.json"
+  },
+  "tags": [
+    "gamebus",
+    "survey",
+    "kv_text_normalization"
+  ],
   "notes": [
     "Auto-generated from descriptor profile. Review before release.",
     "Fixtures are samples only. Expected outputs may still need manual refinement."

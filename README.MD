@@ -1,59 +1,53 @@
-# LSMBench
+# LLM Schema Mapping Benchmark
 
-**LSMBench** is a benchmark framework for **JSON-to-JSON LLM schema mapping**.
-
-The current repository contains a first executable benchmark slice centered on **GameBus-derived tasks**. Each benchmark task includes:
-
-- a task definition,
-- a source schema,
-- a target schema,
-- fixture input,
-- expected output,
-- a gold mapping plan,
-- invariants,
-- validation scripts,
-- regression tests.
-
-The benchmark is designed to evaluate not only whether a mapping plan is structurally valid, but whether it is:
-
-1. schema-valid,
-2. reference-valid,
-3. executable on sanitized/synthetic fixtures,
-4. correct with respect to expected outputs and invariants.
-
----
+A benchmark framework for **JSON-to-JSON schema mapping with LLMs**, focused on:
+- **semi-real anchor tasks** derived from GameBus descriptor exports,
+- **structured mapping plans** as the target output format,
+- **deterministic validation and execution** on sample/sanitized fixtures,
+- and a path toward **public anchor tasks** and later **synthetic generation**.
 
 ## Current status
 
-Implemented now:
+The repository currently includes a fully working **GameBus semi-real anchor split**:
 
-- mapping plan JSON Schema
-- benchmark task JSON Schema
-- first GameBus anchor split:
-  - `GB_001`
-  - `GB_002`
-  - `GB_003`
-  - `GB_004`
-  - `GB_005`
-  - `GB_006`
-- gold plans for all six tasks
-- fixture-based validation pipeline
-- batch validation script
-- single-task validation script
-- positive regression tests
-- broken-plan regression tests
+- `gamebus_anchor_v1`
+- **7 / 7 tasks passing**
+- mixed evaluation modes:
+  - **exact expected-output comparison**
+  - **invariant-based checking**
 
-Planned next:
+Implemented pipeline:
+1. profile raw GameBus descriptor JSON files
+2. scaffold benchmark tasks from descriptor profiles
+3. validate task and gold-plan artifacts against schemas
+4. execute gold plans on sample fixtures
+5. evaluate outputs with exact comparison or invariants
+6. run the whole anchor split as one task set
 
-- public-anchor task split
-- synthetic task generation
-- richer join/filter semantics
-- stronger validator modularization
-- benchmark evaluation baselines
+## Benchmark design
 
----
+Each benchmark task contains:
+- a **source schema**
+- a **target schema**
+- a **task description**
+- **gold matches**
+- a **gold mapping plan**
+- **input fixtures**
+- **expected outputs** or **invariants**
 
-## Repository layout
+The benchmark uses a **structured JSON mapping plan** rather than free-text answers.
+
+### Evaluation modes
+
+Two evaluation modes are supported:
+
+- **exact**  
+  Executed outputs must exactly match the expected output fixture.
+
+- **invariants**  
+  Executed outputs must satisfy semantic checks when exact output matching is less appropriate.
+
+## Repository structure
 
 ```text
 schemas/
@@ -70,347 +64,213 @@ benchmark/
     plans/
     invariants/
   task_sets/
+    gamebus_anchor_v1.json
+
+data/
+  raw_private/
+    gamebus/
+  interim_private/
+    descriptor_profiles/
 
 src/lsmbench/
+  config/
+  sources/gamebus/
   validators/
   execution/
+  evaluation/
 
 scripts/
-  validate_tasks.py
-  validate_one_task.py
-
-tests/
-  test_validators.py
-  test_broken_plans.py
-
-docs/
-  validator_design.md
+  profile_gamebus_descriptor.py
+  build_gamebus_tasks.py
+  validate_gamebus_tasks.py
+  execute_gamebus_gold_plan.py
+  promote_expected_outputs.py
+  compare_expected_outputs.py
+  check_gamebus_invariants.py
+  run_gamebus_anchor_v1.py
 ````
 
----
+## GameBus anchor split
 
-## What the benchmark currently evaluates
+### Included tasks
 
-The current benchmark slice focuses on **mapping plan validation and execution**.
+* `GB_001` — `NUTRITION_SUMMARY -> daily_nutrition_summary`
+* `GB_002` — `DAY_AGGREGATE -> daily_activity_summary`
+* `GB_003` — `NAVIGATE_APP -> navigation_event`
+* `GB_004` — `CONSENT -> consent_record`
+* `GB_005` — `GENERAL_SURVEY -> general_survey_profile`
+* `GB_006` — `SCORE_GAMEBUS_POINTS -> points_event`
+* `GB_007` — `TIZEN(detail) -> sensor_activity_detail`
 
-Each task requires a plan to:
+### Current task-set result
 
-* conform to the plan schema,
-* use valid source and target references,
-* produce all required target fields,
-* execute correctly on fixture input,
-* match expected output,
-* satisfy declared invariants.
+`gamebus_anchor_v1` currently passes fully:
 
-This means the benchmark already distinguishes between:
+* passed: **7 / 7**
+* pending: **0**
+* failed: **0**
 
-* **invalid plans**
-* **executable but wrong plans**
-* **correct plans**
+Reports are written to:
 
-That distinction is central for LLM evaluation.
+```text
+runs/reports/
+```
 
----
+## How to run
 
-## Current GameBus anchor tasks
+### 1. Profile raw GameBus descriptor files
 
-### GB_001 — NUTRITION_SUMMARY → `daily_nutrition_summary`
+```powershell
+python .\scripts\profile_gamebus_descriptor.py `
+  .\data\raw_private\gamebus\player_451_nutrition_summary.json `
+  .\data\raw_private\gamebus\player_502_navigate_app.json `
+  .\data\raw_private\gamebus\player_502_consent.json `
+  .\data\raw_private\gamebus\player_502_general_survey.json `
+  .\data\raw_private\gamebus\player_502_score_gamebus_points.json `
+  .\data\raw_private\gamebus\player_449_day_aggregate.json `
+  ".\data\raw_private\gamebus\player_449_tizen(detail).json"
+```
 
-Tests:
+This writes descriptor profiles under:
 
-* field copying
-* integer casting
-* date truncation
+```text
+data/interim_private/descriptor_profiles/
+```
 
-### GB_002 — DAY_AGGREGATE → `daily_activity_summary`
+### 2. Build GameBus task scaffolds
 
-Tests:
+```powershell
+python .\scripts\build_gamebus_tasks.py `
+  .\data\interim_private\descriptor_profiles\nutrition_summary.profile.json `
+  .\data\interim_private\descriptor_profiles\navigate_app.profile.json `
+  .\data\interim_private\descriptor_profiles\consent.profile.json `
+  .\data\interim_private\descriptor_profiles\general_survey.profile.json `
+  .\data\interim_private\descriptor_profiles\score_gamebus_points.profile.json `
+  .\data\interim_private\descriptor_profiles\day_aggregate.profile.json `
+  ".\data\interim_private\descriptor_profiles\tizen(detail).profile.json"
+```
 
-* numeric casting
-* simple daily summary normalization
+### 3. Validate selected task bundles
 
-### GB_003 — NAVIGATE_APP → `navigation_event`
+```powershell
+python .\scripts\validate_gamebus_tasks.py GB_001 GB_004 GB_007
+```
 
-Tests:
+### 4. Execute gold plans on sample fixtures
 
-* event-level mapping
-* datetime parsing
-* URI preservation
+```powershell
+python .\scripts\execute_gamebus_gold_plan.py GB_001 GB_004 GB_007
+```
 
-### GB_004 — CONSENT → `consent_record`
+### 5. Promote executed outputs to expected outputs
 
-Tests:
+```powershell
+python .\scripts\promote_expected_outputs.py GB_001 GB_004
+```
 
-* embedded JSON parsing
-* field remapping inside parsed arrays
-* boolean aggregations
-* invariant checking
+### 6. Compare exact expected outputs
 
-### GB_005 — GENERAL_SURVEY → `general_survey_profile`
+```powershell
+python .\scripts\compare_expected_outputs.py GB_001 GB_004
+```
 
-Tests:
+### 7. Check invariants
 
+```powershell
+python .\scripts\check_gamebus_invariants.py GB_005 GB_007
+```
+
+### 8. Run the full GameBus anchor benchmark
+
+```powershell
+python .\scripts\run_gamebus_anchor_v1.py
+```
+
+This writes a summary to:
+
+```text
+runs/reports/gamebus_anchor_v1_summary.json
+runs/reports/gamebus_anchor_v1_summary.csv
+```
+
+## Mapping-plan language
+
+The benchmark uses a constrained operation language for mapping plans, including:
+
+* copy / rename
+* type casts
+* date and datetime parsing
+* enum normalization
+* JSON-array / JSON-object parsing
+* Python-like object parsing
 * key:value extraction
-* typed field derivation from semi-structured text
+* simple aggregations such as:
 
-### GB_006 — SCORE_GAMEBUS_POINTS → `points_event`
+  * `count`
+  * `sum`
+  * `latest`
+  * `count_true`
+  * `all_true`
+  * `distinct_count`
+  * `first`
 
-Tests:
+This language is designed to be:
 
-* numeric casting
-* challenge / activity linkage preservation
+* expressive enough for realistic JSON mapping tasks,
+* but still small enough for deterministic validation and execution.
 
----
+## Privacy and release model
 
-## Supported plan operations in v1
+This repository distinguishes between:
 
-### Field operations
+* **private raw source data**
+  Stored under `data/raw_private/`
 
-* `copy`
-* `rename`
-* `cast_string`
-* `cast_integer`
-* `cast_number`
-* `cast_boolean`
-* `parse_date`
-* `parse_datetime`
-* `truncate_date`
-* `normalize_enum`
-* `normalize_boolean`
-* `concat`
-* `split`
-* `derive_arithmetic`
-* `default_value`
-* `coalesce`
-* `latest_value`
-* `parse_json_array`
-* `parse_json_array_map_fields`
-* `parse_json_object`
-* `parse_pythonish_object`
-* `extract_kv_value`
-* `extract_kv_value_cast_integer`
-* `extract_object_field`
-* `extract_array_field`
+* **benchmark artifacts**
+  Stored under `benchmark/`
 
-### Aggregation functions
+GameBus-derived tasks are intended to be released only in **sanitized benchmark form**:
 
-* `count`
-* `sum`
-* `avg`
-* `min`
-* `max`
-* `latest`
-* `count_true`
-* `all_true`
-* `distinct_count`
-* `first`
+* source schema summaries
+* sample/sanitized fixtures
+* gold plans
+* invariants
+* benchmark metadata
 
----
+Raw GameBus user data should not be released.
 
-## Validation model
+## What is implemented vs planned
 
-Validation currently runs in these stages:
+### Implemented
 
-* **V1** — plan schema validation
-* **V2** — reference validation
-* **V3** — static semantic validation
-* **V4** — execution on fixtures
-* **V5** — exact-output and invariant validation
-* **V6** — downstream-check hook
+* mapping-plan and benchmark task schemas
+* GameBus descriptor profiler
+* semi-automated GameBus task creation
+* task/plan validation
+* gold-plan execution on fixtures
+* exact output comparison
+* invariant checking
+* full GameBus anchor task-set runner
 
-See:
+### Planned next
 
-* `docs/validator_design.md`
+* first **public anchor split**
+* benchmark README refinement and artifact packaging
+* baseline LLM runner
+* synthetic generation inspired by STBenchmark/iBench
 
-for the detailed design.
+## Project goal
 
----
+The project aims to provide a **minimal but publishable benchmark** for LLM schema mapping, starting with:
 
-## Quick start
+* a strong semi-real anchor,
+* then a small public anchor,
+* and later a scalable synthetic split.
 
-### 1. Create and activate a virtual environment
+The emphasis is on:
 
-#### PowerShell
-
-```powershell
-python -m venv .venv
-. .venv/Scripts/Activate.ps1
-```
-
-### 2. Install dependencies
-
-At minimum you need:
-
-```powershell
-pip install jsonschema pytest
-```
-
-If you later formalize dependencies in `pyproject.toml`, install with:
-
-```powershell
-pip install -e .
-```
-
----
-
-## Run the validator
-
-### Validate all GameBus tasks
-
-```powershell
-python scripts/validate_tasks.py --show-passed
-```
-
-### Validate a single task
-
-```powershell
-python scripts/validate_one_task.py GB_004
-```
-
-### Inspect produced vs expected output for one task
-
-```powershell
-python scripts/validate_one_task.py GB_004 --show-produced --show-expected
-```
-
-### Inspect the task and gold plan
-
-```powershell
-python scripts/validate_one_task.py GB_004 --show-task --show-plan
-```
-
----
-
-## Run tests
-
-### Run validator tests
-
-```powershell
-pytest tests/test_validators.py -q
-```
-
-### Run broken-plan tests
-
-```powershell
-pytest tests/test_broken_plans.py -q
-```
-
-### Run everything
-
-```powershell
-pytest -q
-```
-
----
-
-## What “passing” means right now
-
-If a task passes validation, that currently means:
-
-* the gold plan conforms to the schema,
-* all source and target references are valid,
-* required target fields are produced,
-* the plan executes successfully on fixture input,
-* produced output exactly matches expected output,
-* invariants pass.
-
-This is a strong benchmark guarantee for fixture-based evaluation.
-
-It does **not** yet mean the plan is ready for unrestricted production use on arbitrary real data.
-
----
-
-## Privacy and data handling
-
-The benchmark artifacts are designed to be based on:
-
-* sanitized inputs,
-* synthetic or benchmark-safe fixtures,
-* canonical target outputs,
-* explicit task definitions.
-
-The benchmark should **not** require releasing raw private user data.
-
-GameBus-derived tasks in this repository are intended as a **semi-real anchor split**, not as a release of raw GameBus datasets.
-
----
-
-## Why this benchmark exists
-
-Most schema-mapping evaluation is still weakly standardized, and much current LLM work focuses more on **matching** than on **executable mapping plans**.
-
-This project is aimed at a more rigorous evaluation setting where a mapping plan must:
-
-* be well-formed,
-* be executable,
-* and be correct on benchmark fixtures.
-
-That makes it more useful both for research evaluation and for safe system design.
-
----
-
-## What is intentionally out of scope in v1
-
-The current benchmark does **not** try to support:
-
-* arbitrary SQL generation
-* window functions
-* regex extraction
-* fuzzy matching
-* recursive transforms
-* free-form Python transforms
-* ontology lookups
-
-These are excluded on purpose so that the benchmark remains:
-
-* deterministic,
-* reproducible,
-* and manageable for a first research release.
-
----
-
-## Development roadmap
-
-### Short-term
-
-* stabilize the validator
-* expand task documentation
-* add public-anchor tasks
-* improve benchmark metadata and task manifests
-
-### Medium-term
-
-* add synthetic task generation
-* add benchmark baselines
-* add richer task families
-* modularize validator and execution code
-
-### Longer-term
-
-* publish a broader benchmark release
-* evaluate multiple LLMs systematically
-* compare prompt tracks and repair strategies
-* add stronger semantic equivalence checking
-
----
-
-## Recommended next files to read
-
-If you are trying to understand the repo in order:
-
-1. `README.MD`
-2. `docs/validator_design.md`
-3. `schemas/mapping_plan_v1.schema.json`
-4. `benchmark/tasks/gamebus/GB_004_task.json`
-5. `src/lsmbench/validators/pipeline.py`
-6. `tests/test_validators.py`
-7. `tests/test_broken_plans.py`
-
----
-
-## Project state
-
-This repository is currently a **working benchmark prototype**, not yet a final benchmark release.
-
-The validator and first six tasks are real and executable.
-The public-anchor and synthetic splits are still to be added.
+* **structured outputs**
+* **deterministic evaluation**
+* **semantic validity**
+* and **realistic mapping tasks**
+  rather than only schema matching.

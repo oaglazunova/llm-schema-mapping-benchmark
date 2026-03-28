@@ -1,0 +1,47 @@
+[
+  {
+    "source_activity_id": 715815,
+    "date": "2025-09-30",
+    "aggregation_level": "DAILY",
+    "summary_score": 0,
+    "carbs_conformance": 0,
+    "fat_conformance": 0,
+    "fiber_conformance": 0
+  },
+  {
+    "source_activity_id": 714743,
+    "date": "2025-09-29",
+    "aggregation_level": "DAILY",
+    "summary_score": 0,
+    "carbs_conformance": 0,
+    "fat_conformance": 0,
+    "fiber_conformance": 0
+  },
+  {
+    "source_activity_id": 714478,
+    "date": "2025-09-29",
+    "aggregation_level": "WEEKLY",
+    "summary_score": 0,
+    "carbs_conformance": 0,
+    "fat_conformance": 0,
+    "fiber_conformance": 0
+  },
+  {
+    "source_activity_id": 714228,
+    "date": "2025-09-28",
+    "aggregation_level": "DAILY",
+    "summary_score": 0,
+    "carbs_conformance": 0,
+    "fat_conformance": 0,
+    "fiber_conformance": 0
+  },
+  {
+    "source_activity_id": 713762,
+    "date": "2025-09-27",
+    "aggregation_level": "DAILY",
+    "summary_score": 0,
+    "carbs_conformance": 0,
+    "fat_conformance": 0,
+    "fiber_conformance": 0
+  }
+]

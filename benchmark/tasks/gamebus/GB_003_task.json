@@ -1,14 +1,14 @@
 {
   "task_id": "GB_003",
   "title": "Map NAVIGATE_APP to navigation_event",
+  "split": "gamebus",
   "difficulty": "easy",
   "source_family": "gamebus",
-  "descriptor_name": "navigate_app",
   "target_entity": "navigation_event",
-  "benchmark_family_hint": "event_log_or_session_rollup",
   "task_text": "Map one NAVIGATE_APP event into one normalized navigation_event object.",
   "source_schema": {
     "descriptor_name": "navigate_app",
+    "source_file": "C:\\Users\\sonok\\Documents\\Github\\llm-schema-mapping-benchmark\\data\\raw_private\\gamebus\\player_502_navigate_app.json",
     "top_level_type": "list",
     "record_count": 1726,
     "field_count": 7,
@@ -184,6 +184,21 @@
       }
     ]
   },
+  "fixture_refs": {
+    "input": "benchmark/fixtures/gamebus/GB_003_input.sample.json",
+    "expected": "benchmark/fixtures/gamebus/GB_003_expected.sample.json"
+  },
+  "gold_refs": {
+    "matches": "benchmark/gold/matches/GB_003_matches.json",
+    "plan": "benchmark/gold/plans/GB_003_plan.json",
+    "invariants": "benchmark/gold/invariants/GB_003_invariants.json"
+  },
+  "tags": [
+    "gamebus",
+    "navigation",
+    "event",
+    "event_log_or_session_rollup"
+  ],
   "notes": [
     "Auto-generated from descriptor profile. Review before release.",
     "Fixtures are samples only. Expected outputs may still need manual refinement."

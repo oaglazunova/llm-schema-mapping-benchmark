@@ -1,0 +1,37 @@
+[
+  {
+    "source_activity_id": 1026583,
+    "date": "2025-06-04",
+    "steps_sum": 1384,
+    "distance_sum_m": 1028.328125,
+    "pa_cal_sum_kcal": 50
+  },
+  {
+    "source_activity_id": 1026582,
+    "date": "2025-06-03",
+    "steps_sum": 3566,
+    "distance_sum_m": 2671.640625,
+    "pa_cal_sum_kcal": 126
+  },
+  {
+    "source_activity_id": 1026581,
+    "date": "2025-06-02",
+    "steps_sum": 20425,
+    "distance_sum_m": 14995.25,
+    "pa_cal_sum_kcal": 727
+  },
+  {
+    "source_activity_id": 1026580,
+    "date": "2025-06-01",
+    "steps_sum": 8196,
+    "distance_sum_m": 6045.453125,
+    "pa_cal_sum_kcal": 290
+  },
+  {
+    "source_activity_id": 1026579,
+    "date": "2025-05-31",
+    "steps_sum": 18604,
+    "distance_sum_m": 13646.8984375,
+    "pa_cal_sum_kcal": 653
+  }
+]
