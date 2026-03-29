@@ -1,0 +1,11 @@
+{
+  "native_families": [
+    "flat_record_normalization",
+    "daily_numeric_summary",
+    "event_normalization",
+    "embedded_json_parsing",
+    "key_value_extraction",
+    "grouped_aggregation",
+    "filter_then_map"
+  ]
+}

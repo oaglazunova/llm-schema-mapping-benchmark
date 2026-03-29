@@ -26,10 +26,15 @@
     },
     {
       "target_field": "consent_items",
-      "operation": "parse_json_array",
-      "source_paths": [
-        "$.DESCRIPTION"
-      ]
+      "operation": "parse_json_array_map_fields",
+      "source_paths": ["$.DESCRIPTION"],
+      "parameters": {
+        "field_map": {
+          "tk": "code",
+          "condition": "condition_text",
+          "accepted": "accepted"
+        }
+      }
     }
   ],
   "joins": [],

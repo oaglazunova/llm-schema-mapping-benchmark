@@ -1,0 +1,12 @@
+[
+  {
+    "type": "range",
+    "field": "steps_sum",
+    "min": 0
+  },
+  {
+    "type": "range",
+    "field": "distance_sum_m",
+    "min": 0
+  }
+]

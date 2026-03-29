@@ -1,0 +1,8 @@
+{"task_id": "SYN_001", "generator": "native_synthetic_specs", "difficulty": "easy", "source_family": "synthetic_daily_nutrient_metrics", "target_entity": "synthetic_daily_nutrient_summary"}
+{"task_id": "SYN_002", "generator": "native_synthetic_specs", "difficulty": "easy", "source_family": "synthetic_daily_activity_aggregate", "target_entity": "synthetic_daily_activity_summary"}
+{"task_id": "SYN_003", "generator": "native_synthetic_specs", "difficulty": "easy", "source_family": "synthetic_route_event", "target_entity": "synthetic_navigation_event"}
+{"task_id": "SYN_004", "generator": "native_synthetic_specs", "difficulty": "medium", "source_family": "synthetic_embedded_json_consent", "target_entity": "synthetic_consent_record"}
+{"task_id": "SYN_005", "generator": "native_synthetic_specs", "difficulty": "medium", "source_family": "synthetic_key_value_profile", "target_entity": "synthetic_profile_attributes"}
+{"task_id": "SYN_006", "generator": "native_synthetic_specs", "difficulty": "medium", "source_family": "synthetic_payment_event", "target_entity": "synthetic_customer_payment_summary"}
+{"task_id": "SYN_007", "generator": "native_synthetic_specs", "difficulty": "hard", "source_family": "synthetic_session_route_event", "target_entity": "synthetic_session_route_summary"}
+{"task_id": "SYN_008", "generator": "native_synthetic_specs", "difficulty": "medium", "source_family": "synthetic_filtered_score_record", "target_entity": "synthetic_filtered_score"}

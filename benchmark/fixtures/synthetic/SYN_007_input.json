@@ -1,0 +1,22 @@
+{
+  "records": [
+    {
+      "event_id": 1,
+      "session_id": "s1",
+      "route": "/home",
+      "event_time": "2025-09-10 10:00:00"
+    },
+    {
+      "event_id": 2,
+      "session_id": "s1",
+      "route": "/account",
+      "event_time": "2025-09-10 10:02:00"
+    },
+    {
+      "event_id": 3,
+      "session_id": "s1",
+      "route": "/account",
+      "event_time": "2025-09-10 10:03:00"
+    }
+  ]
+}

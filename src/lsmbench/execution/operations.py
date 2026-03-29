@@ -19,15 +19,19 @@ def _parse_datetime_string(value: Any) -> str:
     if not s:
         raise ValueError("Cannot parse empty datetime string")
 
-    # Handle common formats used in the current benchmark.
+    # Keep already-normalized "YYYY-MM-DD HH:MM:SS"
+    for fmt in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%dT%H:%M:%S"):
+        try:
+            dt = datetime.strptime(s, fmt)
+            return dt.strftime("%Y-%m-%d %H:%M:%S")
+        except ValueError:
+            pass
+
+    # Preserve trailing-Z timestamps if you want, or normalize them too later
     if s.endswith("Z"):
         return s
 
-    # "2025-10-04 16:12:08" -> ISO-like
-    if " " in s and "T" not in s:
-        return s.replace(" ", "T")
-
-    return s
+    raise ValueError(f"Cannot parse datetime string: {value!r}")
 
 
 def _parse_date_string(value: Any) -> str:
@@ -57,6 +61,20 @@ def _extract_kv(items: Any, key: str, delimiter: str = ":") -> Any:
         if isinstance(item, str) and item.startswith(prefix):
             return item[len(prefix):]
     return None
+
+
+def _get_single_value(context, source_paths):
+    """
+    Resolve exactly one source path against the current record/context.
+    Used by parse_json_array / parse_json_object style operations.
+    """
+    if not source_paths:
+        raise ValueError("Expected at least one source path")
+
+    if len(source_paths) != 1:
+        raise ValueError(f"Expected exactly one source path, got {len(source_paths)}")
+
+    return resolve_one(context, source_paths[0])
 
 
 def _extract_array_field(
@@ -212,10 +230,31 @@ def apply_operation(
         return values[-1]
 
     if operation == "parse_json_array":
-        parsed = json.loads(_to_str(values[0]))
-        if not isinstance(parsed, list):
-            raise ValueError("parse_json_array expected a JSON array")
-        return parsed
+        raw = _get_single_value(context, source_paths)
+        if raw is None:
+            return None
+
+        if isinstance(raw, str):
+            arr = json.loads(raw)
+        elif isinstance(raw, list):
+            arr = raw
+        else:
+            raise ValueError(f"parse_json_array expected string or list, got {type(raw)!r}")
+
+        field_map = parameters.get("field_map")
+        if field_map and isinstance(arr, list):
+            mapped = []
+            for item in arr:
+                if isinstance(item, dict):
+                    mapped.append({
+                        field_map.get(k, k): v
+                        for k, v in item.items()
+                    })
+                else:
+                    mapped.append(item)
+            return mapped
+
+        return arr
 
     if operation == "parse_json_object":
         parsed = json.loads(_to_str(values[0]))

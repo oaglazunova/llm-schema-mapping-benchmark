@@ -1,5 +1,87 @@
-{
-  "task_id": "GB_007",
-  "status": "placeholder",
-  "note": "Populate expected outputs manually or generate via trusted gold execution later."
-}
+[
+  {
+    "event_time": "2025-06-03 17:03:06",
+    "source_activity_id": 910593,
+    "activity_type_raw": "{'src':'p','ts':1748962986832,'type':'NOT_MOVING','speed':0,'steps':135606,'walks':132555,'runs':80,'freq':0,'distance':100582.6484375,'cals':4789.4599609375}",
+    "activity_type_obj": {
+      "src": "p",
+      "ts": 1748962986832,
+      "type": "NOT_MOVING",
+      "speed": 0,
+      "steps": 135606,
+      "walks": 132555,
+      "runs": 80,
+      "freq": 0,
+      "distance": 100582.6484375,
+      "cals": 4789.4599609375
+    }
+  },
+  {
+    "event_time": "2025-06-03 17:00:27",
+    "source_activity_id": 910592,
+    "activity_type_raw": "{'src':'p','ts':1748962827106,'type':'NOT_MOVING','speed':0,'steps':135606,'walks':132555,'runs':80,'freq':0,'distance':100582.6484375,'cals':4789.4599609375}",
+    "activity_type_obj": {
+      "src": "p",
+      "ts": 1748962827106,
+      "type": "NOT_MOVING",
+      "speed": 0,
+      "steps": 135606,
+      "walks": 132555,
+      "runs": 80,
+      "freq": 0,
+      "distance": 100582.6484375,
+      "cals": 4789.4599609375
+    }
+  },
+  {
+    "event_time": "2025-06-03 16:57:27",
+    "source_activity_id": 910591,
+    "activity_type_raw": "{'src':'p','ts':1748962647761,'type':'NOT_MOVING','speed':0,'steps':135606,'walks':132555,'runs':80,'freq':0,'distance':100582.6484375,'cals':4789.4599609375}",
+    "activity_type_obj": {
+      "src": "p",
+      "ts": 1748962647761,
+      "type": "NOT_MOVING",
+      "speed": 0,
+      "steps": 135606,
+      "walks": 132555,
+      "runs": 80,
+      "freq": 0,
+      "distance": 100582.6484375,
+      "cals": 4789.4599609375
+    }
+  },
+  {
+    "event_time": "2025-06-03 16:55:01",
+    "source_activity_id": 910590,
+    "activity_type_raw": "{'src':'p','ts':1748962501188,'type':'NOT_MOVING','speed':0,'steps':135606,'walks':132555,'runs':80,'freq':0,'distance':100582.6484375,'cals':4789.4599609375}",
+    "activity_type_obj": {
+      "src": "p",
+      "ts": 1748962501188,
+      "type": "NOT_MOVING",
+      "speed": 0,
+      "steps": 135606,
+      "walks": 132555,
+      "runs": 80,
+      "freq": 0,
+      "distance": 100582.6484375,
+      "cals": 4789.4599609375
+    }
+  },
+  {
+    "event_time": "2025-06-03 16:53:34",
+    "source_activity_id": 910589,
+    "activity_type_raw": "{'src':'p','ts':1748962414815,'type':'NOT_MOVING','speed':0,'steps':135606,'walks':132555,'runs':80,'freq':0,'distance':100582.6484375,'cals':4789.4599609375}",
+    "activity_type_obj": {
+      "src": "p",
+      "ts": 1748962414815,
+      "type": "NOT_MOVING",
+      "speed": 0,
+      "steps": 135606,
+      "walks": 132555,
+      "runs": 80,
+      "freq": 0,
+      "distance": 100582.6484375,
+      "cals": 4789.4599609375
+    }
+  }
+]

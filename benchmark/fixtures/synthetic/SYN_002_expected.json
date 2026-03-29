@@ -1,0 +1,11 @@
+{
+  "records": [
+    {
+      "source_row_id": 2001,
+      "date": "2025-10-03",
+      "steps_sum": 6388,
+      "distance_sum_m": 4820.5,
+      "active_kcal_sum": 248
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+[
+  {
+    "target_field": "record_id",
+    "source_path": "$.record_id",
+    "relation": "exact"
+  },
+  {
+    "target_field": "score",
+    "source_path": "$.score",
+    "relation": "transform:cast_integer"
+  },
+  {
+    "target_field": "date",
+    "source_path": "$.ts",
+    "relation": "transform:truncate_date"
+  }
+]

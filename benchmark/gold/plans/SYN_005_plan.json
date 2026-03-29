@@ -1,0 +1,57 @@
+{
+  "plan_id": "SYN_005_gold",
+  "task_id": "SYN_005",
+  "target_entity": "synthetic_profile_attributes",
+  "field_mappings": [
+    {
+      "target_field": "survey_time",
+      "operation": "parse_datetime",
+      "source_paths": [
+        "$.TS"
+      ]
+    },
+    {
+      "target_field": "source_event_id",
+      "operation": "copy",
+      "source_paths": [
+        "$.EVENT_ID"
+      ]
+    },
+    {
+      "target_field": "raw_pairs",
+      "operation": "copy",
+      "source_paths": [
+        "$.FACTS"
+      ]
+    },
+    {
+      "target_field": "gender",
+      "operation": "extract_kv_value",
+      "source_paths": [
+        "$.FACTS"
+      ],
+      "parameters": {
+        "key": "gender",
+        "delimiter": ":"
+      }
+    },
+    {
+      "target_field": "age",
+      "operation": "extract_kv_value_cast_integer",
+      "source_paths": [
+        "$.FACTS"
+      ],
+      "parameters": {
+        "key": "age",
+        "delimiter": ":"
+      }
+    }
+  ],
+  "joins": [],
+  "filters": [],
+  "aggregations": [],
+  "assumptions": [
+    "FACTS is a list of key:value strings."
+  ],
+  "confidence": 1.0
+}

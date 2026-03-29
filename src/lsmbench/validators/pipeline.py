@@ -2,12 +2,13 @@ from __future__ import annotations
 
 import ast
 import json
+import jsonschema
+
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Callable, Dict, Iterable, List, Mapping, Optional, Sequence
-
-import jsonschema
+from lsmbench.execution.engine import execute_plan_on_fixture as engine_execute_plan_on_fixture
 
 
 # =========================================================
@@ -45,34 +46,64 @@ class ValidationReport:
 # File loading helpers
 # =========================================================
 
+from pathlib import Path
+import json
+from typing import Any, Dict
+
+
 def load_json(path: str | Path) -> Any:
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
 
+def _find_repo_root(start: Path) -> Path:
+    cur = start.resolve()
+    if cur.is_file():
+        cur = cur.parent
+
+    for candidate in [cur, *cur.parents]:
+        if (candidate / "pyproject.toml").exists():
+            return candidate
+
+    raise RuntimeError(f"Could not locate repo root from {start}")
+
+
+def _resolve_repo_relative(repo_root: Path, ref: str | Path) -> Path:
+    p = Path(ref)
+    if p.is_absolute():
+        return p
+    return repo_root / p
+
+
 def load_task_bundle(task_path: str | Path) -> Dict[str, Any]:
-    """
-    Load:
-      - task file
-      - referenced fixture input
-      - referenced expected output
-      - referenced gold plan
-      - referenced invariants
-
-    Assumes task_path is something like:
-      benchmark/tasks/gamebus/GB_001_task.json
-    """
     task_path = Path(task_path).resolve()
-    repo_root = task_path.parents[3]
+    task_dir = task_path.parent
 
-    task = load_json(task_path)
-    fixture_input = load_json(repo_root / task["fixture_refs"]["input"])
-    fixture_expected = load_json(repo_root / task["fixture_refs"]["expected"])
-    gold_plan = load_json(repo_root / task["gold_refs"]["plan"])
-    invariants = load_json(repo_root / task["gold_refs"]["invariants"])
+    def _load(path: Path):
+        return load_json(path)
+
+    def _resolve_ref(ref: str) -> Path:
+        ref_path = Path(ref)
+
+        if ref_path.is_absolute():
+            return ref_path
+
+        # repo-root style refs
+        if ref_path.parts and ref_path.parts[0] in {"benchmark", "schemas", "src", "tests", "docs"}:
+            repo_root = _find_repo_root(task_path)
+            return repo_root / ref_path
+
+        # otherwise resolve relative to the task file
+        return (task_dir / ref_path).resolve()
+
+    task = _load(task_path)
+
+    fixture_input = _load(_resolve_ref(task["fixture_refs"]["input"]))
+    fixture_expected = _load(_resolve_ref(task["fixture_refs"]["expected"]))
+    gold_plan = _load(_resolve_ref(task["gold_refs"]["plan"]))
+    invariants = _load(_resolve_ref(task["gold_refs"]["invariants"]))
 
     return {
-        "repo_root": repo_root,
         "task": task,
         "fixture_input": fixture_input,
         "fixture_expected": fixture_expected,
@@ -84,6 +115,16 @@ def load_task_bundle(task_path: str | Path) -> Dict[str, Any]:
 # =========================================================
 # JSON path helpers
 # =========================================================
+
+def _fixture_to_records(obj: Any) -> list[dict[str, Any]]:
+    if isinstance(obj, list):
+        return obj
+    if isinstance(obj, dict):
+        if "records" in obj:
+            return obj["records"]
+        return [obj]
+    raise ValueError(f"Unsupported fixture object type: {type(obj)!r}")
+
 
 def _strip_root(path: str) -> str:
     if not path.startswith("$."):
@@ -134,13 +175,49 @@ def get_value_by_path(obj: Any, path: str) -> Any:
     return cur
 
 
+def _source_field_names(source_schema: Mapping[str, Any]) -> set[str]:
+    # Profiled schema style
+    if "fields" in source_schema and isinstance(source_schema["fields"], list):
+        return {
+            field["name"]
+            for field in source_schema["fields"]
+            if isinstance(field, dict) and "name" in field
+        }
+
+    # Plain JSON Schema style
+    props = source_schema.get("properties", {})
+    if isinstance(props, dict):
+        return set(props.keys())
+
+    return set()
+
+
+def _target_field_names(target_schema: Mapping[str, Any]) -> set[str]:
+    # Benchmark target schema style
+    if "fields" in target_schema and isinstance(target_schema["fields"], list):
+        return {
+            field["name"]
+            for field in target_schema["fields"]
+            if isinstance(field, dict) and "name" in field
+        }
+
+    # Plain JSON Schema style
+    props = target_schema.get("properties", {})
+    if isinstance(props, dict):
+        return set(props.keys())
+
+    return set()
+
+
 def source_path_exists_in_schema(source_schema: Mapping[str, Any], path: str) -> bool:
     """
     Minimal schema-level path existence check.
 
-    v1 assumption:
-      - source schemas are mostly flat objects
-      - if root field exists, we allow path
+    Supported in v1:
+      $.FIELD
+      $.FIELD[*]
+      $.FIELD[*].subfield   -> validated only against root field existence
+      $.FIELD.subfield      -> validated only against root field existence
     """
     try:
         stripped = _strip_root(path)
@@ -148,13 +225,11 @@ def source_path_exists_in_schema(source_schema: Mapping[str, Any], path: str) ->
         return False
 
     root = stripped.split(".", 1)[0].split("[", 1)[0]
-    props = source_schema.get("properties", {})
-    return isinstance(props, dict) and root in props
+    return root in _source_field_names(source_schema)
 
 
 def target_field_exists_in_schema(target_schema: Mapping[str, Any], field_name: str) -> bool:
-    props = target_schema.get("properties", {})
-    return isinstance(props, dict) and field_name in props
+    return field_name in _target_field_names(target_schema)
 
 
 # =========================================================
@@ -209,7 +284,7 @@ def parse_datetime_str(value: Any) -> Optional[str]:
     if not isinstance(value, str):
         raise ValueError(f"Cannot parse datetime from non-string: {value!r}")
     dt = datetime.fromisoformat(value.replace(" ", "T"))
-    return dt.isoformat(timespec="seconds")
+    return dt.strftime("%Y-%m-%d %H:%M:%S")
 
 
 def truncate_date_str(value: Any) -> Optional[str]:
@@ -525,7 +600,17 @@ def validate_references(task: Dict[str, Any], plan: Dict[str, Any], report: Vali
 
 
 def validate_static_semantics(task: Dict[str, Any], plan: Dict[str, Any], report: ValidationReport) -> None:
-    required_target_fields = set(task["target_schema"].get("required", []))
+    target_schema = task["target_schema"]
+
+    if "fields" in target_schema and isinstance(target_schema["fields"], list):
+        required_target_fields = {
+            field["name"]
+            for field in target_schema["fields"]
+            if isinstance(field, dict) and field.get("required", False)
+        }
+    else:
+        required_target_fields = set(target_schema.get("required", []))
+
     covered_fields = {fm["target_field"] for fm in plan.get("field_mappings", [])}
     covered_fields.update(agg["target_field"] for agg in plan.get("aggregations", []))
 
@@ -551,7 +636,6 @@ def validate_static_semantics(task: Dict[str, Any], plan: Dict[str, Any], report
                     path=f"field_mappings[{i}]",
                 )
 
-
 # =========================================================
 # Plan execution
 # =========================================================
@@ -559,59 +643,55 @@ def validate_static_semantics(task: Dict[str, Any], plan: Dict[str, Any], report
 def execute_plan(
     task: Dict[str, Any],
     plan: Dict[str, Any],
-    fixture_input: Dict[str, Any],
+    fixture_input: Any,
     report: ValidationReport,
-) -> List[Dict[str, Any]]:
-    records = fixture_input["records"]
-    outputs: List[Dict[str, Any]] = []
+) -> Optional[List[Dict[str, Any]]]:
+    """
+    Execute a mapping plan using the shared execution engine.
 
-    for rec_idx, record in enumerate(records):
-        out: Dict[str, Any] = {}
+    This keeps validator-stage execution aligned with:
+      - grouped execution
+      - filters
+      - joins
+      - aggregation semantics
+      - datetime normalization
+    """
+    try:
+        produced_payload = engine_execute_plan_on_fixture(
+            fixture_input,
+            plan,
+            task_payload=task,
+        )
 
-        # 1. Field mappings
-        for i, fm in enumerate(plan.get("field_mappings", [])):
-            try:
-                source_values = [
-                    get_value_by_path(record, sp)
-                    for sp in fm.get("source_paths", [])
-                ]
-                value = apply_operation(
-                    fm["operation"],
-                    source_values,
-                    fm.get("parameters"),
-                )
-                out[fm["target_field"]] = value
-            except Exception as e:
-                report.add(
-                    "V4_EXECUTION",
-                    "error",
-                    f"Failed to execute field mapping for target '{fm['target_field']}': {e}",
-                    path=f"record[{rec_idx}].field_mappings[{i}]",
-                )
+        if isinstance(produced_payload, dict) and "records" in produced_payload:
+            produced = produced_payload["records"]
+        elif isinstance(produced_payload, list):
+            produced = produced_payload
+        else:
+            report.add(
+                "V4_EXECUTION",
+                "error",
+                f"Execution returned unsupported payload type: {type(produced_payload)!r}",
+            )
+            return None
 
-        # 2. Aggregations over produced output
-        for i, agg in enumerate(plan.get("aggregations", [])):
-            try:
-                if "source_path" in agg:
-                    values = get_value_by_path(out, agg["source_path"])
-                else:
-                    values = []
-                    for sp in agg["source_paths"]:
-                        values.append(get_value_by_path(out, sp))
+        if not isinstance(produced, list):
+            report.add(
+                "V4_EXECUTION",
+                "error",
+                f"Execution did not return a list of records: {type(produced)!r}",
+            )
+            return None
 
-                agg_value = apply_aggregation(agg["function"], values)
-                out[agg["target_field"]] = agg_value
-            except Exception as e:
-                report.add(
-                    "V4_EXECUTION",
-                    "error",
-                    f"Failed to execute aggregation for target '{agg['target_field']}': {e}",
-                    path=f"record[{rec_idx}].aggregations[{i}]",
-                )
+        return produced
 
-        outputs.append(out)
-
-    return outputs
+    except Exception as e:
+        report.add(
+            "V4_EXECUTION",
+            "error",
+            f"Unhandled execution error: {e}",
+        )
+        return None
 
 
 # =========================================================
@@ -619,11 +699,11 @@ def execute_plan(
 # =========================================================
 
 def validate_exact_output(
-    expected: Dict[str, Any],
+    expected: Dict[str, Any] | List[Dict[str, Any]],
     produced: List[Dict[str, Any]],
     report: ValidationReport,
 ) -> None:
-    expected_records = expected["records"]
+    expected_records = _fixture_to_records(expected)
     if produced != expected_records:
         report.add(
             "V5_OUTPUT",
@@ -666,85 +746,132 @@ def _eval_simple_formula(expr: str, record: Mapping[str, Any]) -> bool:
 
 
 def validate_invariants(
-    invariants: List[Dict[str, Any]],
+    invariants,
     produced: List[Dict[str, Any]],
     report: ValidationReport,
 ) -> None:
+    """
+    Supports both:
+      1) structured invariants: list[dict]
+      2) lightweight invariant files:
+         {
+           "task_id": "...",
+           "invariants": ["human-readable text", ...]
+         }
+
+    Human-readable string invariants are currently documentation-only.
+    """
+    if invariants is None:
+        return
+
+    if isinstance(invariants, dict):
+        raw = invariants.get("invariants", [])
+    else:
+        raw = invariants
+
+    if not isinstance(raw, list):
+        report.add(
+            "V6_INVARIANTS",
+            "error",
+            f"Invariants payload must be a list or dict-with-invariants, got {type(invariants)!r}",
+        )
+        return
+
+    structured = [inv for inv in raw if isinstance(inv, dict)]
+
     for rec_idx, rec in enumerate(produced):
-        for inv in invariants:
+        for inv in structured:
             inv_type = inv["type"]
-            field = inv.get("field")
 
-            if inv_type == "range":
-                val = rec.get(field)
-                if val is None:
-                    report.add("V5_INVARIANTS", "error", f"Missing field for range invariant: {field}")
-                    continue
-                if "min" in inv and val < inv["min"]:
-                    report.add("V5_INVARIANTS", "error", f"{field}={val} violates min={inv['min']}")
-                if "max" in inv and val > inv["max"]:
-                    report.add("V5_INVARIANTS", "error", f"{field}={val} violates max={inv['max']}")
+            if inv_type == "field_type":
+                field = inv["field"]
+                expected = inv["expect"]
+                value = rec.get(field)
 
-            elif inv_type == "prefix":
-                val = rec.get(field)
-                if not isinstance(val, str) or not val.startswith(inv["value"]):
-                    report.add("V5_INVARIANTS", "error", f"{field} does not start with {inv['value']!r}")
-
-            elif inv_type == "non_empty":
-                val = rec.get(field)
-                if val in (None, "", []):
-                    report.add("V5_INVARIANTS", "error", f"{field} is empty")
-
-            elif inv_type == "field_type":
-                val = rec.get(field)
-                expect = inv["expect"]
-                ok = True
-
-                if expect == "integer":
-                    ok = isinstance(val, int)
-                elif expect == "number":
-                    ok = isinstance(val, (int, float))
-                elif expect == "boolean":
-                    ok = isinstance(val, bool)
-                elif expect == "array":
-                    ok = isinstance(val, list)
-                elif expect == "datetime-string":
-                    ok = isinstance(val, str) and "T" in val
-                elif expect == "date-string":
-                    ok = isinstance(val, str) and len(val) == 10 and val.count("-") == 2
-                elif expect == "integer-or-null":
-                    ok = val is None or isinstance(val, int)
-                elif expect == "string-or-null":
-                    ok = val is None or isinstance(val, str)
+                if expected == "integer":
+                    ok = isinstance(value, int) and not isinstance(value, bool)
+                elif expected == "number":
+                    ok = isinstance(value, (int, float)) and not isinstance(value, bool)
+                elif expected == "string":
+                    ok = isinstance(value, str)
+                elif expected == "boolean":
+                    ok = isinstance(value, bool)
+                elif expected == "array":
+                    ok = isinstance(value, list)
+                elif expected == "object":
+                    ok = isinstance(value, dict)
+                elif expected == "date-string":
+                    ok = isinstance(value, str) and len(value) == 10 and value[4] == "-" and value[7] == "-"
+                elif expected == "datetime-string":
+                    ok = isinstance(value, str) and len(value) >= 19
+                elif expected == "integer-or-null":
+                    ok = value is None or (isinstance(value, int) and not isinstance(value, bool))
+                elif expected == "string-or-null":
+                    ok = value is None or isinstance(value, str)
+                else:
+                    ok = True
 
                 if not ok:
                     report.add(
-                        "V5_INVARIANTS",
+                        "V6_INVARIANTS",
                         "error",
-                        f"{field} does not satisfy expected type {expect}",
+                        f"Field {field!r} violates invariant type expectation {expected!r}",
+                        path=f"produced[{rec_idx}]",
                     )
 
-            elif inv_type == "formula":
-                try:
-                    if not _eval_simple_formula(inv["expr"], rec):
-                        report.add(
-                            "V5_INVARIANTS",
-                            "error",
-                            f"Formula failed: {inv['expr']}",
-                        )
-                except Exception as e:
+            elif inv_type == "range":
+                field = inv["field"]
+                value = rec.get(field)
+                min_value = inv.get("min")
+                max_value = inv.get("max")
+
+                if value is None or not isinstance(value, (int, float)):
                     report.add(
-                        "V5_INVARIANTS",
+                        "V6_INVARIANTS",
                         "error",
-                        f"Formula evaluation failed: {inv['expr']} ({e})",
+                        f"Field {field!r} is not numeric for range invariant",
+                        path=f"produced[{rec_idx}]",
+                    )
+                    continue
+
+                if min_value is not None and value < min_value:
+                    report.add(
+                        "V6_INVARIANTS",
+                        "error",
+                        f"Field {field!r} = {value!r} is below minimum {min_value!r}",
+                        path=f"produced[{rec_idx}]",
                     )
 
-            else:
-                report.add(
-                    "V5_INVARIANTS",
-                    "warning",
-                    f"Unknown invariant type: {inv_type}",
-                )
+                if max_value is not None and value > max_value:
+                    report.add(
+                        "V6_INVARIANTS",
+                        "error",
+                        f"Field {field!r} = {value!r} exceeds maximum {max_value!r}",
+                        path=f"produced[{rec_idx}]",
+                    )
+
+            elif inv_type == "non_empty":
+                field = inv["field"]
+                value = rec.get(field)
+                if value in (None, "", [], {}):
+                    report.add(
+                        "V6_INVARIANTS",
+                        "error",
+                        f"Field {field!r} must be non-empty",
+                        path=f"produced[{rec_idx}]",
+                    )
+
+            elif inv_type == "prefix":
+                field = inv["field"]
+                prefix = inv["value"]
+                value = rec.get(field)
+                if not isinstance(value, str) or not value.startswith(prefix):
+                    report.add(
+                        "V6_INVARIANTS",
+                        "error",
+                        f"Field {field!r} must start with {prefix!r}",
+                        path=f"produced[{rec_idx}]",
+                    )
 
 
 # =========================================================

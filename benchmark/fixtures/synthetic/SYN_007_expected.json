@@ -1,0 +1,11 @@
+{
+  "records": [
+    {
+      "session_id": "s1",
+      "page_visit_count": 3,
+      "first_route": "/home",
+      "last_route": "/account",
+      "distinct_route_count": 2
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "records": [
+    {
+      "record_id": 1,
+      "status": "active",
+      "score": "8",
+      "ts": "2025-10-01 08:00:00"
+    },
+    {
+      "record_id": 2,
+      "status": "archived",
+      "score": "99",
+      "ts": "2025-10-01 08:10:00"
+    }
+  ]
+}

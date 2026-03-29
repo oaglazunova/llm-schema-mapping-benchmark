@@ -1,0 +1,37 @@
+[
+  {
+    "target_field": "event_time",
+    "source_path": "$.TS",
+    "relation": "transform:parse_datetime"
+  },
+  {
+    "target_field": "source_event_id",
+    "source_path": "$.EVENT_ID",
+    "relation": "exact"
+  },
+  {
+    "target_field": "app",
+    "source_path": "$.APP_NAME",
+    "relation": "exact"
+  },
+  {
+    "target_field": "session_id",
+    "source_path": "$.SESSION_KEY",
+    "relation": "exact"
+  },
+  {
+    "target_field": "user_external_id",
+    "source_path": "$.USER_TOKEN",
+    "relation": "exact"
+  },
+  {
+    "target_field": "campaign",
+    "source_path": "$.CAMPAIGN_CODE",
+    "relation": "exact"
+  },
+  {
+    "target_field": "uri",
+    "source_path": "$.ROUTE",
+    "relation": "exact"
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "records": [
+    {
+      "event_time": "2025-10-04 16:12:08",
+      "source_event_id": 3001,
+      "app": "example.app",
+      "session_id": "sess-1",
+      "user_external_id": "u-42",
+      "campaign": "camp-a",
+      "uri": "/account"
+    }
+  ]
+}

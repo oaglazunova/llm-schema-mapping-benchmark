@@ -1,0 +1,11 @@
+[
+  {
+    "type": "prefix",
+    "field": "uri",
+    "value": "/"
+  },
+  {
+    "type": "non_empty",
+    "field": "session_id"
+  }
+]

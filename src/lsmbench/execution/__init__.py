@@ -1,6 +1,7 @@
 from lsmbench.execution.engine import (
     ExecutionIssue,
     ExecutionResult,
+    execute_plan_on_fixture,
     execute_plan_on_records,
     execute_plan_from_files,
 )
@@ -8,6 +9,7 @@ from lsmbench.execution.engine import (
 __all__ = [
     "ExecutionIssue",
     "ExecutionResult",
+    "execute_plan_on_fixture",
     "execute_plan_on_records",
     "execute_plan_from_files",
 ]

@@ -1,0 +1,12 @@
+{
+  "records": [
+    {
+      "TS": "2025-05-28 23:42:53",
+      "EVENT_ID": 5001,
+      "FACTS": [
+        "gender:female",
+        "age:23"
+      ]
+    }
+  ]
+}

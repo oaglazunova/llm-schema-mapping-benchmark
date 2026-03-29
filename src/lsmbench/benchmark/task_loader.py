@@ -2,164 +2,101 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 
 
-def repo_root() -> Path:
-    return REPO_ROOT
-
-
-def _as_path(path_or_name: str | Path) -> Path:
-    """
-    Convert either:
-    - an absolute path
-    - a repo-relative path like 'benchmark/tasks/gamebus/GB_001_task.json'
-    - a bare task-set name like 'pilot_v1'
-    into an absolute Path.
-    """
-    if isinstance(path_or_name, Path):
-        path = path_or_name
-    else:
-        path = Path(path_or_name)
-
-    if path.is_absolute():
-        return path
-
-    # allow bare task-set names like "pilot_v1"
-    if path.suffix == "":
-        candidate = REPO_ROOT / "benchmark" / "task_sets" / f"{path.name}.json"
-        if candidate.exists():
-            return candidate
-
-    return REPO_ROOT / path
-
-
-def load_json(path_or_name: str | Path) -> dict[str, Any]:
-    path = _as_path(path_or_name)
+def _load_json(path: Path) -> Any:
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
 
-def load_task(task_path: str | Path) -> dict[str, Any]:
-    """
-    Load a single benchmark task JSON.
-    """
-    task = load_json(task_path)
+def _resolve_repo_path(ref: str | Path, *, base_dir: Path | None = None) -> Path:
+    p = Path(ref)
 
-    required = {
-        "task_id",
-        "title",
-        "split",
-        "difficulty",
-        "source_family",
-        "target_entity",
-        "task_text",
-        "source_schema",
-        "target_schema",
-        "fixture_refs",
-        "gold_refs",
-        "tags",
-    }
-    missing = required - set(task.keys())
-    if missing:
-        raise ValueError(f"Task file {task_path} is missing required keys: {sorted(missing)}")
+    if p.is_absolute():
+        return p
 
+    # Treat repo-root-relative refs explicitly
+    if p.parts and p.parts[0] in {"benchmark", "schemas", "docs", "src", "tests"}:
+        return REPO_ROOT / p
+
+    # Otherwise resolve relative to the provided base dir if present
+    if base_dir is not None:
+        return (base_dir / p).resolve()
+
+    return (REPO_ROOT / p).resolve()
+
+
+def load_task(task_ref: str | Path) -> dict[str, Any]:
+    task_path = _resolve_repo_path(task_ref)
+    task = _load_json(task_path)
+    task["__task_path__"] = str(task_path)
     return task
 
 
-def load_task_set(task_set: str | Path) -> dict[str, Any]:
-    """
-    Load a task-set JSON.
-    Accepts either:
-    - 'pilot_v1'
-    - 'benchmark/task_sets/pilot_v1.json'
-    - an absolute path
-    """
-    out = load_json(task_set)
+def load_task_set(task_set_ref: str | Path) -> dict[str, Any]:
+    ref = Path(task_set_ref)
 
-    required = {"name", "version", "tasks"}
-    missing = required - set(out.keys())
-    if missing:
-        raise ValueError(f"Task set {task_set} is missing required keys: {sorted(missing)}")
+    if isinstance(task_set_ref, str) and ref.suffix == "":
+        task_set_path = REPO_ROOT / "benchmark" / "task_sets" / f"{task_set_ref}.json"
+    else:
+        task_set_path = _resolve_repo_path(task_set_ref)
 
-    if not isinstance(out["tasks"], list):
-        raise ValueError(f"Task set {task_set} must contain a list under 'tasks'.")
-
-    return out
+    task_set = _load_json(task_set_path)
+    task_set["__task_set_path__"] = str(task_set_path)
+    return task_set
 
 
-def load_tasks_from_task_set(task_set: str | Path) -> list[dict[str, Any]]:
-    """
-    Load all tasks referenced by a task-set JSON.
-    """
-    task_set_obj = load_task_set(task_set)
-    return [load_task(task_ref) for task_ref in task_set_obj["tasks"]]
+def load_tasks_from_task_set(task_set_ref: str | Path) -> list[dict[str, Any]]:
+    task_set = load_task_set(task_set_ref)
+    task_set_path = Path(task_set["__task_set_path__"])
+    base_dir = task_set_path.parent
+
+    tasks: list[dict[str, Any]] = []
+    for task_ref in task_set["tasks"]:
+        task_path = _resolve_repo_path(task_ref, base_dir=base_dir)
+        tasks.append(load_task(task_path))
+    return tasks
 
 
-def iter_task_files(split: str | None = None) -> Iterable[Path]:
-    """
-    Iterate over benchmark task files on disk.
+def load_fixture(task: dict[str, Any], which: str) -> Any:
+    task_path = Path(task["__task_path__"])
+    base_dir = task_path.parent
 
-    If split is provided, it must be one of:
-    - 'gamebus'
-    - 'public'
-    - 'synthetic'
-    """
-    tasks_root = REPO_ROOT / "benchmark" / "tasks"
-
-    if split is None:
-        yield from sorted(tasks_root.glob("*/*_task.json"))
-        return
-
-    split_dir = tasks_root / split
-    if not split_dir.exists():
-        raise ValueError(f"Unknown or missing split directory: {split_dir}")
-
-    yield from sorted(split_dir.glob("*_task.json"))
+    ref = task["fixture_refs"][which]
+    fixture_path = _resolve_repo_path(ref, base_dir=base_dir)
+    return _load_json(fixture_path)
 
 
-def load_all_tasks(split: str | None = None) -> list[dict[str, Any]]:
-    """
-    Load all tasks, optionally restricted to one split.
-    """
-    return [load_task(path) for path in iter_task_files(split=split)]
+def load_gold(task: dict[str, Any], which: str) -> Any:
+    task_path = Path(task["__task_path__"])
+    base_dir = task_path.parent
+
+    ref = task["gold_refs"][which]
+    gold_path = _resolve_repo_path(ref, base_dir=base_dir)
+    return _load_json(gold_path)
 
 
-def load_fixture(task: dict[str, Any], kind: str) -> dict[str, Any]:
-    """
-    Load one fixture for a task.
-
-    kind must be one of:
-    - 'input'
-    - 'expected'
-    """
-    if kind not in {"input", "expected"}:
-        raise ValueError(f"Unknown fixture kind: {kind}")
-
-    fixture_refs = task["fixture_refs"]
-    if kind not in fixture_refs:
-        raise ValueError(f"Task {task['task_id']} has no fixture ref for '{kind}'")
-
-    return load_json(fixture_refs[kind])
+def load_task_bundle(task_ref: str | Path) -> dict[str, Any]:
+    task = load_task(task_ref)
+    return {
+        "task": task,
+        "fixture_input": load_fixture(task, "input"),
+        "fixture_expected": load_fixture(task, "expected"),
+        "gold_matches": load_gold(task, "matches"),
+        "gold_plan": load_gold(task, "plan"),
+        "invariants": load_gold(task, "invariants"),
+    }
 
 
-def load_gold(task: dict[str, Any], kind: str) -> Any:
-    """
-    Load one gold artifact for a task.
+def load_all_tasks(tasks_root: str | Path = "benchmark/tasks") -> list[dict[str, Any]]:
+    root = _resolve_repo_path(tasks_root)
+    tasks: list[dict[str, Any]] = []
 
-    kind must be one of:
-    - 'matches'
-    - 'plan'
-    - 'invariants'
-    """
-    if kind not in {"matches", "plan", "invariants"}:
-        raise ValueError(f"Unknown gold artifact kind: {kind}")
+    for task_path in sorted(root.rglob("*_task.json")):
+        tasks.append(load_task(task_path))
 
-    gold_refs = task["gold_refs"]
-    if kind not in gold_refs:
-        raise ValueError(f"Task {task['task_id']} has no gold ref for '{kind}'")
-
-    return load_json(gold_refs[kind])
+    return tasks

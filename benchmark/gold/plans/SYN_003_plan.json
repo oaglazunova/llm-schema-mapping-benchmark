@@ -1,0 +1,63 @@
+{
+  "plan_id": "SYN_003_gold",
+  "task_id": "SYN_003",
+  "target_entity": "synthetic_navigation_event",
+  "field_mappings": [
+    {
+      "target_field": "event_time",
+      "operation": "parse_datetime",
+      "source_paths": [
+        "$.TS"
+      ]
+    },
+    {
+      "target_field": "source_event_id",
+      "operation": "copy",
+      "source_paths": [
+        "$.EVENT_ID"
+      ]
+    },
+    {
+      "target_field": "app",
+      "operation": "copy",
+      "source_paths": [
+        "$.APP_NAME"
+      ]
+    },
+    {
+      "target_field": "session_id",
+      "operation": "copy",
+      "source_paths": [
+        "$.SESSION_KEY"
+      ]
+    },
+    {
+      "target_field": "user_external_id",
+      "operation": "copy",
+      "source_paths": [
+        "$.USER_TOKEN"
+      ]
+    },
+    {
+      "target_field": "campaign",
+      "operation": "copy",
+      "source_paths": [
+        "$.CAMPAIGN_CODE"
+      ]
+    },
+    {
+      "target_field": "uri",
+      "operation": "copy",
+      "source_paths": [
+        "$.ROUTE"
+      ]
+    }
+  ],
+  "joins": [],
+  "filters": [],
+  "aggregations": [],
+  "assumptions": [
+    "One source record becomes one target event."
+  ],
+  "confidence": 1.0
+}

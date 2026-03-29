@@ -1,0 +1,56 @@
+{
+  "plan_id": "SYN_001_gold",
+  "task_id": "SYN_001",
+  "target_entity": "synthetic_daily_nutrient_summary",
+  "field_mappings": [
+    {
+      "target_field": "source_event_id",
+      "operation": "copy",
+      "source_paths": [
+        "$.EVENT_ID"
+      ]
+    },
+    {
+      "target_field": "date",
+      "operation": "truncate_date",
+      "source_paths": [
+        "$.EVENT_TS"
+      ]
+    },
+    {
+      "target_field": "level",
+      "operation": "copy",
+      "source_paths": [
+        "$.LEVEL"
+      ]
+    },
+    {
+      "target_field": "total_score",
+      "operation": "cast_integer",
+      "source_paths": [
+        "$.TOTAL_SCORE"
+      ]
+    },
+    {
+      "target_field": "protein_score",
+      "operation": "cast_integer",
+      "source_paths": [
+        "$.PROTEIN_SCORE"
+      ]
+    },
+    {
+      "target_field": "sugar_score",
+      "operation": "cast_integer",
+      "source_paths": [
+        "$.SUGAR_SCORE"
+      ]
+    }
+  ],
+  "joins": [],
+  "filters": [],
+  "aggregations": [],
+  "assumptions": [
+    "One source record becomes one target record."
+  ],
+  "confidence": 1.0
+}

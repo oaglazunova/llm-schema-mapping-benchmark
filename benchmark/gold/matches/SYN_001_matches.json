@@ -1,0 +1,32 @@
+[
+  {
+    "target_field": "source_event_id",
+    "source_path": "$.EVENT_ID",
+    "relation": "exact"
+  },
+  {
+    "target_field": "date",
+    "source_path": "$.EVENT_TS",
+    "relation": "transform:truncate_date"
+  },
+  {
+    "target_field": "level",
+    "source_path": "$.LEVEL",
+    "relation": "exact"
+  },
+  {
+    "target_field": "total_score",
+    "source_path": "$.TOTAL_SCORE",
+    "relation": "transform:cast_integer"
+  },
+  {
+    "target_field": "protein_score",
+    "source_path": "$.PROTEIN_SCORE",
+    "relation": "transform:cast_integer"
+  },
+  {
+    "target_field": "sugar_score",
+    "source_path": "$.SUGAR_SCORE",
+    "relation": "transform:cast_integer"
+  }
+]

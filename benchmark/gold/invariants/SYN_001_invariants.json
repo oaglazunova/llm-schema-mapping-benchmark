@@ -1,0 +1,12 @@
+[
+  {
+    "type": "field_type",
+    "field": "date",
+    "expect": "date-string"
+  },
+  {
+    "type": "field_type",
+    "field": "total_score",
+    "expect": "integer"
+  }
+]

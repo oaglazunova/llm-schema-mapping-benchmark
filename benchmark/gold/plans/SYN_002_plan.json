@@ -1,0 +1,49 @@
+{
+  "plan_id": "SYN_002_gold",
+  "task_id": "SYN_002",
+  "target_entity": "synthetic_daily_activity_summary",
+  "field_mappings": [
+    {
+      "target_field": "source_row_id",
+      "operation": "copy",
+      "source_paths": [
+        "$.ROW_ID"
+      ]
+    },
+    {
+      "target_field": "date",
+      "operation": "truncate_date",
+      "source_paths": [
+        "$.TS"
+      ]
+    },
+    {
+      "target_field": "steps_sum",
+      "operation": "cast_integer",
+      "source_paths": [
+        "$.STEP_TOTAL"
+      ]
+    },
+    {
+      "target_field": "distance_sum_m",
+      "operation": "cast_number",
+      "source_paths": [
+        "$.DIST_M"
+      ]
+    },
+    {
+      "target_field": "active_kcal_sum",
+      "operation": "cast_integer",
+      "source_paths": [
+        "$.ACTIVE_KCAL"
+      ]
+    }
+  ],
+  "joins": [],
+  "filters": [],
+  "aggregations": [],
+  "assumptions": [
+    "Source values are already aggregated."
+  ],
+  "confidence": 1.0
+}

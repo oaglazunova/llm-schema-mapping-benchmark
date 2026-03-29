@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import json
 from pathlib import Path
 from typing import Any
@@ -37,13 +38,21 @@ def _sorted_error_messages(validator: Draft202012Validator, instance: dict[str, 
     return messages
 
 
+def _strip_loader_metadata(instance: dict[str, Any]) -> dict[str, Any]:
+    cleaned = copy.deepcopy(instance)
+    cleaned.pop("__task_path__", None)
+    cleaned.pop("__task_set_path__", None)
+    return cleaned
+
+
 def validate_instance_against_schema(
     instance: dict[str, Any],
     schema_filename: str,
 ) -> dict[str, Any]:
     schema = load_schema(schema_filename)
     validator = Draft202012Validator(schema)
-    errors = _sorted_error_messages(validator, instance)
+    cleaned = _strip_loader_metadata(instance)
+    errors = _sorted_error_messages(validator, cleaned)
 
     return {
         "valid": len(errors) == 0,

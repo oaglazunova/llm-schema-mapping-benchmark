@@ -1,0 +1,12 @@
+[
+  {
+    "type": "field_type",
+    "field": "age",
+    "expect": "integer-or-null"
+  },
+  {
+    "type": "field_type",
+    "field": "gender",
+    "expect": "string-or-null"
+  }
+]

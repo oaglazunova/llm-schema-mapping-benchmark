@@ -1,0 +1,10 @@
+{
+  "records": [
+    {
+      "TS": "2025-04-11 16:32:37",
+      "EVENT_ID": 4001,
+      "CAMPAIGN_CODE": "camp-a",
+      "CONSENT_PAYLOAD": "[{\"code\":\"data\",\"accepted\":true},{\"code\":\"terms\",\"accepted\":true},{\"code\":\"reminders\",\"accepted\":false}]"
+    }
+  ]
+}

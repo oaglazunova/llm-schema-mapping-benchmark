@@ -1,0 +1,58 @@
+{
+  "plan_id": "SYN_004_gold",
+  "task_id": "SYN_004",
+  "target_entity": "synthetic_consent_record",
+  "field_mappings": [
+    {
+      "target_field": "consent_time",
+      "operation": "parse_datetime",
+      "source_paths": [
+        "$.TS"
+      ]
+    },
+    {
+      "target_field": "source_event_id",
+      "operation": "copy",
+      "source_paths": [
+        "$.EVENT_ID"
+      ]
+    },
+    {
+      "target_field": "campaign",
+      "operation": "copy",
+      "source_paths": [
+        "$.CAMPAIGN_CODE"
+      ]
+    },
+    {
+      "target_field": "consent_items",
+      "operation": "parse_json_array",
+      "source_paths": [
+        "$.CONSENT_PAYLOAD"
+      ]
+    }
+  ],
+  "joins": [],
+  "filters": [],
+  "aggregations": [
+    {
+      "target_field": "accepted_count",
+      "function": "count_true",
+      "source_path": "$.consent_items[*].accepted"
+    },
+    {
+      "target_field": "item_count",
+      "function": "count",
+      "source_path": "$.consent_items[*]"
+    },
+    {
+      "target_field": "all_required_accepted",
+      "function": "all_true",
+      "source_path": "$.consent_items[*].accepted"
+    }
+  ],
+  "assumptions": [
+    "CONSENT_PAYLOAD is a valid JSON string."
+  ],
+  "confidence": 1.0
+}

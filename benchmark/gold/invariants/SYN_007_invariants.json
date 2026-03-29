@@ -1,0 +1,9 @@
+[
+  {
+    "type": "record_count_matches_expected"
+  },
+  {
+    "type": "formula",
+    "expr": "distinct_route_count <= page_visit_count"
+  }
+]

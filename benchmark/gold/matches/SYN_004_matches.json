@@ -1,0 +1,22 @@
+[
+  {
+    "target_field": "consent_time",
+    "source_path": "$.TS",
+    "relation": "transform:parse_datetime"
+  },
+  {
+    "target_field": "source_event_id",
+    "source_path": "$.EVENT_ID",
+    "relation": "exact"
+  },
+  {
+    "target_field": "campaign",
+    "source_path": "$.CAMPAIGN_CODE",
+    "relation": "exact"
+  },
+  {
+    "target_field": "consent_items",
+    "source_path": "$.CONSENT_PAYLOAD",
+    "relation": "transform:parse_json_array"
+  }
+]

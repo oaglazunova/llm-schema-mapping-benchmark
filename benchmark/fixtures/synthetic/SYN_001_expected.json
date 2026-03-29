@@ -1,0 +1,12 @@
+{
+  "records": [
+    {
+      "source_event_id": 1001,
+      "date": "2025-10-05",
+      "level": "DAILY",
+      "total_score": 82,
+      "protein_score": 74,
+      "sugar_score": 91
+    }
+  ]
+}

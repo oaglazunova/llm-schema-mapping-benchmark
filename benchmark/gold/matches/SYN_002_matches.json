@@ -1,0 +1,27 @@
+[
+  {
+    "target_field": "source_row_id",
+    "source_path": "$.ROW_ID",
+    "relation": "exact"
+  },
+  {
+    "target_field": "date",
+    "source_path": "$.TS",
+    "relation": "transform:truncate_date"
+  },
+  {
+    "target_field": "steps_sum",
+    "source_path": "$.STEP_TOTAL",
+    "relation": "transform:cast_integer"
+  },
+  {
+    "target_field": "distance_sum_m",
+    "source_path": "$.DIST_M",
+    "relation": "transform:cast_number"
+  },
+  {
+    "target_field": "active_kcal_sum",
+    "source_path": "$.ACTIVE_KCAL",
+    "relation": "transform:cast_integer"
+  }
+]

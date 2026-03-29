@@ -1,0 +1,10 @@
+[
+  {
+    "type": "record_count_matches_expected"
+  },
+  {
+    "type": "field_type",
+    "field": "score",
+    "expect": "integer"
+  }
+]

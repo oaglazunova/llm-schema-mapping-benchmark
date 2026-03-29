@@ -1,0 +1,13 @@
+{
+  "records": [
+    {
+      "TS": "2025-10-04 16:12:08",
+      "EVENT_ID": 3001,
+      "APP_NAME": "example.app",
+      "SESSION_KEY": "sess-1",
+      "USER_TOKEN": "u-42",
+      "CAMPAIGN_CODE": "camp-a",
+      "ROUTE": "/account"
+    }
+  ]
+}

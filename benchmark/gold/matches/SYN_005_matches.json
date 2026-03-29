@@ -1,0 +1,27 @@
+[
+  {
+    "target_field": "survey_time",
+    "source_path": "$.TS",
+    "relation": "transform:parse_datetime"
+  },
+  {
+    "target_field": "source_event_id",
+    "source_path": "$.EVENT_ID",
+    "relation": "exact"
+  },
+  {
+    "target_field": "raw_pairs",
+    "source_path": "$.FACTS",
+    "relation": "exact"
+  },
+  {
+    "target_field": "gender",
+    "source_path": "$.FACTS",
+    "relation": "transform:extract_kv_value(key=gender)"
+  },
+  {
+    "target_field": "age",
+    "source_path": "$.FACTS",
+    "relation": "transform:extract_kv_value_cast_integer(key=age)"
+  }
+]

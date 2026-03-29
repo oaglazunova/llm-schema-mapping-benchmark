@@ -1,0 +1,34 @@
+{
+  "name": "synthetic_v1",
+  "version": "0.1.0",
+  "tasks": [
+    "benchmark/tasks/synthetic/native/SYN_001_task.json",
+    "benchmark/tasks/synthetic/native/SYN_002_task.json",
+    "benchmark/tasks/synthetic/native/SYN_003_task.json",
+    "benchmark/tasks/synthetic/native/SYN_004_task.json",
+    "benchmark/tasks/synthetic/native/SYN_005_task.json",
+    "benchmark/tasks/synthetic/native/SYN_006_task.json",
+    "benchmark/tasks/synthetic/native/SYN_007_task.json",
+    "benchmark/tasks/synthetic/native/SYN_008_task.json"
+  ],
+  "splits": {
+    "easy": [
+      "SYN_001",
+      "SYN_002",
+      "SYN_003"
+    ],
+    "medium": [
+      "SYN_004",
+      "SYN_005",
+      "SYN_006",
+      "SYN_008"
+    ],
+    "hard": [
+      "SYN_007"
+    ]
+  },
+  "notes": [
+    "Native synthetic split.",
+    "Task families are intentionally simple in v1."
+  ]
+}

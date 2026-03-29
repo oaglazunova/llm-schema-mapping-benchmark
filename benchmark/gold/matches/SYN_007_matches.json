@@ -1,0 +1,27 @@
+[
+  {
+    "target_field": "session_id",
+    "source_path": "$.session_id",
+    "relation": "group-key"
+  },
+  {
+    "target_field": "page_visit_count",
+    "source_path": "$.event_id",
+    "relation": "aggregate:count"
+  },
+  {
+    "target_field": "first_route",
+    "source_path": "$.route",
+    "relation": "aggregate:first"
+  },
+  {
+    "target_field": "last_route",
+    "source_path": "$.route",
+    "relation": "aggregate:latest"
+  },
+  {
+    "target_field": "distinct_route_count",
+    "source_path": "$.route",
+    "relation": "aggregate:distinct_count"
+  }
+]

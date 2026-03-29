@@ -1,0 +1,41 @@
+{
+  "plan_id": "SYN_008_gold",
+  "task_id": "SYN_008",
+  "target_entity": "synthetic_filtered_score",
+  "field_mappings": [
+    {
+      "target_field": "record_id",
+      "operation": "copy",
+      "source_paths": [
+        "$.record_id"
+      ]
+    },
+    {
+      "target_field": "score",
+      "operation": "cast_integer",
+      "source_paths": [
+        "$.score"
+      ]
+    },
+    {
+      "target_field": "date",
+      "operation": "truncate_date",
+      "source_paths": [
+        "$.ts"
+      ]
+    }
+  ],
+  "joins": [],
+  "filters": [
+    {
+      "path": "$.status",
+      "operator": "eq",
+      "value": "active"
+    }
+  ],
+  "aggregations": [],
+  "assumptions": [
+    "Only active records should be included."
+  ],
+  "confidence": 1.0
+}

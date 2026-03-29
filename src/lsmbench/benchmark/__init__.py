@@ -5,8 +5,8 @@ from lsmbench.benchmark.task_loader import (
     load_all_tasks,
     load_fixture,
     load_gold,
+    load_task_bundle,
 )
-from lsmbench.benchmark.task_registry import TaskRegistry
 
 __all__ = [
     "load_task",
@@ -15,5 +15,5 @@ __all__ = [
     "load_all_tasks",
     "load_fixture",
     "load_gold",
-    "TaskRegistry",
+    "load_task_bundle",
 ]

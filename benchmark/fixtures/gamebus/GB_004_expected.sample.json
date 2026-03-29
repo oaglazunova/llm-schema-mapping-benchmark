@@ -5,18 +5,18 @@
     "campaign": "HW8_YA_HB",
     "consent_items": [
       {
-        "tk": "data-sharing",
-        "condition": "Ich gebe die Erlaubnis zur Verwendung meiner Informationen in wissenschaftlichen Datenanalysen und trage so zur Forschung bei",
+        "code": "data-sharing",
+        "condition_text": "Ich gebe die Erlaubnis zur Verwendung meiner Informationen in wissenschaftlichen Datenanalysen und trage so zur Forschung bei",
         "accepted": true
       },
       {
-        "tk": "terms-conditions-data",
-        "condition": "Ich habe die Allgemeinen Geschäftsbedingungen gelesen und stimme der Analyse meiner persönlichen Daten zu.",
+        "code": "terms-conditions-data",
+        "condition_text": "Ich habe die Allgemeinen Geschäftsbedingungen gelesen und stimme der Analyse meiner persönlichen Daten zu.",
         "accepted": true
       },
       {
-        "tk": "terms-conditions",
-        "condition": "Ich akzeptiere die Allgemeinen Geschäftsbedingungen",
+        "code": "terms-conditions",
+        "condition_text": "Ich akzeptiere die Allgemeinen Geschäftsbedingungen",
         "accepted": true
       }
     ],
