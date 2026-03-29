@@ -9,15 +9,14 @@ from typing import Any
 from lsmbench.benchmark.task_loader import load_gold, load_task, load_task_set, load_tasks_from_task_set
 from lsmbench.validators import (
     validate_downstream,
+    validate_execution,
     validate_plan,
     validate_references,
     validate_task,
 )
-from lsmbench.validators.pipeline import validate_task_file
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-SCHEMA_PATH = REPO_ROOT / "schemas" / "mapping_plan_v1.schema.json"
 
 
 @dataclass
@@ -52,9 +51,6 @@ def _safe_errors(report: dict[str, Any] | None) -> list[str]:
 
 
 def _task_paths_from_task_set(task_set_ref: str | Path) -> list[Path]:
-    """
-    Resolve all task paths from a task-set manifest, even when task refs are dicts.
-    """
     task_set = load_task_set(task_set_ref)
     task_set_path = Path(task_set["__task_set_path__"])
     base_dir = task_set_path.parent
@@ -125,18 +121,11 @@ def evaluate_task_set(task_set: str | Path) -> dict[str, Any]:
         task = load_task(task_path)
         plan = load_gold(task, "plan")
 
-        # Stage-level validators
         task_report = validate_task(task)
         plan_report = validate_plan(plan)
         ref_report = validate_references(task, plan)
+        exec_report = validate_execution(task, plan)
 
-        # Canonical pipeline report: align with validate_tasks.py
-        pipeline_report = validate_task_file(
-            task_path=task_path,
-            mapping_plan_schema_path=SCHEMA_PATH,
-        )
-
-        # Best-effort downstream. Do not let this override the pipeline-based overall_valid.
         if task.get("downstream_checks"):
             try:
                 downstream_report = validate_downstream(task, plan)
@@ -157,13 +146,20 @@ def evaluate_task_set(task_set: str | Path) -> dict[str, Any]:
             task_valid=task_report["valid"],
             plan_valid=plan_report["valid"],
             references_valid=ref_report["valid"],
-            execution_valid=pipeline_report.ok,
+            execution_valid=exec_report["valid"],
             downstream_valid=downstream_report["valid"],
-            overall_valid=pipeline_report.ok,
+            overall_valid=all(
+                [
+                    task_report["valid"],
+                    plan_report["valid"],
+                    ref_report["valid"],
+                    exec_report["valid"],
+                ]
+            ),
             task_error_count=len(_safe_errors(task_report)),
             plan_error_count=len(_safe_errors(plan_report)),
             reference_error_count=len(_safe_errors(ref_report)),
-            execution_error_count=len(pipeline_report.issues),
+            execution_error_count=len(_safe_errors(exec_report)),
             downstream_error_count=len(_safe_errors(downstream_report)),
         )
         rows.append(row)
@@ -179,18 +175,7 @@ def evaluate_task_set(task_set: str | Path) -> dict[str, Any]:
                 "task_report": task_report,
                 "plan_report": plan_report,
                 "reference_report": ref_report,
-                "pipeline_report": {
-                    "ok": pipeline_report.ok,
-                    "issues": [
-                        {
-                            "stage": issue.stage,
-                            "level": issue.level,
-                            "message": issue.message,
-                            "path": issue.path,
-                        }
-                        for issue in pipeline_report.issues
-                    ],
-                },
+                "execution_report": exec_report,
                 "downstream_report": downstream_report,
             }
         )

@@ -1,3 +1,26 @@
 {
-  "records": []
+  "records": [
+    {
+      "consent_time": "2025-04-11 16:32:37",
+      "source_event_id": 4001,
+      "campaign": "camp-a",
+      "consent_items": [
+        {
+          "code": "data",
+          "accepted": true
+        },
+        {
+          "code": "terms",
+          "accepted": true
+        },
+        {
+          "code": "reminders",
+          "accepted": false
+        }
+      ],
+      "accepted_count": 2,
+      "item_count": 3,
+      "all_required_accepted": false
+    }
+  ]
 }
