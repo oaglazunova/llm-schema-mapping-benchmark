@@ -239,38 +239,28 @@ GameBus-derived tasks are intended to be released only in **sanitized benchmark 
 
 Raw GameBus user data should not be released.
 
-## What is implemented vs planned
 
-### Implemented
+## Reporting
 
-* mapping-plan and benchmark task schemas
-* GameBus descriptor profiler
-* semi-automated GameBus task creation
-* task/plan validation
-* gold-plan execution on fixtures
-* exact output comparison
-* invariant checking
-* full GameBus anchor task-set runner
+Run benchmark reporting for a task set:
 
-### Planned next
+```bash
+python scripts/report_task_set.py --task-set pilot_v1
+````
 
-* first **public anchor split**
-* benchmark README refinement and artifact packaging
-* baseline LLM runner
-* synthetic generation inspired by STBenchmark/iBench
+This writes:
 
-## Project goal
+* `runs/reports/<task_set>_summary.json`
+* `runs/reports/<task_set>_summary.csv`
 
-The project aims to provide a **minimal but publishable benchmark** for LLM schema mapping, starting with:
+The JSON contains:
 
-* a strong semi-real anchor,
-* then a small public anchor,
-* and later a scalable synthetic split.
+* aggregate validity rates
+* per-task detailed reports
+* split-level and difficulty-level summaries
 
-The emphasis is on:
+The CSV contains:
 
-* **structured outputs**
-* **deterministic evaluation**
-* **semantic validity**
-* and **realistic mapping tasks**
-  rather than only schema matching.
+* one row per task
+* pass/fail columns for task, plan, reference, execution, downstream, and overall validity
+
