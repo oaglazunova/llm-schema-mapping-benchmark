@@ -1,0 +1,20 @@
+{
+  "plan_id": "SYN_110_gold",
+  "task_id": "SYN_110",
+  "target_entity": "canonical_activity_summary",
+  "field_mappings": [
+    {
+      "target_field": "steps",
+      "operation": "copy",
+      "source_paths": [
+        "$.activity_count"
+      ]
+    }
+  ],
+  "joins": [],
+  "filters": [],
+  "aggregations": [],
+  "assumptions": [
+    "Broader source term."
+  ]
+}

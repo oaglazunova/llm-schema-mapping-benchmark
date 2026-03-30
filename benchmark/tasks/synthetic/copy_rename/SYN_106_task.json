@@ -1,0 +1,76 @@
+{
+  "task_id": "SYN_106",
+  "title": "Copy/rename primitive: distractor",
+  "split": "synthetic",
+  "difficulty": "easy",
+  "source_family": "synthetic_copy_rename",
+  "target_entity": "canonical_user_profile",
+  "task_text": "Map source field 'participant_id' to target field 'birth_date'.",
+  "primitive_family": "copy_rename",
+  "primitive_subtype": "distractor",
+  "lexical_perturbation": "distractor",
+  "ambiguity_class": "single_gold",
+  "composition_depth": 1,
+  "difficulty_axes": {
+    "num_source_objects": 1,
+    "num_target_fields": 1,
+    "num_joins": 0,
+    "num_aggregations": 0,
+    "nesting_depth": 0,
+    "has_enum_normalization": false,
+    "has_time_normalization": false
+  },
+  "source_schema": {
+    "type": "object",
+    "title": "SYN_106Source",
+    "properties": {
+      "participant_id": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "participant_id"
+    ],
+    "additionalProperties": false
+  },
+  "target_schema": {
+    "type": "object",
+    "title": "SYN_106Target",
+    "properties": {
+      "birth_date": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "birth_date"
+    ],
+    "additionalProperties": false
+  },
+  "fixture_refs": {
+    "input": "../../../fixtures/synthetic/SYN_106_input.json",
+    "expected": "../../../fixtures/synthetic/SYN_106_expected.json"
+  },
+  "gold_refs": {
+    "matches": "../../../gold/matches/SYN_106_matches.json",
+    "plan": "../../../gold/plans/SYN_106_plan.json",
+    "invariants": "../../../gold/invariants/SYN_106_invariants.json"
+  },
+  "tags": [
+    "synthetic",
+    "primitive",
+    "copy_rename",
+    "distractor"
+  ],
+  "notes": [
+    "Close competing identifier."
+  ],
+  "downstream_checks": [
+    {
+      "type": "required_fields_present",
+      "fields": [
+        "birth_date"
+      ],
+      "scope": "all_records"
+    }
+  ]
+}

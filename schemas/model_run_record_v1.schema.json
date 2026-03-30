@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/model_run_record_v1.schema.json",
+  "title": "ModelRunRecordV1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "run_id",
+    "task_set_id",
+    "task_id",
+    "model",
+    "status",
+    "candidates"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "model_run_record_v1"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_set_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model": {
+      "type": "object",
+      "required": ["model_name"],
+      "additionalProperties": false,
+      "properties": {
+        "model_name": { "type": "string" },
+        "provider": { "type": "string" },
+        "model_version": { "type": "string" }
+      }
+    },
+    "prompt": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "track": { "type": "string" },
+        "template_id": { "type": "string" },
+        "template_version": { "type": "string" }
+      }
+    },
+    "generation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "temperature": { "type": "number" },
+        "top_p": { "type": "number" },
+        "max_output_tokens": { "type": "integer", "minimum": 1 },
+        "seed": { "type": "integer" }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "ok",
+        "abstained",
+        "error",
+        "invalid_output"
+      ]
+    },
+    "selected_candidate_id": {
+      "type": ["string", "null"]
+    },
+    "candidates": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Candidate"
+      }
+    },
+    "usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "input_tokens": { "type": "integer", "minimum": 0 },
+        "output_tokens": { "type": "integer", "minimum": 0 },
+        "total_tokens": { "type": "integer", "minimum": 0 },
+        "latency_ms": { "type": "number", "minimum": 0 },
+        "cost_usd": { "type": "number", "minimum": 0 }
+      }
+    },
+    "timestamps": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "started_at": { "type": "string" },
+        "finished_at": { "type": "string" }
+      }
+    },
+    "error_message": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "$defs": {
+    "Candidate": {
+      "type": "object",
+      "required": [
+        "candidate_id",
+        "raw_text"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "candidate_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "raw_text": {
+          "type": "string"
+        },
+        "candidate_plan": {
+          "type": ["object", "null"]
+        },
+        "parse_error": {
+          "type": ["string", "null"]
+        },
+        "notes": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}

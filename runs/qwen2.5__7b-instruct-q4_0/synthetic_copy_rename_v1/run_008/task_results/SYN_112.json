@@ -1,0 +1,99 @@
+{
+  "schema_version": "model_run_record_v1",
+  "run_id": "run_008",
+  "task_set_id": "synthetic_copy_rename_v1",
+  "task_id": "SYN_112",
+  "model": {
+    "model_name": "qwen2.5:7b-instruct-q4_0",
+    "provider": "ollama"
+  },
+  "prompt": {
+    "track": "multi_candidate_v1",
+    "template_id": "run_task_set_ollama_multi_v1",
+    "template_version": "0.1.0"
+  },
+  "generation": {
+    "temperature": 0.7
+  },
+  "status": "ok",
+  "selected_candidate_id": "c1",
+  "candidates": [
+    {
+      "candidate_id": "c1",
+      "raw_text": "{\n  \"plan_id\": \"MAPPING_PLAN_SYN_112\",\n  \"task_id\": \"SYN_112\",\n  \"target_entity\": \"canonical_activity_summary\",\n  \"field_mappings\": [\n    {\n      \"target_field\": \"steps\",\n      \"operation\": \"copy\",\n      \"source_paths\": [\"$.participant_id\"]\n    }\n  ],\n  \"joins\": [],\n  \"filters\": [],\n  \"aggregations\": [],\n  \"assumptions\": []\n}",
+      "candidate_plan": {
+        "plan_id": "MAPPING_PLAN_SYN_112",
+        "task_id": "SYN_112",
+        "target_entity": "canonical_activity_summary",
+        "field_mappings": [
+          {
+            "target_field": "steps",
+            "operation": "copy",
+            "source_paths": [
+              "$.participant_id"
+            ]
+          }
+        ],
+        "joins": [],
+        "filters": [],
+        "aggregations": [],
+        "assumptions": []
+      },
+      "parse_error": null
+    },
+    {
+      "candidate_id": "c2",
+      "raw_text": "{\n  \"plan_id\": \"SYN_112Plan\",\n  \"task_id\": \"SYN_112\",\n  \"target_entity\": \"canonical_activity_summary\",\n  \"field_mappings\": [\n    {\n      \"target_field\": \"$.steps\",\n      \"operation\": \"copy\",\n      \"source_paths\": [\"$.participant_id\"]\n    }\n  ],\n  \"joins\": [],\n  \"filters\": [],\n  \"aggregations\": [],\n  \"assumptions\": []\n}",
+      "candidate_plan": {
+        "plan_id": "SYN_112Plan",
+        "task_id": "SYN_112",
+        "target_entity": "canonical_activity_summary",
+        "field_mappings": [
+          {
+            "target_field": "$.steps",
+            "operation": "copy",
+            "source_paths": [
+              "$.participant_id"
+            ]
+          }
+        ],
+        "joins": [],
+        "filters": [],
+        "aggregations": [],
+        "assumptions": []
+      },
+      "parse_error": null
+    },
+    {
+      "candidate_id": "c3",
+      "raw_text": "{\n  \"plan_id\": \"SYN_112MappingPlan\",\n  \"task_id\": \"SYN_112\",\n  \"target_entity\": \"canonical_activity_summary\",\n  \"field_mappings\": [\n    {\n      \"target_field\": \"steps\",\n      \"operation\": \"copy\",\n      \"source_paths\": [\"$.participant_id\"]\n    }\n  ],\n  \"joins\": [],\n  \"filters\": [],\n  \"aggregations\": [],\n  \"assumptions\": []\n}",
+      "candidate_plan": {
+        "plan_id": "SYN_112MappingPlan",
+        "task_id": "SYN_112",
+        "target_entity": "canonical_activity_summary",
+        "field_mappings": [
+          {
+            "target_field": "steps",
+            "operation": "copy",
+            "source_paths": [
+              "$.participant_id"
+            ]
+          }
+        ],
+        "joins": [],
+        "filters": [],
+        "aggregations": [],
+        "assumptions": []
+      },
+      "parse_error": null
+    }
+  ],
+  "usage": {
+    "latency_ms": 25016.098
+  },
+  "timestamps": {
+    "started_at": "2026-03-30T13:34:22.488749+00:00",
+    "finished_at": "2026-03-30T13:34:47.504846+00:00"
+  },
+  "notes": []
+}

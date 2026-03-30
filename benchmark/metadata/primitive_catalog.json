@@ -1,11 +1,81 @@
 {
-  "native_families": [
-    "flat_record_normalization",
-    "daily_numeric_summary",
-    "event_normalization",
-    "embedded_json_parsing",
-    "key_value_extraction",
-    "grouped_aggregation",
-    "filter_then_map"
+  "primitive_families": [
+    {
+      "name": "copy_rename",
+      "description": "Single-field direct mapping with no structural composition.",
+      "v1_enabled": true,
+      "subtypes": [
+        "exact",
+        "synonym",
+        "abbreviation",
+        "hypernym",
+        "multilingual",
+        "distractor"
+      ]
+    },
+    {
+      "name": "type_normalization",
+      "description": "Single-field mapping with cast or normalization.",
+      "v1_enabled": false,
+      "subtypes": [
+        "cast_integer",
+        "cast_number",
+        "cast_boolean",
+        "parse_date",
+        "parse_datetime",
+        "normalize_enum",
+        "normalize_boolean"
+      ]
+    },
+    {
+      "name": "projection",
+      "description": "Select the right source fields among distractors.",
+      "v1_enabled": false,
+      "subtypes": ["drop_irrelevant_fields"]
+    },
+    {
+      "name": "split_merge",
+      "description": "One source field to many targets or many sources to one target.",
+      "v1_enabled": false,
+      "subtypes": ["split", "merge", "concat"]
+    },
+    {
+      "name": "join",
+      "description": "Combine 2+ source objects into one target object.",
+      "v1_enabled": false,
+      "subtypes": ["inner", "left"]
+    },
+    {
+      "name": "aggregation",
+      "description": "Summarize multiple source records into one target field or object.",
+      "v1_enabled": false,
+      "subtypes": ["count", "sum", "avg", "min", "max", "latest"]
+    },
+    {
+      "name": "nested_extraction",
+      "description": "Extract values from nested JSON structures.",
+      "v1_enabled": false,
+      "subtypes": ["object_path", "array_path"]
+    },
+    {
+      "name": "derived_field",
+      "description": "Compute target field from multiple inputs.",
+      "v1_enabled": false,
+      "subtypes": ["arithmetic", "coalesce", "default_value"]
+    }
+  ],
+  "ambiguity_classes": [
+    "single_gold",
+    "multiple_valid_plans_same_output",
+    "multiple_semantic_interpretations",
+    "abstention_appropriate"
+  ],
+  "prompt_regimes": [
+    "minimal",
+    "contextual",
+    "few_shot",
+    "decomposed",
+    "multi_candidate_self_select",
+    "multi_candidate_validator_select"
   ]
 }

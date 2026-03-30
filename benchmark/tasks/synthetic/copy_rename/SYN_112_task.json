@@ -1,0 +1,76 @@
+{
+  "task_id": "SYN_112",
+  "title": "Copy/rename primitive: distractor",
+  "split": "synthetic",
+  "difficulty": "easy",
+  "source_family": "synthetic_copy_rename",
+  "target_entity": "canonical_activity_summary",
+  "task_text": "Map source field 'participant_id' to target field 'steps'.",
+  "primitive_family": "copy_rename",
+  "primitive_subtype": "distractor",
+  "lexical_perturbation": "distractor",
+  "ambiguity_class": "single_gold",
+  "composition_depth": 1,
+  "difficulty_axes": {
+    "num_source_objects": 1,
+    "num_target_fields": 1,
+    "num_joins": 0,
+    "num_aggregations": 0,
+    "nesting_depth": 0,
+    "has_enum_normalization": false,
+    "has_time_normalization": false
+  },
+  "source_schema": {
+    "type": "object",
+    "title": "SYN_112Source",
+    "properties": {
+      "participant_id": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "participant_id"
+    ],
+    "additionalProperties": false
+  },
+  "target_schema": {
+    "type": "object",
+    "title": "SYN_112Target",
+    "properties": {
+      "steps": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "steps"
+    ],
+    "additionalProperties": false
+  },
+  "fixture_refs": {
+    "input": "../../../fixtures/synthetic/SYN_112_input.json",
+    "expected": "../../../fixtures/synthetic/SYN_112_expected.json"
+  },
+  "gold_refs": {
+    "matches": "../../../gold/matches/SYN_112_matches.json",
+    "plan": "../../../gold/plans/SYN_112_plan.json",
+    "invariants": "../../../gold/invariants/SYN_112_invariants.json"
+  },
+  "tags": [
+    "synthetic",
+    "primitive",
+    "copy_rename",
+    "distractor"
+  ],
+  "notes": [
+    "Close competing identifier."
+  ],
+  "downstream_checks": [
+    {
+      "type": "required_fields_present",
+      "fields": [
+        "steps"
+      ],
+      "scope": "all_records"
+    }
+  ]
+}

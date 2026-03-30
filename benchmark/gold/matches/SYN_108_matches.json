@@ -1,0 +1,7 @@
+[
+  {
+    "target_field": "steps",
+    "source_path": "$.date_of_birth",
+    "relation": "synonym"
+  }
+]

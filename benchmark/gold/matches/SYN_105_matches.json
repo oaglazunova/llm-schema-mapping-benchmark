@@ -1,0 +1,7 @@
+[
+  {
+    "target_field": "birth_date",
+    "source_path": "$.fecha_nacimiento",
+    "relation": "multilingual"
+  }
+]

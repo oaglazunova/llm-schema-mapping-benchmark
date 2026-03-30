@@ -1,0 +1,80 @@
+{
+  "task_id": "SYN_104",
+  "task_path": "C:\\Users\\sonok\\Documents\\Github\\llm-schema-mapping-benchmark\\benchmark\\tasks\\synthetic\\copy_rename\\SYN_104_task.json",
+  "result_path": "runs\\qwen2.5__7b-instruct-q4_0\\synthetic_copy_rename_v1\\run_008\\task_results\\SYN_104.json",
+  "record_valid": true,
+  "selected_candidate_present": true,
+  "produced_plan": true,
+  "plan_valid": true,
+  "references_valid": true,
+  "execution_valid": false,
+  "downstream_valid": false,
+  "overall_valid": false,
+  "error_codes": [
+    "invalid_execution"
+  ],
+  "record_schema_report": {
+    "valid": true,
+    "schema": "model_run_record_v1.schema.json",
+    "errors": []
+  },
+  "record_consistency_errors": [],
+  "selection_errors": [],
+  "plan_report": {
+    "valid": true,
+    "schema": "mapping_plan_v1.schema.json",
+    "errors": []
+  },
+  "plan_consistency_errors": [],
+  "references_report": {
+    "valid": true,
+    "errors": []
+  },
+  "execution_report": {
+    "valid": false,
+    "errors": [
+      "Produced output does not exactly match expected fixture. Produced=[{'birth_date': None}] Expected=[{'birth_date': '1992-03-14'}]"
+    ],
+    "produced": {
+      "records": [
+        {
+          "birth_date": null
+        }
+      ]
+    },
+    "expected": {
+      "records": [
+        {
+          "birth_date": "1992-03-14"
+        }
+      ]
+    }
+  },
+  "downstream_report": {
+    "valid": false,
+    "errors": []
+  },
+  "selected_candidate": {
+    "candidate_id": "c1",
+    "raw_text": "{\n  \"plan_id\": \"1\",\n  \"task_id\": \"SYN_104\",\n  \"target_entity\": \"canonical_user_profile\",\n  \"field_mappings\": [\n    {\n      \"target_field\": \"birth_date\",\n      \"operation\": \"default_value\",\n      \"source_paths\": []\n    }\n  ],\n  \"joins\": [],\n  \"filters\": [],\n  \"aggregations\": [],\n  \"assumptions\": [\n    \"activity_count is assumed to be a string representing a date\"\n  ]\n}",
+    "candidate_plan": {
+      "plan_id": "1",
+      "task_id": "SYN_104",
+      "target_entity": "canonical_user_profile",
+      "field_mappings": [
+        {
+          "target_field": "birth_date",
+          "operation": "default_value",
+          "source_paths": []
+        }
+      ],
+      "joins": [],
+      "filters": [],
+      "aggregations": [],
+      "assumptions": [
+        "activity_count is assumed to be a string representing a date"
+      ]
+    },
+    "parse_error": null
+  }
+}

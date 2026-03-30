@@ -1,0 +1,76 @@
+{
+  "task_id": "SYN_102",
+  "title": "Copy/rename primitive: synonym",
+  "split": "synthetic",
+  "difficulty": "easy",
+  "source_family": "synthetic_copy_rename",
+  "target_entity": "canonical_user_profile",
+  "task_text": "Map source field 'date_of_birth' to target field 'birth_date'.",
+  "primitive_family": "copy_rename",
+  "primitive_subtype": "synonym",
+  "lexical_perturbation": "synonym",
+  "ambiguity_class": "single_gold",
+  "composition_depth": 1,
+  "difficulty_axes": {
+    "num_source_objects": 1,
+    "num_target_fields": 1,
+    "num_joins": 0,
+    "num_aggregations": 0,
+    "nesting_depth": 0,
+    "has_enum_normalization": false,
+    "has_time_normalization": false
+  },
+  "source_schema": {
+    "type": "object",
+    "title": "SYN_102Source",
+    "properties": {
+      "date_of_birth": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "date_of_birth"
+    ],
+    "additionalProperties": false
+  },
+  "target_schema": {
+    "type": "object",
+    "title": "SYN_102Target",
+    "properties": {
+      "birth_date": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "birth_date"
+    ],
+    "additionalProperties": false
+  },
+  "fixture_refs": {
+    "input": "../../../fixtures/synthetic/SYN_102_input.json",
+    "expected": "../../../fixtures/synthetic/SYN_102_expected.json"
+  },
+  "gold_refs": {
+    "matches": "../../../gold/matches/SYN_102_matches.json",
+    "plan": "../../../gold/plans/SYN_102_plan.json",
+    "invariants": "../../../gold/invariants/SYN_102_invariants.json"
+  },
+  "tags": [
+    "synthetic",
+    "primitive",
+    "copy_rename",
+    "synonym"
+  ],
+  "notes": [
+    "Common synonym."
+  ],
+  "downstream_checks": [
+    {
+      "type": "required_fields_present",
+      "fields": [
+        "birth_date"
+      ],
+      "scope": "all_records"
+    }
+  ]
+}

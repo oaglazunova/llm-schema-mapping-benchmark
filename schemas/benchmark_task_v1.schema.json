@@ -4,140 +4,167 @@
   "title": "BenchmarkTaskV1",
   "type": "object",
   "required": [
-	"task_id",
-	"title",
-	"split",
-	"difficulty",
-	"source_family",
-	"target_entity",
-	"task_text",
-	"source_schema",
-	"target_schema",
-	"fixture_refs",
-	"gold_refs",
-	"tags"
+    "task_id",
+    "title",
+    "split",
+    "difficulty",
+    "source_family",
+    "target_entity",
+    "task_text",
+    "source_schema",
+    "target_schema",
+    "fixture_refs",
+    "gold_refs",
+    "tags"
   ],
   "additionalProperties": false,
   "properties": {
-	"task_id": {
-	  "type": "string",
-	  "pattern": "^(GB|PUB|SYN)_\\d{3}$"
-	},
-	"title": {
-	  "type": "string"
-	},
-	"split": {
-	  "type": "string",
-	  "enum": [
-		"gamebus",
-		"public",
-		"synthetic"
-	  ]
-	},
-	"difficulty": {
-	  "type": "string",
-	  "enum": [
-		"easy",
-		"medium",
-		"hard"
-	  ]
-	},
-	"source_family": {
-	  "type": "string"
-	},
-	"target_entity": {
-	  "type": "string"
-	},
-	"task_text": {
-	  "type": "string"
-	},
-	"source_schema": {
-	  "type": "object"
-	},
-	"target_schema": {
-	  "type": "object"
-	},
-	"fixture_refs": {
-	  "type": "object",
-	  "required": [
-		"input",
-		"expected"
-	  ],
-	  "properties": {
-		"input": {
-		  "type": "string"
-		},
-		"expected": {
-		  "type": "string"
-		}
-	  },
-	  "additionalProperties": false
-	},
-	"gold_refs": {
-	  "type": "object",
-	  "required": [
-		"matches",
-		"plan",
-		"invariants"
-	  ],
-	  "properties": {
-		"matches": {
-		  "type": "string"
-		},
-		"plan": {
-		  "type": "string"
-		},
-		"invariants": {
-		  "type": "string"
-		}
-	  },
-	  "additionalProperties": false
-	},
-	"tags": {
-	  "type": "array",
-	  "items": {
-		"type": "string"
-	  }
-	},
-	"notes": {
-	  "type": "array",
-	  "items": {
-		"type": "string"
-	  }
-	},
-	"downstream_checks": {
-	  "type": "array",
-	  "items": {
-		"type": "object",
-		"required": ["type"],
-		"properties": {
-		  "type": {
-			"type": "string",
-			"enum": [
-			  "record_count_matches_expected",
-			  "required_fields_present",
-			  "field_types"
-			]
-		  },
-		  "fields": {
-			"oneOf": [
-			  {
-				"type": "array",
-				"items": { "type": "string" }
-			  },
-			  {
-				"type": "object",
-				"additionalProperties": { "type": "string" }
-			  }
-			]
-		  },
-		  "scope": {
-			"type": "string",
-			"enum": ["all_records", "any_record"]
-		  }
-		},
-		"additionalProperties": true
-	  }
-	}
+    "task_id": {
+      "type": "string",
+      "pattern": "^(GB|PUB|SYN)_\\d{3}$"
+    },
+    "title": {
+      "type": "string"
+    },
+    "split": {
+      "type": "string",
+      "enum": ["gamebus", "public", "synthetic"]
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": ["easy", "medium", "hard"]
+    },
+    "source_family": {
+      "type": "string"
+    },
+    "target_entity": {
+      "type": "string"
+    },
+    "task_text": {
+      "type": "string"
+    },
+
+    "primitive_family": {
+      "type": "string",
+      "enum": [
+        "copy_rename",
+        "type_normalization",
+        "projection",
+        "split_merge",
+        "join",
+        "aggregation",
+        "nested_extraction",
+        "derived_field"
+      ]
+    },
+    "primitive_subtype": {
+      "type": "string"
+    },
+    "lexical_perturbation": {
+      "type": "string",
+      "enum": [
+        "none",
+        "exact",
+        "synonym",
+        "abbreviation",
+        "hypernym",
+        "multilingual",
+        "distractor"
+      ]
+    },
+    "ambiguity_class": {
+      "type": "string",
+      "enum": [
+        "single_gold",
+        "multiple_valid_plans_same_output",
+        "multiple_semantic_interpretations",
+        "abstention_appropriate"
+      ]
+    },
+    "composition_depth": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "difficulty_axes": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "num_source_objects": { "type": "integer", "minimum": 1 },
+        "num_target_fields": { "type": "integer", "minimum": 1 },
+        "num_joins": { "type": "integer", "minimum": 0 },
+        "num_aggregations": { "type": "integer", "minimum": 0 },
+        "nesting_depth": { "type": "integer", "minimum": 0 },
+        "has_enum_normalization": { "type": "boolean" },
+        "has_time_normalization": { "type": "boolean" }
+      }
+    },
+
+    "source_schema": {
+      "type": "object"
+    },
+    "target_schema": {
+      "type": "object"
+    },
+    "fixture_refs": {
+      "type": "object",
+      "required": ["input", "expected"],
+      "properties": {
+        "input": { "type": "string" },
+        "expected": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "gold_refs": {
+      "type": "object",
+      "required": ["matches", "plan", "invariants"],
+      "properties": {
+        "matches": { "type": "string" },
+        "plan": { "type": "string" },
+        "invariants": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "notes": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "downstream_checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "record_count_matches_expected",
+              "required_fields_present",
+              "field_types"
+            ]
+          },
+          "fields": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              {
+                "type": "object",
+                "additionalProperties": { "type": "string" }
+              }
+            ]
+          },
+          "scope": {
+            "type": "string",
+            "enum": ["all_records", "any_record"]
+          }
+        },
+        "additionalProperties": true
+      }
+    }
   }
 }

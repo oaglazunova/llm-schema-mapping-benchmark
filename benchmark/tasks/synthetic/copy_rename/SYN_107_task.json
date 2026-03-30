@@ -1,0 +1,76 @@
+{
+  "task_id": "SYN_107",
+  "title": "Copy/rename primitive: exact",
+  "split": "synthetic",
+  "difficulty": "easy",
+  "source_family": "synthetic_copy_rename",
+  "target_entity": "canonical_activity_summary",
+  "task_text": "Map source field 'birth_date' to target field 'steps'.",
+  "primitive_family": "copy_rename",
+  "primitive_subtype": "exact",
+  "lexical_perturbation": "exact",
+  "ambiguity_class": "single_gold",
+  "composition_depth": 1,
+  "difficulty_axes": {
+    "num_source_objects": 1,
+    "num_target_fields": 1,
+    "num_joins": 0,
+    "num_aggregations": 0,
+    "nesting_depth": 0,
+    "has_enum_normalization": false,
+    "has_time_normalization": false
+  },
+  "source_schema": {
+    "type": "object",
+    "title": "SYN_107Source",
+    "properties": {
+      "birth_date": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "birth_date"
+    ],
+    "additionalProperties": false
+  },
+  "target_schema": {
+    "type": "object",
+    "title": "SYN_107Target",
+    "properties": {
+      "steps": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "steps"
+    ],
+    "additionalProperties": false
+  },
+  "fixture_refs": {
+    "input": "../../../fixtures/synthetic/SYN_107_input.json",
+    "expected": "../../../fixtures/synthetic/SYN_107_expected.json"
+  },
+  "gold_refs": {
+    "matches": "../../../gold/matches/SYN_107_matches.json",
+    "plan": "../../../gold/plans/SYN_107_plan.json",
+    "invariants": "../../../gold/invariants/SYN_107_invariants.json"
+  },
+  "tags": [
+    "synthetic",
+    "primitive",
+    "copy_rename",
+    "exact"
+  ],
+  "notes": [
+    "Exact lexical match."
+  ],
+  "downstream_checks": [
+    {
+      "type": "required_fields_present",
+      "fields": [
+        "steps"
+      ],
+      "scope": "all_records"
+    }
+  ]
+}

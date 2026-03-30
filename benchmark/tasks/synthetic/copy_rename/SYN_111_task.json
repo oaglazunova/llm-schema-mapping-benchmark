@@ -1,0 +1,76 @@
+{
+  "task_id": "SYN_111",
+  "title": "Copy/rename primitive: multilingual",
+  "split": "synthetic",
+  "difficulty": "easy",
+  "source_family": "synthetic_copy_rename",
+  "target_entity": "canonical_activity_summary",
+  "task_text": "Map source field 'fecha_nacimiento' to target field 'steps'.",
+  "primitive_family": "copy_rename",
+  "primitive_subtype": "multilingual",
+  "lexical_perturbation": "multilingual",
+  "ambiguity_class": "single_gold",
+  "composition_depth": 1,
+  "difficulty_axes": {
+    "num_source_objects": 1,
+    "num_target_fields": 1,
+    "num_joins": 0,
+    "num_aggregations": 0,
+    "nesting_depth": 0,
+    "has_enum_normalization": false,
+    "has_time_normalization": false
+  },
+  "source_schema": {
+    "type": "object",
+    "title": "SYN_111Source",
+    "properties": {
+      "fecha_nacimiento": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "fecha_nacimiento"
+    ],
+    "additionalProperties": false
+  },
+  "target_schema": {
+    "type": "object",
+    "title": "SYN_111Target",
+    "properties": {
+      "steps": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "steps"
+    ],
+    "additionalProperties": false
+  },
+  "fixture_refs": {
+    "input": "../../../fixtures/synthetic/SYN_111_input.json",
+    "expected": "../../../fixtures/synthetic/SYN_111_expected.json"
+  },
+  "gold_refs": {
+    "matches": "../../../gold/matches/SYN_111_matches.json",
+    "plan": "../../../gold/plans/SYN_111_plan.json",
+    "invariants": "../../../gold/invariants/SYN_111_invariants.json"
+  },
+  "tags": [
+    "synthetic",
+    "primitive",
+    "copy_rename",
+    "multilingual"
+  ],
+  "notes": [
+    "Spanish source term."
+  ],
+  "downstream_checks": [
+    {
+      "type": "required_fields_present",
+      "fields": [
+        "steps"
+      ],
+      "scope": "all_records"
+    }
+  ]
+}

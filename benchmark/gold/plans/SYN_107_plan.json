@@ -1,0 +1,20 @@
+{
+  "plan_id": "SYN_107_gold",
+  "task_id": "SYN_107",
+  "target_entity": "canonical_activity_summary",
+  "field_mappings": [
+    {
+      "target_field": "steps",
+      "operation": "copy",
+      "source_paths": [
+        "$.birth_date"
+      ]
+    }
+  ],
+  "joins": [],
+  "filters": [],
+  "aggregations": [],
+  "assumptions": [
+    "Exact lexical match."
+  ]
+}

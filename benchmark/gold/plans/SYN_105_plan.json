@@ -1,0 +1,20 @@
+{
+  "plan_id": "SYN_105_gold",
+  "task_id": "SYN_105",
+  "target_entity": "canonical_user_profile",
+  "field_mappings": [
+    {
+      "target_field": "birth_date",
+      "operation": "copy",
+      "source_paths": [
+        "$.fecha_nacimiento"
+      ]
+    }
+  ],
+  "joins": [],
+  "filters": [],
+  "aggregations": [],
+  "assumptions": [
+    "Spanish source term."
+  ]
+}

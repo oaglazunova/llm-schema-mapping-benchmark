@@ -1,0 +1,76 @@
+{
+  "task_id": "SYN_110",
+  "title": "Copy/rename primitive: hypernym",
+  "split": "synthetic",
+  "difficulty": "easy",
+  "source_family": "synthetic_copy_rename",
+  "target_entity": "canonical_activity_summary",
+  "task_text": "Map source field 'activity_count' to target field 'steps'.",
+  "primitive_family": "copy_rename",
+  "primitive_subtype": "hypernym",
+  "lexical_perturbation": "hypernym",
+  "ambiguity_class": "single_gold",
+  "composition_depth": 1,
+  "difficulty_axes": {
+    "num_source_objects": 1,
+    "num_target_fields": 1,
+    "num_joins": 0,
+    "num_aggregations": 0,
+    "nesting_depth": 0,
+    "has_enum_normalization": false,
+    "has_time_normalization": false
+  },
+  "source_schema": {
+    "type": "object",
+    "title": "SYN_110Source",
+    "properties": {
+      "activity_count": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "activity_count"
+    ],
+    "additionalProperties": false
+  },
+  "target_schema": {
+    "type": "object",
+    "title": "SYN_110Target",
+    "properties": {
+      "steps": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "steps"
+    ],
+    "additionalProperties": false
+  },
+  "fixture_refs": {
+    "input": "../../../fixtures/synthetic/SYN_110_input.json",
+    "expected": "../../../fixtures/synthetic/SYN_110_expected.json"
+  },
+  "gold_refs": {
+    "matches": "../../../gold/matches/SYN_110_matches.json",
+    "plan": "../../../gold/plans/SYN_110_plan.json",
+    "invariants": "../../../gold/invariants/SYN_110_invariants.json"
+  },
+  "tags": [
+    "synthetic",
+    "primitive",
+    "copy_rename",
+    "hypernym"
+  ],
+  "notes": [
+    "Broader source term."
+  ],
+  "downstream_checks": [
+    {
+      "type": "required_fields_present",
+      "fields": [
+        "steps"
+      ],
+      "scope": "all_records"
+    }
+  ]
+}

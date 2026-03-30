@@ -1,0 +1,7 @@
+[
+  {
+    "target_field": "steps",
+    "source_path": "$.birth_date",
+    "relation": "exact"
+  }
+]

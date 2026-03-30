@@ -1,0 +1,103 @@
+{
+  "schema_version": "model_run_record_v1",
+  "run_id": "run_008",
+  "task_set_id": "synthetic_copy_rename_v1",
+  "task_id": "SYN_106",
+  "model": {
+    "model_name": "qwen2.5:7b-instruct-q4_0",
+    "provider": "ollama"
+  },
+  "prompt": {
+    "track": "multi_candidate_v1",
+    "template_id": "run_task_set_ollama_multi_v1",
+    "template_version": "0.1.0"
+  },
+  "generation": {
+    "temperature": 0.7
+  },
+  "status": "ok",
+  "selected_candidate_id": "c1",
+  "candidates": [
+    {
+      "candidate_id": "c1",
+      "raw_text": "{\n  \"plan_id\": \"T106_SYN_106\",\n  \"task_id\": \"SYN_106\",\n  \"target_entity\": \"canonical_user_profile\",\n  \"field_mappings\": [\n    {\n      \"target_field\": \"birth_date\",\n      \"operation\": \"default_value\",\n      \"source_paths\": [\"$participant_id\"]\n    }\n  ],\n  \"joins\": [],\n  \"filters\": [],\n  \"aggregations\": [],\n  \"assumptions\": [\n    \"The 'participant_id' field is assumed to contain a string that can be parsed as a date.\"\n  ]\n}",
+      "candidate_plan": {
+        "plan_id": "T106_SYN_106",
+        "task_id": "SYN_106",
+        "target_entity": "canonical_user_profile",
+        "field_mappings": [
+          {
+            "target_field": "birth_date",
+            "operation": "default_value",
+            "source_paths": [
+              "$participant_id"
+            ]
+          }
+        ],
+        "joins": [],
+        "filters": [],
+        "aggregations": [],
+        "assumptions": [
+          "The 'participant_id' field is assumed to contain a string that can be parsed as a date."
+        ]
+      },
+      "parse_error": null
+    },
+    {
+      "candidate_id": "c2",
+      "raw_text": "{\n  \"plan_id\": \"SYN_106_MAPPING_PLAN\",\n  \"task_id\": \"SYN_106\",\n  \"target_entity\": \"canonical_user_profile\",\n  \"field_mappings\": [\n    {\n      \"target_field\": \"birth_date\",\n      \"operation\": \"default_value\",\n      \"source_paths\": []\n    }\n  ],\n  \"joins\": [],\n  \"filters\": [],\n  \"aggregations\": [],\n  \"assumptions\": [\n    \"participant_id is a unique identifier for each participant\"\n  ]\n}",
+      "candidate_plan": {
+        "plan_id": "SYN_106_MAPPING_PLAN",
+        "task_id": "SYN_106",
+        "target_entity": "canonical_user_profile",
+        "field_mappings": [
+          {
+            "target_field": "birth_date",
+            "operation": "default_value",
+            "source_paths": []
+          }
+        ],
+        "joins": [],
+        "filters": [],
+        "aggregations": [],
+        "assumptions": [
+          "participant_id is a unique identifier for each participant"
+        ]
+      },
+      "parse_error": null
+    },
+    {
+      "candidate_id": "c3",
+      "raw_text": "{\n  \"plan_id\": \"SYN_106_mapping_plan\",\n  \"task_id\": \"SYN_106\",\n  \"target_entity\": \"canonical_user_profile\",\n  \"field_mappings\": [\n    {\n      \"target_field\": \"birth_date\",\n      \"operation\": \"default_value\",\n      \"source_paths\": [\"$participant_id\"]\n    }\n  ],\n  \"joins\": [],\n  \"filters\": [],\n  \"aggregations\": [],\n  \"assumptions\": [\n    \"The 'participant_id' field is assumed to be a string representing a date.\"\n  ]\n}",
+      "candidate_plan": {
+        "plan_id": "SYN_106_mapping_plan",
+        "task_id": "SYN_106",
+        "target_entity": "canonical_user_profile",
+        "field_mappings": [
+          {
+            "target_field": "birth_date",
+            "operation": "default_value",
+            "source_paths": [
+              "$participant_id"
+            ]
+          }
+        ],
+        "joins": [],
+        "filters": [],
+        "aggregations": [],
+        "assumptions": [
+          "The 'participant_id' field is assumed to be a string representing a date."
+        ]
+      },
+      "parse_error": null
+    }
+  ],
+  "usage": {
+    "latency_ms": 28338.051
+  },
+  "timestamps": {
+    "started_at": "2026-03-30T13:31:51.944124+00:00",
+    "finished_at": "2026-03-30T13:32:20.282175+00:00"
+  },
+  "notes": []
+}

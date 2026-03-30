@@ -1,0 +1,20 @@
+{
+  "plan_id": "SYN_108_gold",
+  "task_id": "SYN_108",
+  "target_entity": "canonical_activity_summary",
+  "field_mappings": [
+    {
+      "target_field": "steps",
+      "operation": "copy",
+      "source_paths": [
+        "$.date_of_birth"
+      ]
+    }
+  ],
+  "joins": [],
+  "filters": [],
+  "aggregations": [],
+  "assumptions": [
+    "Common synonym."
+  ]
+}

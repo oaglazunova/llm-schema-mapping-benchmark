@@ -1,0 +1,63 @@
+{
+  "task_id": "SYN_102",
+  "task_path": "C:\\Users\\sonok\\Documents\\Github\\llm-schema-mapping-benchmark\\benchmark\\tasks\\synthetic\\copy_rename\\SYN_102_task.json",
+  "result_path": "runs\\qwen2.5__7b-instruct-q4_0\\synthetic_copy_rename_v1\\run_008\\task_results\\SYN_102.json",
+  "record_valid": true,
+  "selected_candidate_present": true,
+  "produced_plan": true,
+  "plan_valid": true,
+  "references_valid": false,
+  "execution_valid": false,
+  "downstream_valid": false,
+  "overall_valid": false,
+  "error_codes": [
+    "invalid_references"
+  ],
+  "record_schema_report": {
+    "valid": true,
+    "schema": "model_run_record_v1.schema.json",
+    "errors": []
+  },
+  "record_consistency_errors": [],
+  "selection_errors": [],
+  "plan_report": {
+    "valid": true,
+    "schema": "mapping_plan_v1.schema.json",
+    "errors": []
+  },
+  "plan_consistency_errors": [],
+  "references_report": {
+    "valid": false,
+    "errors": [
+      "field_mappings[0]: target_field '$.birth_date' does not exist in target_schema"
+    ]
+  },
+  "execution_report": null,
+  "downstream_report": {
+    "valid": false,
+    "errors": []
+  },
+  "selected_candidate": {
+    "candidate_id": "c1",
+    "raw_text": "{\n  \"plan_id\": \"MAPPING_PLAN_102\",\n  \"task_id\": \"SYN_102\",\n  \"target_entity\": \"canonical_user_profile\",\n  \"field_mappings\": [\n    {\n      \"target_field\": \"$.birth_date\",\n      \"operation\": \"copy\",\n      \"source_paths\": [\n        \"$.date_of_birth\"\n      ]\n    }\n  ],\n  \"joins\": [],\n  \"filters\": [],\n  \"aggregations\": [],\n  \"assumptions\": []\n}",
+    "candidate_plan": {
+      "plan_id": "MAPPING_PLAN_102",
+      "task_id": "SYN_102",
+      "target_entity": "canonical_user_profile",
+      "field_mappings": [
+        {
+          "target_field": "$.birth_date",
+          "operation": "copy",
+          "source_paths": [
+            "$.date_of_birth"
+          ]
+        }
+      ],
+      "joins": [],
+      "filters": [],
+      "aggregations": [],
+      "assumptions": []
+    },
+    "parse_error": null
+  }
+}

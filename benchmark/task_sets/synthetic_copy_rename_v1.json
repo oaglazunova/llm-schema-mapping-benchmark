@@ -1,0 +1,22 @@
+{
+  "name": "synthetic_copy_rename_v1",
+  "version": "0.1.0",
+  "tasks": [
+    "benchmark/tasks/synthetic/copy_rename/SYN_101_task.json",
+    "benchmark/tasks/synthetic/copy_rename/SYN_102_task.json",
+    "benchmark/tasks/synthetic/copy_rename/SYN_103_task.json",
+    "benchmark/tasks/synthetic/copy_rename/SYN_104_task.json",
+    "benchmark/tasks/synthetic/copy_rename/SYN_105_task.json",
+    "benchmark/tasks/synthetic/copy_rename/SYN_106_task.json",
+    "benchmark/tasks/synthetic/copy_rename/SYN_107_task.json",
+    "benchmark/tasks/synthetic/copy_rename/SYN_108_task.json",
+    "benchmark/tasks/synthetic/copy_rename/SYN_109_task.json",
+    "benchmark/tasks/synthetic/copy_rename/SYN_110_task.json",
+    "benchmark/tasks/synthetic/copy_rename/SYN_111_task.json",
+    "benchmark/tasks/synthetic/copy_rename/SYN_112_task.json"
+  ],
+  "notes": [
+    "Primitive-first synthetic benchmark slice.",
+    "Only copy/rename tasks with lexical perturbations."
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "task_id": "SYN_104",
+  "title": "Copy/rename primitive: hypernym",
+  "split": "synthetic",
+  "difficulty": "easy",
+  "source_family": "synthetic_copy_rename",
+  "target_entity": "canonical_user_profile",
+  "task_text": "Map source field 'activity_count' to target field 'birth_date'.",
+  "primitive_family": "copy_rename",
+  "primitive_subtype": "hypernym",
+  "lexical_perturbation": "hypernym",
+  "ambiguity_class": "single_gold",
+  "composition_depth": 1,
+  "difficulty_axes": {
+    "num_source_objects": 1,
+    "num_target_fields": 1,
+    "num_joins": 0,
+    "num_aggregations": 0,
+    "nesting_depth": 0,
+    "has_enum_normalization": false,
+    "has_time_normalization": false
+  },
+  "source_schema": {
+    "type": "object",
+    "title": "SYN_104Source",
+    "properties": {
+      "activity_count": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "activity_count"
+    ],
+    "additionalProperties": false
+  },
+  "target_schema": {
+    "type": "object",
+    "title": "SYN_104Target",
+    "properties": {
+      "birth_date": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "birth_date"
+    ],
+    "additionalProperties": false
+  },
+  "fixture_refs": {
+    "input": "../../../fixtures/synthetic/SYN_104_input.json",
+    "expected": "../../../fixtures/synthetic/SYN_104_expected.json"
+  },
+  "gold_refs": {
+    "matches": "../../../gold/matches/SYN_104_matches.json",
+    "plan": "../../../gold/plans/SYN_104_plan.json",
+    "invariants": "../../../gold/invariants/SYN_104_invariants.json"
+  },
+  "tags": [
+    "synthetic",
+    "primitive",
+    "copy_rename",
+    "hypernym"
+  ],
+  "notes": [
+    "Broader source term."
+  ],
+  "downstream_checks": [
+    {
+      "type": "required_fields_present",
+      "fields": [
+        "birth_date"
+      ],
+      "scope": "all_records"
+    }
+  ]
+}
