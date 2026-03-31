@@ -22,6 +22,7 @@ from lsmbench.validators import (
     validate_references,
 )
 from lsmbench.validators.schema_validator import validate_instance_against_schema
+from lsmbench.evaluation.plan_repair import repair_plan_paths
 
 
 @dataclass
@@ -207,6 +208,10 @@ def score_one_task_result(
     plan = selected_candidate.get("candidate_plan") if selected_candidate else None
     produced_plan = isinstance(plan, dict)
 
+    repaired_plan = None
+    repair_notes: list[str] = []
+    repair_applied = False
+
     plan_report = None
     plan_consistency_errors: list[str] = []
     references_report = None
@@ -231,23 +236,29 @@ def score_one_task_result(
     if not produced_plan and not abstained:
         error_codes.append("no_candidate_plan")
 
+    effective_plan = plan
+
     if produced_plan:
-        plan_report = validate_plan(plan)
-        plan_consistency_errors = _plan_task_consistency_errors(plan, task)
+        repaired_plan, repair_notes = repair_plan_paths(plan)
+        repair_applied = len(repair_notes) > 0
+        effective_plan = repaired_plan
+
+        plan_report = validate_plan(effective_plan)
+        plan_consistency_errors = _plan_task_consistency_errors(effective_plan, task)
         plan_valid = plan_report["valid"] and not plan_consistency_errors
 
         if not plan_valid:
             error_codes.append("invalid_plan")
 
     if plan_valid:
-        references_report = validate_references(task, plan)
+        references_report = validate_references(task, effective_plan)
         references_valid = references_report["valid"]
 
         if not references_valid:
             error_codes.append("invalid_references")
 
     if references_valid:
-        execution_report = validate_execution(task, plan)
+        execution_report = validate_execution(task, effective_plan)
         execution_valid = execution_report["valid"]
 
         if not execution_valid:
@@ -255,7 +266,7 @@ def score_one_task_result(
 
     if execution_valid:
         if task.get("downstream_checks"):
-            downstream_report = validate_downstream(task, plan)
+            downstream_report = validate_downstream(task, effective_plan)
         else:
             downstream_report = {"valid": True, "errors": []}
         downstream_valid = downstream_report["valid"]
@@ -323,6 +334,9 @@ def score_one_task_result(
         "references_report": references_report,
         "execution_report": execution_report,
         "downstream_report": downstream_report,
+        "repair_applied": repair_applied,
+        "repair_notes": repair_notes,
+        "effective_plan": effective_plan,
         "selected_candidate": selected_candidate,
     }
 
