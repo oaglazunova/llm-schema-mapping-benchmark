@@ -1,0 +1,77 @@
+{
+  "task_id": "SYN_205",
+  "title": "Type normalization primitive: boolean_yes_no",
+  "split": "synthetic",
+  "difficulty": "medium",
+  "source_family": "synthetic_type_normalization",
+  "target_entity": "canonical_user_profile",
+  "task_text": "Map source field 'marketing_opt_in_text' to target field 'marketing_opt_in' using the correct normalization operation. Use these operation parameters: {'truthy_values': ['yes', 'true', '1', 'y'], 'falsy_values': ['no', 'false', '0', 'n']}.",
+  "primitive_family": "type_normalization",
+  "primitive_subtype": "normalize_boolean",
+  "lexical_perturbation": "none",
+  "ambiguity_class": "single_gold",
+  "composition_depth": 1,
+  "difficulty_axes": {
+    "num_source_objects": 1,
+    "num_target_fields": 1,
+    "num_joins": 0,
+    "num_aggregations": 0,
+    "nesting_depth": 0,
+    "has_enum_normalization": false,
+    "has_time_normalization": false
+  },
+  "source_schema": {
+    "type": "object",
+    "title": "SYN_205Source",
+    "properties": {
+      "marketing_opt_in_text": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "marketing_opt_in_text"
+    ],
+    "additionalProperties": false
+  },
+  "target_schema": {
+    "type": "object",
+    "title": "SYN_205Target",
+    "properties": {
+      "marketing_opt_in": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "marketing_opt_in"
+    ],
+    "additionalProperties": false
+  },
+  "fixture_refs": {
+    "input": "../../../fixtures/synthetic/SYN_205_input.json",
+    "expected": "../../../fixtures/synthetic/SYN_205_expected.json"
+  },
+  "gold_refs": {
+    "matches": "../../../gold/matches/SYN_205_matches.json",
+    "plan": "../../../gold/plans/SYN_205_plan.json",
+    "invariants": "../../../gold/invariants/SYN_205_invariants.json"
+  },
+  "tags": [
+    "synthetic",
+    "primitive",
+    "type_normalization",
+    "normalize_boolean",
+    "boolean_yes_no"
+  ],
+  "notes": [
+    "yes/no text normalized to boolean."
+  ],
+  "downstream_checks": [
+    {
+      "type": "required_fields_present",
+      "fields": [
+        "marketing_opt_in"
+      ],
+      "scope": "all_records"
+    }
+  ]
+}

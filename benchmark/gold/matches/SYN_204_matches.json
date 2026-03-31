@@ -1,0 +1,7 @@
+[
+  {
+    "target_field": "steps",
+    "source_path": "$.pasos_texto",
+    "relation": "semantic_match"
+  }
+]

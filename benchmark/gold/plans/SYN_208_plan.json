@@ -1,0 +1,21 @@
+{
+  "plan_id": "SYN_208_gold",
+  "task_id": "SYN_208",
+  "target_entity": "canonical_activity_summary",
+  "field_mappings": [
+    {
+      "target_field": "activity_date",
+      "operation": "truncate_date",
+      "source_paths": [
+        "$.activity_time"
+      ],
+      "parameters": {}
+    }
+  ],
+  "joins": [],
+  "filters": [],
+  "aggregations": [],
+  "assumptions": [
+    "Datetime normalized to date with distractor field present."
+  ]
+}

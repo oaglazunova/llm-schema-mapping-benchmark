@@ -1,0 +1,21 @@
+{
+  "plan_id": "SYN_204_gold",
+  "task_id": "SYN_204",
+  "target_entity": "canonical_activity_summary",
+  "field_mappings": [
+    {
+      "target_field": "steps",
+      "operation": "cast_integer",
+      "source_paths": [
+        "$.pasos_texto"
+      ],
+      "parameters": {}
+    }
+  ],
+  "joins": [],
+  "filters": [],
+  "aggregations": [],
+  "assumptions": [
+    "Spanish field name, numeric string value."
+  ]
+}

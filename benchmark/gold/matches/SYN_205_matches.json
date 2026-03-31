@@ -1,0 +1,7 @@
+[
+  {
+    "target_field": "marketing_opt_in",
+    "source_path": "$.marketing_opt_in_text",
+    "relation": "semantic_match"
+  }
+]

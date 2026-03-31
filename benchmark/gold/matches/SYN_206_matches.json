@@ -1,0 +1,7 @@
+[
+  {
+    "target_field": "gender",
+    "source_path": "$.gender_code",
+    "relation": "semantic_match"
+  }
+]

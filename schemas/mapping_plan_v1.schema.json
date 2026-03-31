@@ -78,7 +78,8 @@
       "additionalProperties": false,
       "properties": {
         "target_field": {
-          "type": "string"
+          "type": "string",
+          "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
         },
         "operation": {
           "type": "string",
@@ -197,7 +198,8 @@
       "additionalProperties": false,
       "properties": {
         "target_field": {
-          "type": "string"
+          "type": "string",
+          "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
         },
         "function": {
           "type": "string",

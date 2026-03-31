@@ -1,0 +1,77 @@
+{
+  "task_id": "SYN_203",
+  "title": "Type normalization primitive: numeric_string",
+  "split": "synthetic",
+  "difficulty": "easy",
+  "source_family": "synthetic_type_normalization",
+  "target_entity": "canonical_activity_summary",
+  "task_text": "Map source field 'step_count_text' to target field 'steps' using the correct normalization operation.",
+  "primitive_family": "type_normalization",
+  "primitive_subtype": "cast_integer",
+  "lexical_perturbation": "none",
+  "ambiguity_class": "single_gold",
+  "composition_depth": 1,
+  "difficulty_axes": {
+    "num_source_objects": 1,
+    "num_target_fields": 1,
+    "num_joins": 0,
+    "num_aggregations": 0,
+    "nesting_depth": 0,
+    "has_enum_normalization": false,
+    "has_time_normalization": false
+  },
+  "source_schema": {
+    "type": "object",
+    "title": "SYN_203Source",
+    "properties": {
+      "step_count_text": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "step_count_text"
+    ],
+    "additionalProperties": false
+  },
+  "target_schema": {
+    "type": "object",
+    "title": "SYN_203Target",
+    "properties": {
+      "steps": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "steps"
+    ],
+    "additionalProperties": false
+  },
+  "fixture_refs": {
+    "input": "../../../fixtures/synthetic/SYN_203_input.json",
+    "expected": "../../../fixtures/synthetic/SYN_203_expected.json"
+  },
+  "gold_refs": {
+    "matches": "../../../gold/matches/SYN_203_matches.json",
+    "plan": "../../../gold/plans/SYN_203_plan.json",
+    "invariants": "../../../gold/invariants/SYN_203_invariants.json"
+  },
+  "tags": [
+    "synthetic",
+    "primitive",
+    "type_normalization",
+    "cast_integer",
+    "numeric_string"
+  ],
+  "notes": [
+    "Numeric string to integer."
+  ],
+  "downstream_checks": [
+    {
+      "type": "required_fields_present",
+      "fields": [
+        "steps"
+      ],
+      "scope": "all_records"
+    }
+  ]
+}

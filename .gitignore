@@ -47,5 +47,4 @@ data/interim_private/
 _res/stbenchmark.jar_Decompiler.com/
 
 # Run outputs
-runs/local/
-runs/reports/
+runs/

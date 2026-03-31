@@ -1,0 +1,21 @@
+{
+  "plan_id": "SYN_203_gold",
+  "task_id": "SYN_203",
+  "target_entity": "canonical_activity_summary",
+  "field_mappings": [
+    {
+      "target_field": "steps",
+      "operation": "cast_integer",
+      "source_paths": [
+        "$.step_count_text"
+      ],
+      "parameters": {}
+    }
+  ],
+  "joins": [],
+  "filters": [],
+  "aggregations": [],
+  "assumptions": [
+    "Numeric string to integer."
+  ]
+}

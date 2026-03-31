@@ -1,0 +1,77 @@
+{
+  "task_id": "SYN_204",
+  "title": "Type normalization primitive: numeric_string_multilingual",
+  "split": "synthetic",
+  "difficulty": "easy",
+  "source_family": "synthetic_type_normalization",
+  "target_entity": "canonical_activity_summary",
+  "task_text": "Map source field 'pasos_texto' to target field 'steps' using the correct normalization operation.",
+  "primitive_family": "type_normalization",
+  "primitive_subtype": "cast_integer",
+  "lexical_perturbation": "none",
+  "ambiguity_class": "single_gold",
+  "composition_depth": 1,
+  "difficulty_axes": {
+    "num_source_objects": 1,
+    "num_target_fields": 1,
+    "num_joins": 0,
+    "num_aggregations": 0,
+    "nesting_depth": 0,
+    "has_enum_normalization": false,
+    "has_time_normalization": false
+  },
+  "source_schema": {
+    "type": "object",
+    "title": "SYN_204Source",
+    "properties": {
+      "pasos_texto": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "pasos_texto"
+    ],
+    "additionalProperties": false
+  },
+  "target_schema": {
+    "type": "object",
+    "title": "SYN_204Target",
+    "properties": {
+      "steps": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "steps"
+    ],
+    "additionalProperties": false
+  },
+  "fixture_refs": {
+    "input": "../../../fixtures/synthetic/SYN_204_input.json",
+    "expected": "../../../fixtures/synthetic/SYN_204_expected.json"
+  },
+  "gold_refs": {
+    "matches": "../../../gold/matches/SYN_204_matches.json",
+    "plan": "../../../gold/plans/SYN_204_plan.json",
+    "invariants": "../../../gold/invariants/SYN_204_invariants.json"
+  },
+  "tags": [
+    "synthetic",
+    "primitive",
+    "type_normalization",
+    "cast_integer",
+    "numeric_string_multilingual"
+  ],
+  "notes": [
+    "Spanish field name, numeric string value."
+  ],
+  "downstream_checks": [
+    {
+      "type": "required_fields_present",
+      "fields": [
+        "steps"
+      ],
+      "scope": "all_records"
+    }
+  ]
+}

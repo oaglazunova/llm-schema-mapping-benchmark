@@ -1,0 +1,21 @@
+{
+  "plan_id": "SYN_201_gold",
+  "task_id": "SYN_201",
+  "target_entity": "canonical_user_profile",
+  "field_mappings": [
+    {
+      "target_field": "birth_date",
+      "operation": "parse_date",
+      "source_paths": [
+        "$.dob_text"
+      ],
+      "parameters": {}
+    }
+  ],
+  "joins": [],
+  "filters": [],
+  "aggregations": [],
+  "assumptions": [
+    "ISO date string to canonical birth_date."
+  ]
+}

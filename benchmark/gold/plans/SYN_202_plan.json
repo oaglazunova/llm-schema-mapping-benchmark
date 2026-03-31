@@ -1,0 +1,21 @@
+{
+  "plan_id": "SYN_202_gold",
+  "task_id": "SYN_202",
+  "target_entity": "canonical_user_profile",
+  "field_mappings": [
+    {
+      "target_field": "birth_date",
+      "operation": "parse_date",
+      "source_paths": [
+        "$.fecha_nacimiento"
+      ],
+      "parameters": {}
+    }
+  ],
+  "joins": [],
+  "filters": [],
+  "aggregations": [],
+  "assumptions": [
+    "Spanish field name, ISO date value."
+  ]
+}

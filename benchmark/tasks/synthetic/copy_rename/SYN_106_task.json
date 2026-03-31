@@ -1,11 +1,11 @@
 {
   "task_id": "SYN_106",
-  "title": "Copy/rename primitive: distractor",
+  "title": "Copy/rename primitive: birth_date / distractor",
   "split": "synthetic",
   "difficulty": "easy",
   "source_family": "synthetic_copy_rename",
   "target_entity": "canonical_user_profile",
-  "task_text": "Map source field 'participant_id' to target field 'birth_date'.",
+  "task_text": "Map source field 'birth_date' to target field 'birth_date'. Ignore distractor fields with similar type or meaning.",
   "primitive_family": "copy_rename",
   "primitive_subtype": "distractor",
   "lexical_perturbation": "distractor",
@@ -24,12 +24,16 @@
     "type": "object",
     "title": "SYN_106Source",
     "properties": {
-      "participant_id": {
+      "birth_date": {
+        "type": "string"
+      },
+      "created_date": {
         "type": "string"
       }
     },
     "required": [
-      "participant_id"
+      "birth_date",
+      "created_date"
     ],
     "additionalProperties": false
   },
@@ -59,10 +63,11 @@
     "synthetic",
     "primitive",
     "copy_rename",
+    "birth_date",
     "distractor"
   ],
   "notes": [
-    "Close competing identifier."
+    "Correct field appears alongside a competing date-like field."
   ],
   "downstream_checks": [
     {

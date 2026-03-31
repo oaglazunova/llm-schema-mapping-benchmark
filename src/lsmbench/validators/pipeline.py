@@ -337,6 +337,39 @@ def extract_kv_value(values: Sequence[str], key: str, delimiter: str = ":") -> O
     return None
 
 
+def normalize_enum_value(value: Any, mapping: Optional[Dict[str, Any]] = None) -> Any:
+    if mapping and isinstance(mapping, dict):
+        return mapping.get(value, value)
+    return value
+
+
+def normalize_boolean_value(
+    value: Any,
+    *,
+    truthy_values: Optional[List[Any]] = None,
+    falsy_values: Optional[List[Any]] = None,
+    mapping: Optional[Dict[Any, Any]] = None,
+) -> Optional[bool]:
+    if mapping and isinstance(mapping, dict):
+        if value in mapping:
+            mapped = mapping[value]
+            if isinstance(mapped, bool):
+                return mapped
+            return coerce_bool(mapped)
+
+    if truthy_values is not None or falsy_values is not None:
+        if value in (truthy_values or []):
+            return True
+        if value in (falsy_values or []):
+            return False
+        if isinstance(value, str):
+            if value in {str(v) for v in (truthy_values or [])}:
+                return True
+            if value in {str(v) for v in (falsy_values or [])}:
+                return False
+
+    return coerce_bool(value)
+
 # =========================================================
 # Operations
 # =========================================================
@@ -395,15 +428,16 @@ def apply_operation(
 
     if operation == "normalize_enum":
         value = source_values[0] if source_values else None
-        mapping = parameters.get("mapping", {})
-        return mapping.get(value, value)
+        return normalize_enum_value(value, parameters.get("mapping"))
 
     if operation == "normalize_boolean":
         value = source_values[0] if source_values else None
-        mapping = parameters.get("mapping", {})
-        if value in mapping:
-            return mapping[value]
-        return coerce_bool(value)
+        return normalize_boolean_value(
+            value,
+            truthy_values=parameters.get("truthy_values"),
+            falsy_values=parameters.get("falsy_values"),
+            mapping=parameters.get("mapping"),
+        )
 
     if operation == "derive_arithmetic":
         op = parameters.get("op")

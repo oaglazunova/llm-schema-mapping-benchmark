@@ -1,11 +1,11 @@
 {
   "task_id": "SYN_111",
-  "title": "Copy/rename primitive: multilingual",
+  "title": "Copy/rename primitive: steps / multilingual",
   "split": "synthetic",
   "difficulty": "easy",
   "source_family": "synthetic_copy_rename",
   "target_entity": "canonical_activity_summary",
-  "task_text": "Map source field 'fecha_nacimiento' to target field 'steps'.",
+  "task_text": "Map source field 'pasos' to target field 'steps'.",
   "primitive_family": "copy_rename",
   "primitive_subtype": "multilingual",
   "lexical_perturbation": "multilingual",
@@ -24,12 +24,12 @@
     "type": "object",
     "title": "SYN_111Source",
     "properties": {
-      "fecha_nacimiento": {
+      "pasos": {
         "type": "integer"
       }
     },
     "required": [
-      "fecha_nacimiento"
+      "pasos"
     ],
     "additionalProperties": false
   },
@@ -59,6 +59,7 @@
     "synthetic",
     "primitive",
     "copy_rename",
+    "steps",
     "multilingual"
   ],
   "notes": [

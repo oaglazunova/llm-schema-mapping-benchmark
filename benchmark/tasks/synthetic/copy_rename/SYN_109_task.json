@@ -1,11 +1,11 @@
 {
   "task_id": "SYN_109",
-  "title": "Copy/rename primitive: abbreviation",
+  "title": "Copy/rename primitive: steps / abbreviation",
   "split": "synthetic",
   "difficulty": "easy",
   "source_family": "synthetic_copy_rename",
   "target_entity": "canonical_activity_summary",
-  "task_text": "Map source field 'dob' to target field 'steps'.",
+  "task_text": "Map source field 'step_cnt' to target field 'steps'.",
   "primitive_family": "copy_rename",
   "primitive_subtype": "abbreviation",
   "lexical_perturbation": "abbreviation",
@@ -24,12 +24,12 @@
     "type": "object",
     "title": "SYN_109Source",
     "properties": {
-      "dob": {
+      "step_cnt": {
         "type": "integer"
       }
     },
     "required": [
-      "dob"
+      "step_cnt"
     ],
     "additionalProperties": false
   },
@@ -59,10 +59,11 @@
     "synthetic",
     "primitive",
     "copy_rename",
+    "steps",
     "abbreviation"
   ],
   "notes": [
-    "Abbreviation."
+    "Abbreviated source label."
   ],
   "downstream_checks": [
     {

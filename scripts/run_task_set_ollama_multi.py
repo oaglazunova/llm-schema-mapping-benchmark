@@ -38,6 +38,7 @@ def to_iso_utc(ts: float) -> str:
     return datetime.fromtimestamp(ts, tz=timezone.utc).isoformat()
 
 
+
 def build_generation_prompt(task: dict[str, Any]) -> list[dict[str, str]]:
     system = (
         "You are a schema mapping assistant. "
@@ -46,21 +47,44 @@ def build_generation_prompt(task: dict[str, Any]) -> list[dict[str, str]]:
         "Do not add explanations."
     )
 
+    task_text = task["task_text"]
+    primitive_family = task.get("primitive_family", "")
+    primitive_subtype = task.get("primitive_subtype", "")
+
+    instruction_parts = [
+        "Produce a mapping plan JSON with keys: "
+        "plan_id, task_id, target_entity, field_mappings, joins, filters, aggregations, assumptions.",
+        "Each field_mapping must contain: target_field, operation, source_paths.",
+        "target_field must be a bare field name like birth_date or steps, never a JSONPath.",
+        "Every source path must be a JSONPath starting with '$.'.",
+        "Use only these operations when appropriate: "
+        "copy, rename, cast_string, cast_integer, cast_number, cast_boolean, "
+        "parse_date, parse_datetime, truncate_date, normalize_enum, normalize_boolean, "
+        "concat, split, derive_arithmetic, default_value, coalesce, latest_value.",
+    ]
+
+    needs_parameters = (
+        primitive_subtype in {"normalize_enum", "normalize_boolean"}
+        or "Use these operation parameters:" in task_text
+    )
+
+    if needs_parameters:
+        instruction_parts.append(
+            "A field_mapping may include a parameters object when the operation requires it."
+        )
+        instruction_parts.append(
+            "For normalize_enum, include parameters.mapping when the task provides an explicit mapping."
+        )
+        instruction_parts.append(
+            "For normalize_boolean, include parameters.truthy_values and parameters.falsy_values "
+            "when the task provides them."
+        )
+
     user = {
-        "instruction": (
-            "Produce a mapping plan JSON with keys: "
-            "plan_id, task_id, target_entity, field_mappings, joins, filters, aggregations, assumptions. "
-            "Each field_mapping must contain: target_field, operation, source_paths. "
-            "Every source path must be a JSONPath starting with '$.'. "
-            "Use only these operations when appropriate: "
-            "copy, rename, cast_string, cast_integer, cast_number, cast_boolean, "
-            "parse_date, parse_datetime, truncate_date, normalize_enum, normalize_boolean, "
-            "concat, split, derive_arithmetic, default_value, coalesce, latest_value. "
-            "Return only one JSON object."
-        ),
+        "instruction": " ".join(instruction_parts),
         "task_id": task["task_id"],
         "title": task["title"],
-        "task_text": task["task_text"],
+        "task_text": task_text,
         "target_entity": task["target_entity"],
         "source_schema": task["source_schema"],
         "target_schema": task["target_schema"],
@@ -298,9 +322,12 @@ def main() -> int:
                     "provider": "ollama",
                 },
                 "prompt": {
-                    "track": "multi_candidate_v1",
-                    "template_id": "run_task_set_ollama_multi_v1",
-                    "template_version": "0.1.0",
+                    "track": "parameter_aware_v1"
+                    if task.get("primitive_subtype") in {"normalize_enum", "normalize_boolean"}
+                    or "Use these operation parameters:" in task.get("task_text", "")
+                    else "minimal_v1",
+                    "template_id": "run_task_set_ollama_v2",
+                    "template_version": "0.2.0",
                 },
                 "generation": {
                     "temperature": 0.7,

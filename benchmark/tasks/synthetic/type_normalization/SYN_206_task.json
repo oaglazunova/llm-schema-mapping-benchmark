@@ -1,0 +1,77 @@
+{
+  "task_id": "SYN_206",
+  "title": "Type normalization primitive: enum_code",
+  "split": "synthetic",
+  "difficulty": "medium",
+  "source_family": "synthetic_type_normalization",
+  "target_entity": "canonical_user_profile",
+  "task_text": "Map source field 'gender_code' to target field 'gender' using the correct normalization operation. Use these operation parameters: {'mapping': {'F': 'female', 'M': 'male', 'U': 'unknown'}}.",
+  "primitive_family": "type_normalization",
+  "primitive_subtype": "normalize_enum",
+  "lexical_perturbation": "none",
+  "ambiguity_class": "single_gold",
+  "composition_depth": 1,
+  "difficulty_axes": {
+    "num_source_objects": 1,
+    "num_target_fields": 1,
+    "num_joins": 0,
+    "num_aggregations": 0,
+    "nesting_depth": 0,
+    "has_enum_normalization": true,
+    "has_time_normalization": false
+  },
+  "source_schema": {
+    "type": "object",
+    "title": "SYN_206Source",
+    "properties": {
+      "gender_code": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "gender_code"
+    ],
+    "additionalProperties": false
+  },
+  "target_schema": {
+    "type": "object",
+    "title": "SYN_206Target",
+    "properties": {
+      "gender": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "gender"
+    ],
+    "additionalProperties": false
+  },
+  "fixture_refs": {
+    "input": "../../../fixtures/synthetic/SYN_206_input.json",
+    "expected": "../../../fixtures/synthetic/SYN_206_expected.json"
+  },
+  "gold_refs": {
+    "matches": "../../../gold/matches/SYN_206_matches.json",
+    "plan": "../../../gold/plans/SYN_206_plan.json",
+    "invariants": "../../../gold/invariants/SYN_206_invariants.json"
+  },
+  "tags": [
+    "synthetic",
+    "primitive",
+    "type_normalization",
+    "normalize_enum",
+    "enum_code"
+  ],
+  "notes": [
+    "One-letter code normalized to canonical enum."
+  ],
+  "downstream_checks": [
+    {
+      "type": "required_fields_present",
+      "fields": [
+        "gender"
+      ],
+      "scope": "all_records"
+    }
+  ]
+}

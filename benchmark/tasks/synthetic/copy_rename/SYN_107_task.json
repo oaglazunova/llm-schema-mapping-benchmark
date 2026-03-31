@@ -1,11 +1,11 @@
 {
   "task_id": "SYN_107",
-  "title": "Copy/rename primitive: exact",
+  "title": "Copy/rename primitive: steps / exact",
   "split": "synthetic",
   "difficulty": "easy",
   "source_family": "synthetic_copy_rename",
   "target_entity": "canonical_activity_summary",
-  "task_text": "Map source field 'birth_date' to target field 'steps'.",
+  "task_text": "Map source field 'steps' to target field 'steps'.",
   "primitive_family": "copy_rename",
   "primitive_subtype": "exact",
   "lexical_perturbation": "exact",
@@ -24,12 +24,12 @@
     "type": "object",
     "title": "SYN_107Source",
     "properties": {
-      "birth_date": {
+      "steps": {
         "type": "integer"
       }
     },
     "required": [
-      "birth_date"
+      "steps"
     ],
     "additionalProperties": false
   },
@@ -59,6 +59,7 @@
     "synthetic",
     "primitive",
     "copy_rename",
+    "steps",
     "exact"
   ],
   "notes": [

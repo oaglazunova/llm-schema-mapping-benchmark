@@ -1,11 +1,11 @@
 {
   "task_id": "SYN_108",
-  "title": "Copy/rename primitive: synonym",
+  "title": "Copy/rename primitive: steps / synonym",
   "split": "synthetic",
   "difficulty": "easy",
   "source_family": "synthetic_copy_rename",
   "target_entity": "canonical_activity_summary",
-  "task_text": "Map source field 'date_of_birth' to target field 'steps'.",
+  "task_text": "Map source field 'step_count' to target field 'steps'.",
   "primitive_family": "copy_rename",
   "primitive_subtype": "synonym",
   "lexical_perturbation": "synonym",
@@ -24,12 +24,12 @@
     "type": "object",
     "title": "SYN_108Source",
     "properties": {
-      "date_of_birth": {
+      "step_count": {
         "type": "integer"
       }
     },
     "required": [
-      "date_of_birth"
+      "step_count"
     ],
     "additionalProperties": false
   },
@@ -59,6 +59,7 @@
     "synthetic",
     "primitive",
     "copy_rename",
+    "steps",
     "synonym"
   ],
   "notes": [

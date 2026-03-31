@@ -5,48 +5,79 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class LexicalVariant:
-    target_label: str
-    source_label: str
+    source_field: str
     perturbation: str
     note: str | None = None
+    distractor_fields: tuple[str, ...] = ()
 
 
-def copy_rename_variants() -> list[LexicalVariant]:
+def birth_date_variants() -> list[LexicalVariant]:
     return [
         LexicalVariant(
-            target_label="birth_date",
-            source_label="birth_date",
+            source_field="birth_date",
             perturbation="exact",
-            note="Exact lexical match."
+            note="Exact lexical match.",
         ),
         LexicalVariant(
-            target_label="birth_date",
-            source_label="date_of_birth",
+            source_field="date_of_birth",
             perturbation="synonym",
-            note="Common synonym."
+            note="Common synonym.",
         ),
         LexicalVariant(
-            target_label="birth_date",
-            source_label="dob",
+            source_field="dob",
             perturbation="abbreviation",
-            note="Abbreviation."
+            note="Abbreviation.",
         ),
         LexicalVariant(
-            target_label="steps",
-            source_label="activity_count",
+            source_field="date",
             perturbation="hypernym",
-            note="Broader source term."
+            note="Broader date term.",
         ),
         LexicalVariant(
-            target_label="birth_date",
-            source_label="fecha_nacimiento",
+            source_field="fecha_nacimiento",
             perturbation="multilingual",
-            note="Spanish source term."
+            note="Spanish source term.",
         ),
         LexicalVariant(
-            target_label="user_id",
-            source_label="participant_id",
+            source_field="birth_date",
             perturbation="distractor",
-            note="Close competing identifier."
+            note="Correct field appears alongside a competing date-like field.",
+            distractor_fields=("created_date",),
+        ),
+    ]
+
+
+def steps_variants() -> list[LexicalVariant]:
+    return [
+        LexicalVariant(
+            source_field="steps",
+            perturbation="exact",
+            note="Exact lexical match.",
+        ),
+        LexicalVariant(
+            source_field="step_count",
+            perturbation="synonym",
+            note="Common synonym.",
+        ),
+        LexicalVariant(
+            source_field="step_cnt",
+            perturbation="abbreviation",
+            note="Abbreviated source label.",
+        ),
+        LexicalVariant(
+            source_field="activity_count",
+            perturbation="hypernym",
+            note="Broader activity-count term.",
+        ),
+        LexicalVariant(
+            source_field="pasos",
+            perturbation="multilingual",
+            note="Spanish source term.",
+        ),
+        LexicalVariant(
+            source_field="steps",
+            perturbation="distractor",
+            note="Correct field appears alongside a competing numeric activity field.",
+            distractor_fields=("distance_meters",),
         ),
     ]

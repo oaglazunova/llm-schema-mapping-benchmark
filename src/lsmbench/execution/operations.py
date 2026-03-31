@@ -52,6 +52,40 @@ def _to_bool(value: Any) -> bool:
     raise ValueError(f"Cannot cast to boolean: {value!r}")
 
 
+def _normalize_enum_value(value: Any, mapping: dict[str, Any] | None = None) -> Any:
+    if mapping and isinstance(mapping, dict):
+        return mapping.get(value, value)
+    return value
+
+
+def _normalize_boolean_value(
+    value: Any,
+    *,
+    truthy_values: list[Any] | None = None,
+    falsy_values: list[Any] | None = None,
+    mapping: dict[Any, Any] | None = None,
+) -> bool:
+    if mapping and isinstance(mapping, dict):
+        if value in mapping:
+            mapped = mapping[value]
+            if isinstance(mapped, bool):
+                return mapped
+            return _to_bool(mapped)
+
+    if truthy_values is not None or falsy_values is not None:
+        if value in (truthy_values or []):
+            return True
+        if value in (falsy_values or []):
+            return False
+        s = _to_str(value).strip()
+        if s in {str(v) for v in (truthy_values or [])}:
+            return True
+        if s in {str(v) for v in (falsy_values or [])}:
+            return False
+
+    return _to_bool(value)
+
+
 def _extract_kv(items: Any, key: str, delimiter: str = ":") -> Any:
     if not isinstance(items, list):
         return None
@@ -190,14 +224,17 @@ def apply_operation(
         return _parse_date_string(values[0])
 
     if operation == "normalize_enum":
-        value = values[0]
-        mapping = params.get("mapping")
-        if isinstance(mapping, dict):
-            return mapping.get(value, value)
-        return value
+        value = values[0] if values else None
+        return _normalize_enum_value(value, params.get("mapping"))
 
     if operation == "normalize_boolean":
-        return _to_bool(values[0])
+        value = values[0] if values else None
+        return _normalize_boolean_value(
+            value,
+            truthy_values=params.get("truthy_values"),
+            falsy_values=params.get("falsy_values"),
+            mapping=params.get("mapping"),
+        )
 
     if operation == "concat":
         sep = params.get("separator", "")

@@ -1,0 +1,9 @@
+[
+  {
+    "type": "required_fields_present",
+    "fields": [
+      "steps"
+    ],
+    "scope": "all_records"
+  }
+]

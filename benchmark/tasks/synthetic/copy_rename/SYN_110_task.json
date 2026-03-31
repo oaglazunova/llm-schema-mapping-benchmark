@@ -1,6 +1,6 @@
 {
   "task_id": "SYN_110",
-  "title": "Copy/rename primitive: hypernym",
+  "title": "Copy/rename primitive: steps / hypernym",
   "split": "synthetic",
   "difficulty": "easy",
   "source_family": "synthetic_copy_rename",
@@ -59,10 +59,11 @@
     "synthetic",
     "primitive",
     "copy_rename",
+    "steps",
     "hypernym"
   ],
   "notes": [
-    "Broader source term."
+    "Broader activity-count term."
   ],
   "downstream_checks": [
     {

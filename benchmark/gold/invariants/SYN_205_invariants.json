@@ -1,0 +1,9 @@
+[
+  {
+    "type": "required_fields_present",
+    "fields": [
+      "marketing_opt_in"
+    ],
+    "scope": "all_records"
+  }
+]

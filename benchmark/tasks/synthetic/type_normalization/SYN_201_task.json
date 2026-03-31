@@ -1,0 +1,77 @@
+{
+  "task_id": "SYN_201",
+  "title": "Type normalization primitive: date_text_iso",
+  "split": "synthetic",
+  "difficulty": "easy",
+  "source_family": "synthetic_type_normalization",
+  "target_entity": "canonical_user_profile",
+  "task_text": "Map source field 'dob_text' to target field 'birth_date' using the correct normalization operation.",
+  "primitive_family": "type_normalization",
+  "primitive_subtype": "parse_date",
+  "lexical_perturbation": "none",
+  "ambiguity_class": "single_gold",
+  "composition_depth": 1,
+  "difficulty_axes": {
+    "num_source_objects": 1,
+    "num_target_fields": 1,
+    "num_joins": 0,
+    "num_aggregations": 0,
+    "nesting_depth": 0,
+    "has_enum_normalization": false,
+    "has_time_normalization": true
+  },
+  "source_schema": {
+    "type": "object",
+    "title": "SYN_201Source",
+    "properties": {
+      "dob_text": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "dob_text"
+    ],
+    "additionalProperties": false
+  },
+  "target_schema": {
+    "type": "object",
+    "title": "SYN_201Target",
+    "properties": {
+      "birth_date": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "birth_date"
+    ],
+    "additionalProperties": false
+  },
+  "fixture_refs": {
+    "input": "../../../fixtures/synthetic/SYN_201_input.json",
+    "expected": "../../../fixtures/synthetic/SYN_201_expected.json"
+  },
+  "gold_refs": {
+    "matches": "../../../gold/matches/SYN_201_matches.json",
+    "plan": "../../../gold/plans/SYN_201_plan.json",
+    "invariants": "../../../gold/invariants/SYN_201_invariants.json"
+  },
+  "tags": [
+    "synthetic",
+    "primitive",
+    "type_normalization",
+    "parse_date",
+    "date_text_iso"
+  ],
+  "notes": [
+    "ISO date string to canonical birth_date."
+  ],
+  "downstream_checks": [
+    {
+      "type": "required_fields_present",
+      "fields": [
+        "birth_date"
+      ],
+      "scope": "all_records"
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "task_id": "SYN_207",
+  "title": "Type normalization primitive: datetime_to_date",
+  "split": "synthetic",
+  "difficulty": "easy",
+  "source_family": "synthetic_type_normalization",
+  "target_entity": "canonical_activity_summary",
+  "task_text": "Map source field 'activity_time' to target field 'activity_date' using the correct normalization operation.",
+  "primitive_family": "type_normalization",
+  "primitive_subtype": "truncate_date",
+  "lexical_perturbation": "none",
+  "ambiguity_class": "single_gold",
+  "composition_depth": 1,
+  "difficulty_axes": {
+    "num_source_objects": 1,
+    "num_target_fields": 1,
+    "num_joins": 0,
+    "num_aggregations": 0,
+    "nesting_depth": 0,
+    "has_enum_normalization": false,
+    "has_time_normalization": true
+  },
+  "source_schema": {
+    "type": "object",
+    "title": "SYN_207Source",
+    "properties": {
+      "activity_time": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "activity_time"
+    ],
+    "additionalProperties": false
+  },
+  "target_schema": {
+    "type": "object",
+    "title": "SYN_207Target",
+    "properties": {
+      "activity_date": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "activity_date"
+    ],
+    "additionalProperties": false
+  },
+  "fixture_refs": {
+    "input": "../../../fixtures/synthetic/SYN_207_input.json",
+    "expected": "../../../fixtures/synthetic/SYN_207_expected.json"
+  },
+  "gold_refs": {
+    "matches": "../../../gold/matches/SYN_207_matches.json",
+    "plan": "../../../gold/plans/SYN_207_plan.json",
+    "invariants": "../../../gold/invariants/SYN_207_invariants.json"
+  },
+  "tags": [
+    "synthetic",
+    "primitive",
+    "type_normalization",
+    "truncate_date",
+    "datetime_to_date"
+  ],
+  "notes": [
+    "Datetime normalized to date."
+  ],
+  "downstream_checks": [
+    {
+      "type": "required_fields_present",
+      "fields": [
+        "activity_date"
+      ],
+      "scope": "all_records"
+    }
+  ]
+}

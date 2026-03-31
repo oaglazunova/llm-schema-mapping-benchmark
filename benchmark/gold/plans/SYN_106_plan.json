@@ -7,7 +7,7 @@
       "target_field": "birth_date",
       "operation": "copy",
       "source_paths": [
-        "$.participant_id"
+        "$.birth_date"
       ]
     }
   ],
@@ -15,6 +15,6 @@
   "filters": [],
   "aggregations": [],
   "assumptions": [
-    "Close competing identifier."
+    "Correct field appears alongside a competing date-like field."
   ]
 }

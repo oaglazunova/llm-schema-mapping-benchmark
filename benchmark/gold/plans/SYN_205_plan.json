@@ -1,0 +1,34 @@
+{
+  "plan_id": "SYN_205_gold",
+  "task_id": "SYN_205",
+  "target_entity": "canonical_user_profile",
+  "field_mappings": [
+    {
+      "target_field": "marketing_opt_in",
+      "operation": "normalize_boolean",
+      "source_paths": [
+        "$.marketing_opt_in_text"
+      ],
+      "parameters": {
+        "truthy_values": [
+          "yes",
+          "true",
+          "1",
+          "y"
+        ],
+        "falsy_values": [
+          "no",
+          "false",
+          "0",
+          "n"
+        ]
+      }
+    }
+  ],
+  "joins": [],
+  "filters": [],
+  "aggregations": [],
+  "assumptions": [
+    "yes/no text normalized to boolean."
+  ]
+}

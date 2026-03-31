@@ -1,0 +1,9 @@
+[
+  {
+    "type": "required_fields_present",
+    "fields": [
+      "activity_date"
+    ],
+    "scope": "all_records"
+  }
+]

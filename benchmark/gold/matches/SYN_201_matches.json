@@ -1,0 +1,7 @@
+[
+  {
+    "target_field": "birth_date",
+    "source_path": "$.dob_text",
+    "relation": "semantic_match"
+  }
+]

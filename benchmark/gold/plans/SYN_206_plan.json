@@ -1,0 +1,27 @@
+{
+  "plan_id": "SYN_206_gold",
+  "task_id": "SYN_206",
+  "target_entity": "canonical_user_profile",
+  "field_mappings": [
+    {
+      "target_field": "gender",
+      "operation": "normalize_enum",
+      "source_paths": [
+        "$.gender_code"
+      ],
+      "parameters": {
+        "mapping": {
+          "F": "female",
+          "M": "male",
+          "U": "unknown"
+        }
+      }
+    }
+  ],
+  "joins": [],
+  "filters": [],
+  "aggregations": [],
+  "assumptions": [
+    "One-letter code normalized to canonical enum."
+  ]
+}

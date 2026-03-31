@@ -1,11 +1,11 @@
 {
   "task_id": "SYN_104",
-  "title": "Copy/rename primitive: hypernym",
+  "title": "Copy/rename primitive: birth_date / hypernym",
   "split": "synthetic",
   "difficulty": "easy",
   "source_family": "synthetic_copy_rename",
   "target_entity": "canonical_user_profile",
-  "task_text": "Map source field 'activity_count' to target field 'birth_date'.",
+  "task_text": "Map source field 'date' to target field 'birth_date'.",
   "primitive_family": "copy_rename",
   "primitive_subtype": "hypernym",
   "lexical_perturbation": "hypernym",
@@ -24,12 +24,12 @@
     "type": "object",
     "title": "SYN_104Source",
     "properties": {
-      "activity_count": {
+      "date": {
         "type": "string"
       }
     },
     "required": [
-      "activity_count"
+      "date"
     ],
     "additionalProperties": false
   },
@@ -59,10 +59,11 @@
     "synthetic",
     "primitive",
     "copy_rename",
+    "birth_date",
     "hypernym"
   ],
   "notes": [
-    "Broader source term."
+    "Broader date term."
   ],
   "downstream_checks": [
     {

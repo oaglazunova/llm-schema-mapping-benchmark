@@ -1,0 +1,7 @@
+[
+  {
+    "target_field": "activity_date",
+    "source_path": "$.activity_time",
+    "relation": "semantic_match"
+  }
+]

@@ -1,0 +1,9 @@
+[
+  {
+    "type": "required_fields_present",
+    "fields": [
+      "gender"
+    ],
+    "scope": "all_records"
+  }
+]

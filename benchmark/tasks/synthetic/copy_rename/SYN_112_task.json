@@ -1,11 +1,11 @@
 {
   "task_id": "SYN_112",
-  "title": "Copy/rename primitive: distractor",
+  "title": "Copy/rename primitive: steps / distractor",
   "split": "synthetic",
   "difficulty": "easy",
   "source_family": "synthetic_copy_rename",
   "target_entity": "canonical_activity_summary",
-  "task_text": "Map source field 'participant_id' to target field 'steps'.",
+  "task_text": "Map source field 'steps' to target field 'steps'. Ignore distractor fields with similar type or meaning.",
   "primitive_family": "copy_rename",
   "primitive_subtype": "distractor",
   "lexical_perturbation": "distractor",
@@ -24,12 +24,16 @@
     "type": "object",
     "title": "SYN_112Source",
     "properties": {
-      "participant_id": {
+      "steps": {
+        "type": "integer"
+      },
+      "distance_meters": {
         "type": "integer"
       }
     },
     "required": [
-      "participant_id"
+      "steps",
+      "distance_meters"
     ],
     "additionalProperties": false
   },
@@ -59,10 +63,11 @@
     "synthetic",
     "primitive",
     "copy_rename",
+    "steps",
     "distractor"
   ],
   "notes": [
-    "Close competing identifier."
+    "Correct field appears alongside a competing numeric activity field."
   ],
   "downstream_checks": [
     {

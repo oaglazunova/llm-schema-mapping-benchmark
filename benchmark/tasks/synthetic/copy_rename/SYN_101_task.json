@@ -1,6 +1,6 @@
 {
   "task_id": "SYN_101",
-  "title": "Copy/rename primitive: exact",
+  "title": "Copy/rename primitive: birth_date / exact",
   "split": "synthetic",
   "difficulty": "easy",
   "source_family": "synthetic_copy_rename",
@@ -59,6 +59,7 @@
     "synthetic",
     "primitive",
     "copy_rename",
+    "birth_date",
     "exact"
   ],
   "notes": [

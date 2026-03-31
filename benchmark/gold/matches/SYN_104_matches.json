@@ -1,7 +1,7 @@
 [
   {
     "target_field": "birth_date",
-    "source_path": "$.activity_count",
+    "source_path": "$.date",
     "relation": "hypernym"
   }
 ]
