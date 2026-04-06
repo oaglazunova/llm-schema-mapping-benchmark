@@ -1,0 +1,37 @@
+[
+  {
+    "target_field": "order_id",
+    "source_path": "$.orders.id",
+    "relation": "copy"
+  },
+  {
+    "target_field": "customer_id",
+    "source_path": "$.orders.customer_id",
+    "relation": "copy"
+  },
+  {
+    "target_field": "customer_email",
+    "source_path": "$.customers.email",
+    "relation": "copy"
+  },
+  {
+    "target_field": "customer_country",
+    "source_path": "$.customers.country",
+    "relation": "copy"
+  },
+  {
+    "target_field": "customer_tier",
+    "source_path": "$.customers.tier",
+    "relation": "copy"
+  },
+  {
+    "target_field": "order_status",
+    "source_path": "$.orders.status",
+    "relation": "copy"
+  },
+  {
+    "target_field": "total_amount",
+    "source_path": "$.orders.total_amount",
+    "relation": "copy"
+  }
+]

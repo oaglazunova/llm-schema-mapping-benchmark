@@ -1,0 +1,14 @@
+{
+  "name": "synthetic_join_v1",
+  "version": "0.1.0",
+  "tasks": [
+    "benchmark/tasks/synthetic/join/SYN_301_task.json",
+    "benchmark/tasks/synthetic/join/SYN_302_task.json",
+    "benchmark/tasks/synthetic/join/SYN_303_task.json",
+    "benchmark/tasks/synthetic/join/SYN_304_task.json"
+  ],
+  "notes": [
+    "Primitive-first synthetic benchmark slice.",
+    "Join tasks only."
+  ]
+}

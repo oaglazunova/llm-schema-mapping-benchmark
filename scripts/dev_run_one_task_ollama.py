@@ -45,21 +45,79 @@ def build_prompt(task: dict[str, Any]) -> list[dict[str, str]]:
         "Do not add explanations."
     )
 
+    task_text = task["task_text"]
+    primitive_family = task.get("primitive_family", "")
+    primitive_subtype = task.get("primitive_subtype", "")
+
+    instruction_parts = [
+        "Produce a mapping plan JSON with keys: "
+        "plan_id, task_id, target_entity, field_mappings, joins, filters, aggregations, assumptions.",
+        "Each field_mapping must contain: target_field, operation, source_paths.",
+        "target_field must be a bare field name like birth_date or steps, never a JSONPath.",
+        "Every source path must be a JSONPath starting with '$.'.",
+        "Do not write source paths like '$ field'; always write '$.field_name'.",
+        "Use only these operations when appropriate: "
+        "copy, rename, cast_string, cast_integer, cast_number, cast_boolean, "
+        "parse_date, parse_datetime, truncate_date, normalize_enum, normalize_boolean, "
+        "concat, split, derive_arithmetic, default_value, coalesce, latest_value.",
+    ]
+
+    needs_parameters = (
+        primitive_subtype in {"normalize_enum", "normalize_boolean"}
+        or "Use these operation parameters:" in task_text
+    )
+
+    if needs_parameters:
+        instruction_parts.append(
+            "A field_mapping may include a parameters object when the operation requires it."
+        )
+        instruction_parts.append(
+            "For normalize_enum, include parameters.mapping when the task provides an explicit mapping."
+        )
+        instruction_parts.append(
+            "For normalize_boolean, include parameters.truthy_values and parameters.falsy_values "
+            "when the task provides them."
+        )
+
+    if primitive_family == "join":
+        instruction_parts.append(
+            "If the task requires combining arrays from the source bundle, include a joins list."
+        )
+        instruction_parts.append(
+            "Each join must include left_path, right_path, left_key, right_key, and join_type."
+        )
+        instruction_parts.append(
+            "Use join paths like '$.orders' and '$.customers' for bundle arrays."
+        )
+        instruction_parts.append(
+            "left_key and right_key must be bare field names like 'customer_id' or 'id', never JSONPaths."
+        )
+        instruction_parts.append(
+            "join_type must be lowercase, for example 'left' or 'inner'."
+        )
+        instruction_parts.append(
+            "After joining, field_mappings must use simple alias paths like '$.orders.id' or '$.customers.email'."
+        )
+        instruction_parts.append(
+            "Do not put join logic inside source_paths. Do not use filtered or predicate JSONPath such as '[?()]' or '[id == ...]'."
+        )
+        instruction_parts.append(
+            "Use copy for joined fields unless the task explicitly requires another operation."
+        )
+        instruction_parts.append(
+            "assumptions must be a list of plain strings, not objects."
+        )
+        instruction_parts.append(
+            "Example: if joins contains "
+            "{left_path:'$.orders', right_path:'$.customers', left_key:'customer_id', right_key:'id', join_type:'left'}, "
+            "then a joined customer email field must use source_paths ['$.customers.email'], not a filtered path."
+        )
+
     user = {
-        "instruction": (
-            "Produce a mapping plan JSON with keys: "
-            "plan_id, task_id, target_entity, field_mappings, joins, filters, aggregations, assumptions. "
-            "Each field_mapping must contain: target_field, operation, source_paths. "
-            "Every source path must be a JSONPath starting with '$.'. "
-            "Use only these operations when appropriate: "
-            "copy, rename, cast_string, cast_integer, cast_number, cast_boolean, "
-            "parse_date, parse_datetime, truncate_date, normalize_enum, normalize_boolean, "
-            "concat, split, derive_arithmetic, default_value, coalesce, latest_value. "
-            "Do not use markdown fences. Return only one JSON object."
-        ),
+        "instruction": " ".join(instruction_parts),
         "task_id": task["task_id"],
         "title": task["title"],
-        "task_text": task["task_text"],
+        "task_text": task_text,
         "target_entity": task["target_entity"],
         "source_schema": task["source_schema"],
         "target_schema": task["target_schema"],
@@ -69,6 +127,22 @@ def build_prompt(task: dict[str, Any]) -> list[dict[str, str]]:
         {"role": "system", "content": system},
         {"role": "user", "content": json.dumps(user, ensure_ascii=False, indent=2)},
     ]
+
+
+def prompt_track_for_task(task: dict[str, Any]) -> str:
+    primitive_subtype = task.get("primitive_subtype", "")
+    task_text = task.get("task_text", "")
+
+    if task.get("primitive_family") == "join":
+        return "join_example_v1"
+
+    if (
+        primitive_subtype in {"normalize_enum", "normalize_boolean"}
+        or "Use these operation parameters:" in task_text
+    ):
+        return "parameter_aware_v1"
+
+    return "minimal_v1"
 
 
 def call_ollama(model: str, messages: list[dict[str, str]]) -> dict[str, Any]:
@@ -139,9 +213,9 @@ def main() -> int:
             "provider": "ollama",
         },
         "prompt": {
-            "track": "manual_dev",
-            "template_id": "dev_run_one_task_ollama_v1",
-            "template_version": "0.1.0",
+            "track": prompt_track_for_task(task),
+            "template_id": "dev_run_one_task_ollama_v2",
+            "template_version": "0.2.0",
         },
         "generation": {
             "temperature": 0.0,

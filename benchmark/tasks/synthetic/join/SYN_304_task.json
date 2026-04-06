@@ -1,0 +1,162 @@
+{
+  "task_id": "SYN_304",
+  "title": "Join primitive: rewards with campaigns (left join)",
+  "split": "synthetic",
+  "difficulty": "medium",
+  "source_family": "synthetic_join_reward_campaign",
+  "target_entity": "reward_with_campaign",
+  "task_text": "Create one canonical reward_with_campaign object per reward by joining rewards with campaigns on campaign_code = code using a left join.",
+  "primitive_family": "join",
+  "primitive_subtype": "left",
+  "lexical_perturbation": "none",
+  "ambiguity_class": "single_gold",
+  "composition_depth": 1,
+  "difficulty_axes": {
+    "num_source_objects": 2,
+    "num_target_fields": 5,
+    "num_joins": 1,
+    "num_aggregations": 0,
+    "nesting_depth": 1,
+    "has_enum_normalization": false,
+    "has_time_normalization": false
+  },
+  "source_schema": {
+    "type": "object",
+    "title": "RewardCampaignBundle",
+    "properties": {
+      "rewards": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "title": "RewardsRow",
+          "properties": {
+            "reward_id": {
+              "type": "string"
+            },
+            "campaign_code": {
+              "type": "string"
+            },
+            "points": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "reward_id",
+            "campaign_code",
+            "points"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "campaigns": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "title": "CampaignsRow",
+          "properties": {
+            "code": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "code",
+            "title",
+            "status"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": [
+      "rewards",
+      "campaigns"
+    ],
+    "additionalProperties": false
+  },
+  "target_schema": {
+    "type": "object",
+    "title": "RewardWithCampaign",
+    "properties": {
+      "reward_id": {
+        "type": "string"
+      },
+      "campaign_code": {
+        "type": "string"
+      },
+      "campaign_title": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "campaign_status": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "points": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "reward_id",
+      "campaign_code",
+      "campaign_title",
+      "campaign_status",
+      "points"
+    ],
+    "additionalProperties": false
+  },
+  "fixture_refs": {
+    "input": "../../../fixtures/synthetic/SYN_304_input.json",
+    "expected": "../../../fixtures/synthetic/SYN_304_expected.json"
+  },
+  "gold_refs": {
+    "matches": "../../../gold/matches/SYN_304_matches.json",
+    "plan": "../../../gold/plans/SYN_304_plan.json",
+    "invariants": "../../../gold/invariants/SYN_304_invariants.json"
+  },
+  "tags": [
+    "synthetic",
+    "primitive",
+    "join",
+    "left",
+    "campaign"
+  ],
+  "notes": [
+    "Synthetic join primitive.",
+    "Bundle-shaped join task."
+  ],
+  "downstream_checks": [
+    {
+      "type": "record_count_matches_expected"
+    },
+    {
+      "type": "required_fields_present",
+      "fields": [
+        "reward_id",
+        "campaign_code",
+        "points"
+      ],
+      "scope": "all_records"
+    },
+    {
+      "type": "field_types",
+      "fields": {
+        "reward_id": "string",
+        "campaign_code": "string",
+        "campaign_title": "string-or-null",
+        "campaign_status": "string-or-null",
+        "points": "integer"
+      },
+      "scope": "all_records"
+    }
+  ]
+}

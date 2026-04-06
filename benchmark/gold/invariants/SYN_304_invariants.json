@@ -1,0 +1,11 @@
+[
+  {
+    "type": "required_fields_present",
+    "fields": [
+      "reward_id",
+      "campaign_code",
+      "points"
+    ],
+    "scope": "all_records"
+  }
+]

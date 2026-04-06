@@ -1,0 +1,56 @@
+{
+  "plan_id": "SYN_304_gold",
+  "task_id": "SYN_304",
+  "target_entity": "reward_with_campaign",
+  "field_mappings": [
+    {
+      "target_field": "reward_id",
+      "operation": "copy",
+      "source_paths": [
+        "$.rewards.reward_id"
+      ]
+    },
+    {
+      "target_field": "campaign_code",
+      "operation": "copy",
+      "source_paths": [
+        "$.rewards.campaign_code"
+      ]
+    },
+    {
+      "target_field": "campaign_title",
+      "operation": "copy",
+      "source_paths": [
+        "$.campaigns.title"
+      ]
+    },
+    {
+      "target_field": "campaign_status",
+      "operation": "copy",
+      "source_paths": [
+        "$.campaigns.status"
+      ]
+    },
+    {
+      "target_field": "points",
+      "operation": "copy",
+      "source_paths": [
+        "$.rewards.points"
+      ]
+    }
+  ],
+  "joins": [
+    {
+      "left_path": "$.rewards",
+      "right_path": "$.campaigns",
+      "left_key": "campaign_code",
+      "right_key": "code",
+      "join_type": "left"
+    }
+  ],
+  "filters": [],
+  "aggregations": [],
+  "assumptions": [
+    "Missing campaign rows should preserve the reward under left join."
+  ]
+}

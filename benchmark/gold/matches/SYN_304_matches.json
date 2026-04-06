@@ -1,0 +1,27 @@
+[
+  {
+    "target_field": "reward_id",
+    "source_path": "$.rewards.reward_id",
+    "relation": "copy"
+  },
+  {
+    "target_field": "campaign_code",
+    "source_path": "$.rewards.campaign_code",
+    "relation": "copy"
+  },
+  {
+    "target_field": "campaign_title",
+    "source_path": "$.campaigns.title",
+    "relation": "copy"
+  },
+  {
+    "target_field": "campaign_status",
+    "source_path": "$.campaigns.status",
+    "relation": "copy"
+  },
+  {
+    "target_field": "points",
+    "source_path": "$.rewards.points",
+    "relation": "copy"
+  }
+]

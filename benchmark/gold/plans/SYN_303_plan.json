@@ -1,0 +1,56 @@
+{
+  "plan_id": "SYN_303_gold",
+  "task_id": "SYN_303",
+  "target_entity": "activity_with_profile",
+  "field_mappings": [
+    {
+      "target_field": "event_id",
+      "operation": "copy",
+      "source_paths": [
+        "$.activities.event_id"
+      ]
+    },
+    {
+      "target_field": "user_id",
+      "operation": "copy",
+      "source_paths": [
+        "$.activities.user_id"
+      ]
+    },
+    {
+      "target_field": "activity_type",
+      "operation": "copy",
+      "source_paths": [
+        "$.activities.activity_type"
+      ]
+    },
+    {
+      "target_field": "steps",
+      "operation": "copy",
+      "source_paths": [
+        "$.activities.steps"
+      ]
+    },
+    {
+      "target_field": "profile_country",
+      "operation": "copy",
+      "source_paths": [
+        "$.profiles.country"
+      ]
+    }
+  ],
+  "joins": [
+    {
+      "left_path": "$.activities",
+      "right_path": "$.profiles",
+      "left_key": "user_id",
+      "right_key": "id",
+      "join_type": "left"
+    }
+  ],
+  "filters": [],
+  "aggregations": [],
+  "assumptions": [
+    "Missing profile rows should preserve the activity under left join."
+  ]
+}

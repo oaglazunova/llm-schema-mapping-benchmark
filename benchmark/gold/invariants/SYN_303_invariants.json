@@ -1,0 +1,11 @@
+[
+  {
+    "type": "required_fields_present",
+    "fields": [
+      "event_id",
+      "user_id",
+      "profile_country"
+    ],
+    "scope": "all_records"
+  }
+]

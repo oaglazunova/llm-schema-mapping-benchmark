@@ -6,9 +6,15 @@ import re
 import sys
 import time
 import urllib.request
+
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+
+from lsmbench.evaluation.plan_repair import repair_plan_paths
+from lsmbench.validators.schema_validator import validate_plan
+from lsmbench.validators.reference_validator import validate_references
+
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SRC_DIR = REPO_ROOT / "src"
@@ -57,6 +63,7 @@ def build_generation_prompt(task: dict[str, Any]) -> list[dict[str, str]]:
         "Each field_mapping must contain: target_field, operation, source_paths.",
         "target_field must be a bare field name like birth_date or steps, never a JSONPath.",
         "Every source path must be a JSONPath starting with '$.'.",
+        "Do not write source paths like '$ field'; always write '$.field_name'.",
         "Use only these operations when appropriate: "
         "copy, rename, cast_string, cast_integer, cast_number, cast_boolean, "
         "parse_date, parse_datetime, truncate_date, normalize_enum, normalize_boolean, "
@@ -78,6 +85,43 @@ def build_generation_prompt(task: dict[str, Any]) -> list[dict[str, str]]:
         instruction_parts.append(
             "For normalize_boolean, include parameters.truthy_values and parameters.falsy_values "
             "when the task provides them."
+        )
+
+    if primitive_family == "join":
+        instruction_parts.append(
+            "If the task requires combining arrays from the source bundle, include a joins list."
+        )
+        instruction_parts.append(
+            "Each join must include left_path, right_path, left_key, right_key, and join_type."
+        )
+        instruction_parts.append(
+            "Use join paths like '$.orders' and '$.customers' for bundle arrays."
+        )
+        instruction_parts.append(
+            "left_key and right_key must be bare field names like 'customer_id' or 'id', never JSONPaths."
+        )
+        instruction_parts.append(
+            "join_type must be lowercase, for example 'left' or 'inner'."
+        )
+        instruction_parts.append(
+            "After joining, field_mappings must use simple alias paths like '$.orders.id' or '$.customers.email'."
+        )
+        instruction_parts.append(
+            "Do not put join logic inside source_paths. Do not use filtered or predicate JSONPath such as '[?()]' or '[id == ...]'."
+        )
+        instruction_parts.append(
+            "For joined fields, declare the join only in joins, then use simple alias paths like '$.customers.email' or '$.customers.country'."
+        )
+        instruction_parts.append(
+            "Use copy for joined fields unless the task explicitly requires another operation."
+        )
+        instruction_parts.append(
+            "assumptions must be a list of plain strings, not objects."
+        )
+        instruction_parts.append(
+            "Example: if joins contains "
+            "{left_path:'$.orders', right_path:'$.customers', left_key:'customer_id', right_key:'id', join_type:'left'}, "
+            "then a joined customer email field must use source_paths ['$.customers.email'], not a filtered path."
         )
 
     user = {
@@ -124,6 +168,21 @@ def build_self_select_prompt(task: dict[str, Any], parsed_candidates: list[dict[
         {"role": "system", "content": system},
         {"role": "user", "content": json.dumps(user, ensure_ascii=False, indent=2)},
     ]
+
+def prompt_track_for_task(task: dict[str, Any]) -> str:
+    primitive_subtype = task.get("primitive_subtype", "")
+    task_text = task.get("task_text", "")
+
+    if task.get("primitive_family") == "join":
+        return "join_example_v1"
+
+    if (
+        primitive_subtype in {"normalize_enum", "normalize_boolean"}
+        or "Use these operation parameters:" in task_text
+    ):
+        return "parameter_aware_v1"
+
+    return "minimal_v1"
 
 
 def call_ollama(model: str, messages: list[dict[str, str]], *, temperature: float, seed: int | None) -> dict[str, Any]:
@@ -195,6 +254,74 @@ def write_manifest(
     write_json(run_dir / "run_manifest.json", manifest)
 
 
+def select_candidate_validator_select(
+    task: dict[str, Any],
+    candidates: list[dict[str, Any]],
+) -> str | None:
+    """
+    Deterministic selection without oracle leakage.
+    Uses only:
+    - candidate parses as dict
+    - repaired plan schema validity
+    - repaired reference validity
+    Tie-breakers prefer fewer errors and simpler operations.
+    """
+    ranked: list[tuple[int, int, int, str]] = []
+
+    for idx, cand in enumerate(candidates):
+        plan = cand.get("candidate_plan")
+        if not isinstance(plan, dict):
+            continue
+
+        repaired_plan, repair_notes = repair_plan_paths(plan)
+
+        plan_report = validate_plan(repaired_plan)
+        plan_valid = plan_report["valid"]
+        plan_error_count = len(plan_report["errors"])
+
+        ref_valid = False
+        ref_error_count = 9999
+        if plan_valid:
+            ref_report = validate_references(task, repaired_plan)
+            ref_valid = ref_report["valid"]
+            ref_error_count = len(ref_report["errors"])
+
+        # Prefer simpler plans as tie-breaker
+        field_mappings = repaired_plan.get("field_mappings", [])
+        non_copy_ops = sum(
+            1 for fm in field_mappings
+            if fm.get("operation") not in {"copy", "coalesce"}
+        )
+
+        score = 0
+        if isinstance(plan, dict):
+            score += 1
+        if plan_valid:
+            score += 2
+        if ref_valid:
+            score += 4
+
+        # Higher score is better.
+        # Then fewer plan errors, fewer reference errors, fewer non-copy ops.
+        ranked.append(
+            (
+                score,
+                -plan_error_count,
+                -ref_error_count,
+                -non_copy_ops,
+                idx,
+            )
+        )
+
+    if not ranked:
+        return None
+
+    ranked.sort(reverse=True)
+    best_idx = ranked[0][-1]
+    return candidates[best_idx]["candidate_id"]
+
+
+
 def select_candidate_first_valid_json(candidates: list[dict[str, Any]]) -> str | None:
     for cand in candidates:
         if cand.get("candidate_plan") is not None:
@@ -242,7 +369,7 @@ def main() -> int:
     parser.add_argument("--num-candidates", type=int, default=3)
     parser.add_argument(
         "--selection-strategy",
-        choices=["first_valid_json", "self_select"],
+        choices=["first_valid_json", "self_select", "validator_select"],
         default="first_valid_json",
     )
     args = parser.parse_args()
@@ -287,12 +414,15 @@ def main() -> int:
             messages = build_generation_prompt(task)
 
             for cand_idx in range(args.num_candidates):
+                temp = 0.2 if task.get("primitive_family") == "join" else 0.7
+
                 response = call_ollama(
                     args.model,
                     messages,
-                    temperature=0.7,
+                    temperature=temp,
                     seed=cand_idx + 1,
                 )
+
                 raw_text = response.get("message", {}).get("content", "")
                 candidate_plan, parse_error = parse_json_object(raw_text)
 
@@ -307,8 +437,10 @@ def main() -> int:
 
             if args.selection_strategy == "first_valid_json":
                 selected_candidate_id = select_candidate_first_valid_json(candidates)
-            else:
+            elif args.selection_strategy == "self_select":
                 selected_candidate_id = select_candidate_self_select(args.model, task, candidates)
+            else:
+                selected_candidate_id = select_candidate_validator_select(task, candidates)
 
             finished_at = time.time()
 
@@ -322,11 +454,8 @@ def main() -> int:
                     "provider": "ollama",
                 },
                 "prompt": {
-                    "track": "parameter_aware_v1"
-                    if task.get("primitive_subtype") in {"normalize_enum", "normalize_boolean"}
-                    or "Use these operation parameters:" in task.get("task_text", "")
-                    else "minimal_v1",
-                    "template_id": "run_task_set_ollama_v2",
+                    "track": prompt_track_for_task(task),
+                    "template_id": "run_task_set_ollama_multi_v2",
                     "template_version": "0.2.0",
                 },
                 "generation": {

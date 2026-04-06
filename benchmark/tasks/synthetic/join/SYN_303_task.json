@@ -1,0 +1,164 @@
+{
+  "task_id": "SYN_303",
+  "title": "Join primitive: activities with profiles (left join)",
+  "split": "synthetic",
+  "difficulty": "medium",
+  "source_family": "synthetic_join_activity_profile",
+  "target_entity": "activity_with_profile",
+  "task_text": "Create one canonical activity_with_profile object per activity by joining activities with profiles on user_id = id using a left join.",
+  "primitive_family": "join",
+  "primitive_subtype": "left",
+  "lexical_perturbation": "none",
+  "ambiguity_class": "single_gold",
+  "composition_depth": 1,
+  "difficulty_axes": {
+    "num_source_objects": 2,
+    "num_target_fields": 5,
+    "num_joins": 1,
+    "num_aggregations": 0,
+    "nesting_depth": 1,
+    "has_enum_normalization": false,
+    "has_time_normalization": false
+  },
+  "source_schema": {
+    "type": "object",
+    "title": "ActivityProfileBundle",
+    "properties": {
+      "activities": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "title": "ActivitiesRow",
+          "properties": {
+            "event_id": {
+              "type": "string"
+            },
+            "user_id": {
+              "type": "string"
+            },
+            "activity_type": {
+              "type": "string"
+            },
+            "steps": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "event_id",
+            "user_id",
+            "activity_type",
+            "steps"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "profiles": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "title": "ProfilesRow",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "country": {
+              "type": "string"
+            },
+            "cohort": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "country",
+            "cohort"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": [
+      "activities",
+      "profiles"
+    ],
+    "additionalProperties": false
+  },
+  "target_schema": {
+    "type": "object",
+    "title": "ActivityWithProfile",
+    "properties": {
+      "event_id": {
+        "type": "string"
+      },
+      "user_id": {
+        "type": "string"
+      },
+      "activity_type": {
+        "type": "string"
+      },
+      "steps": {
+        "type": "integer"
+      },
+      "profile_country": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "required": [
+      "event_id",
+      "user_id",
+      "activity_type",
+      "steps",
+      "profile_country"
+    ],
+    "additionalProperties": false
+  },
+  "fixture_refs": {
+    "input": "../../../fixtures/synthetic/SYN_303_input.json",
+    "expected": "../../../fixtures/synthetic/SYN_303_expected.json"
+  },
+  "gold_refs": {
+    "matches": "../../../gold/matches/SYN_303_matches.json",
+    "plan": "../../../gold/plans/SYN_303_plan.json",
+    "invariants": "../../../gold/invariants/SYN_303_invariants.json"
+  },
+  "tags": [
+    "synthetic",
+    "primitive",
+    "join",
+    "left",
+    "activity"
+  ],
+  "notes": [
+    "Synthetic join primitive.",
+    "Bundle-shaped join task."
+  ],
+  "downstream_checks": [
+    {
+      "type": "record_count_matches_expected"
+    },
+    {
+      "type": "required_fields_present",
+      "fields": [
+        "event_id",
+        "user_id",
+        "activity_type",
+        "steps"
+      ],
+      "scope": "all_records"
+    },
+    {
+      "type": "field_types",
+      "fields": {
+        "event_id": "string",
+        "user_id": "string",
+        "activity_type": "string",
+        "steps": "integer",
+        "profile_country": "string-or-null"
+      },
+      "scope": "all_records"
+    }
+  ]
+}

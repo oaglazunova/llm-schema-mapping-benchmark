@@ -1,0 +1,25 @@
+{
+  "records": [
+    {
+      "rewards": [
+        {
+          "reward_id": "rw-1",
+          "campaign_code": "CAMP-A",
+          "points": 10
+        },
+        {
+          "reward_id": "rw-2",
+          "campaign_code": "CAMP-Z",
+          "points": 5
+        }
+      ],
+      "campaigns": [
+        {
+          "code": "CAMP-A",
+          "title": "Spring Steps",
+          "status": "active"
+        }
+      ]
+    }
+  ]
+}

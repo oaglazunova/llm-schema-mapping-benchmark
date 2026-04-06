@@ -1,0 +1,28 @@
+{
+  "records": [
+    {
+      "orders": [
+        {
+          "id": "ord-010",
+          "customer_id": "cust-10",
+          "status": "paid",
+          "total_amount": 40.0
+        },
+        {
+          "id": "ord-011",
+          "customer_id": "cust-99",
+          "status": "pending",
+          "total_amount": 5.5
+        }
+      ],
+      "customers": [
+        {
+          "id": "cust-10",
+          "email": "c@example.org",
+          "country": "FR",
+          "tier": "gold"
+        }
+      ]
+    }
+  ]
+}

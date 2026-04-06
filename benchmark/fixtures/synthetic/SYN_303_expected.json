@@ -1,0 +1,18 @@
+{
+  "records": [
+    {
+      "event_id": "ev-1",
+      "user_id": "u1",
+      "activity_type": "walk",
+      "steps": 5000,
+      "profile_country": "NL"
+    },
+    {
+      "event_id": "ev-2",
+      "user_id": "u9",
+      "activity_type": "walk",
+      "steps": 3000,
+      "profile_country": null
+    }
+  ]
+}

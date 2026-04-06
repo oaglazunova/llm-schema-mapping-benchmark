@@ -14,15 +14,9 @@ def _repair_one_path(path: Any) -> tuple[Any, bool]:
 
     original = path
 
-    # Already valid simple JSONPath like $.field_name
     if path.startswith("$."):
         return path, False
 
-    # Common bad forms:
-    # "$ field"        -> "$.field"
-    # "$field"         -> "$.field"
-    # "$ .field"       -> "$.field"
-    # "$. field"       -> "$.field"
     cleaned = path.strip()
 
     if cleaned.startswith("$"):
@@ -38,9 +32,77 @@ def _repair_one_path(path: Any) -> tuple[Any, bool]:
     return path, False
 
 
+def _repair_join_key(key: Any) -> tuple[Any, bool]:
+    """
+    Convert obvious JSONPath-like join key noise to a bare field name.
+    Examples:
+      '$.orders.customer_id' -> 'customer_id'
+      '$.id' -> 'id'
+      '$ id' -> 'id'
+    """
+    if not isinstance(key, str):
+        return key, False
+
+    original = key
+    cleaned = key.strip()
+
+    if cleaned.startswith("$"):
+        cleaned = cleaned[1:].strip()
+
+    if cleaned.startswith("."):
+        cleaned = cleaned[1:].strip()
+
+    if "." in cleaned:
+        cleaned = cleaned.split(".")[-1]
+
+    if _SIMPLE_FIELD_RE.match(cleaned):
+        return cleaned, cleaned != original
+
+    return key, False
+
+
+def _repair_join_type(join_type: Any) -> tuple[Any, bool]:
+    if not isinstance(join_type, str):
+        return join_type, False
+
+    lowered = join_type.strip().lower()
+    if lowered in {"left", "inner"}:
+        return lowered, lowered != join_type
+
+    return join_type, False
+
+
+def _repair_assumptions(assumptions: Any) -> tuple[Any, list[str]]:
+    notes: list[str] = []
+
+    if not isinstance(assumptions, list):
+        return assumptions, notes
+
+    repaired: list[Any] = []
+    changed = False
+
+    for i, item in enumerate(assumptions):
+        if isinstance(item, str):
+            repaired.append(item)
+            continue
+
+        if isinstance(item, dict):
+            if isinstance(item.get("description"), str):
+                repaired.append(item["description"])
+                changed = True
+                notes.append(
+                    f"assumptions[{i}] repaired from object to description string"
+                )
+                continue
+
+        repaired.append(item)
+
+    return repaired if changed else assumptions, notes
+
+
 def repair_plan_paths(plan: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
     """
-    Deterministically repair only obvious JSONPath formatting mistakes.
+    Deterministically repair only obvious plan formatting mistakes.
     Returns a deep-copied repaired plan and a list of repair notes.
     """
     repaired = copy.deepcopy(plan)
@@ -94,5 +156,22 @@ def repair_plan_paths(plan: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
             if changed:
                 join[key] = new_p
                 notes.append(f"joins[{i}].{key} repaired: {p!r} -> {new_p!r}")
+
+        for key in ("left_key", "right_key"):
+            p = join.get(key)
+            new_p, changed = _repair_join_key(p)
+            if changed:
+                join[key] = new_p
+                notes.append(f"joins[{i}].{key} repaired: {p!r} -> {new_p!r}")
+
+        jt = join.get("join_type")
+        new_jt, changed = _repair_join_type(jt)
+        if changed:
+            join["join_type"] = new_jt
+            notes.append(f"joins[{i}].join_type repaired: {jt!r} -> {new_jt!r}")
+
+    assumptions, assumption_notes = _repair_assumptions(repaired.get("assumptions", []))
+    repaired["assumptions"] = assumptions
+    notes.extend(assumption_notes)
 
     return repaired, notes

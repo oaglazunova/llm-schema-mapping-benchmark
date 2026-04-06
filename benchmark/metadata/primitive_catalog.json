@@ -42,7 +42,7 @@
     {
       "name": "join",
       "description": "Combine 2+ source objects into one target object.",
-      "v1_enabled": false,
+      "v1_enabled": true,
       "subtypes": ["inner", "left"]
     },
     {

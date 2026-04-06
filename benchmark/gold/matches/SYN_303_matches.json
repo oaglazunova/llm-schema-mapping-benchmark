@@ -1,0 +1,27 @@
+[
+  {
+    "target_field": "event_id",
+    "source_path": "$.activities.event_id",
+    "relation": "copy"
+  },
+  {
+    "target_field": "user_id",
+    "source_path": "$.activities.user_id",
+    "relation": "copy"
+  },
+  {
+    "target_field": "activity_type",
+    "source_path": "$.activities.activity_type",
+    "relation": "copy"
+  },
+  {
+    "target_field": "steps",
+    "source_path": "$.activities.steps",
+    "relation": "copy"
+  },
+  {
+    "target_field": "profile_country",
+    "source_path": "$.profiles.country",
+    "relation": "copy"
+  }
+]

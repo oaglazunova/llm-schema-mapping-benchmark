@@ -1,0 +1,11 @@
+[
+  {
+    "type": "required_fields_present",
+    "fields": [
+      "order_id",
+      "customer_id",
+      "order_status"
+    ],
+    "scope": "all_records"
+  }
+]

@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 from datetime import datetime, timezone
 
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SRC_DIR = REPO_ROOT / "src"
 
@@ -43,6 +44,22 @@ def to_iso_utc(ts: float) -> str:
     return datetime.fromtimestamp(ts, tz=timezone.utc).isoformat()
 
 
+def prompt_track_for_task(task: dict[str, Any]) -> str:
+    primitive_subtype = task.get("primitive_subtype", "")
+    task_text = task.get("task_text", "")
+
+    if task.get("primitive_family") == "join":
+        return "join_example_v1"
+
+    if (
+        primitive_subtype in {"normalize_enum", "normalize_boolean"}
+        or "Use these operation parameters:" in task_text
+    ):
+        return "parameter_aware_v1"
+
+    return "minimal_v1"
+
+
 def build_prompt(task: dict[str, Any]) -> list[dict[str, str]]:
     system = (
         "You are a schema mapping assistant. "
@@ -61,6 +78,7 @@ def build_prompt(task: dict[str, Any]) -> list[dict[str, str]]:
         "Each field_mapping must contain: target_field, operation, source_paths.",
         "target_field must be a bare field name like birth_date or steps, never a JSONPath.",
         "Every source path must be a JSONPath starting with '$.'.",
+        "Do not write source paths like '$ field'; always write '$.field_name'.",
         "Use only these operations when appropriate: "
         "copy, rename, cast_string, cast_integer, cast_number, cast_boolean, "
         "parse_date, parse_datetime, truncate_date, normalize_enum, normalize_boolean, "
@@ -82,6 +100,43 @@ def build_prompt(task: dict[str, Any]) -> list[dict[str, str]]:
         instruction_parts.append(
             "For normalize_boolean, include parameters.truthy_values and parameters.falsy_values "
             "when the task provides them."
+        )
+
+    if primitive_family == "join":
+        instruction_parts.append(
+            "If the task requires combining arrays from the source bundle, include a joins list."
+        )
+        instruction_parts.append(
+            "Each join must include left_path, right_path, left_key, right_key, and join_type."
+        )
+        instruction_parts.append(
+            "Use join paths like '$.orders' and '$.customers' for bundle arrays."
+        )
+        instruction_parts.append(
+            "left_key and right_key must be bare field names like 'customer_id' or 'id', never JSONPaths."
+        )
+        instruction_parts.append(
+            "join_type must be lowercase, for example 'left' or 'inner'."
+        )
+        instruction_parts.append(
+            "After joining, field_mappings must use simple alias paths like '$.orders.id' or '$.customers.email'."
+        )
+        instruction_parts.append(
+            "Do not put join logic inside source_paths. Do not use filtered or predicate JSONPath such as '[?()]' or '[id == ...]'."
+        )
+        instruction_parts.append(
+            "For joined fields, declare the join only in joins, then use simple alias paths like '$.customers.email' or '$.customers.country'."
+        )
+        instruction_parts.append(
+            "Use copy for joined fields unless the task explicitly requires another operation."
+        )
+        instruction_parts.append(
+            "assumptions must be a list of plain strings, not objects."
+        )
+        instruction_parts.append(
+            "Example: if joins contains "
+            "{left_path:'$.orders', right_path:'$.customers', left_key:'customer_id', right_key:'id', join_type:'left'}, "
+            "then a joined customer email field must use source_paths ['$.customers.email'], not a filtered path."
         )
 
     user = {
@@ -287,6 +342,11 @@ def main() -> int:
                 "timestamps": {
                     "started_at": to_iso_utc(started_at),
                     "finished_at": to_iso_utc(finished_at),
+                },
+                "prompt": {
+                    "track": prompt_track_for_task(task),
+                    "template_id": "run_task_set_ollama_v2",
+                    "template_version": "0.2.0",
                 },
                 "error_message": f"{type(e).__name__}: {e}",
                 "notes": [],

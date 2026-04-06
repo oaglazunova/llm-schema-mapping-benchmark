@@ -3,6 +3,20 @@ from __future__ import annotations
 from typing import Any
 
 
+def _contains_embedded_join_logic(path: str) -> bool:
+    """
+    Reject predicate/filter-style expressions inside source_paths for this benchmark IR.
+    The join must be expressed in `joins`, not inside field-mapping paths.
+    """
+    if not isinstance(path, str):
+        return False
+
+    # Examples to reject:
+    # $.customers[?(@.id==$.orders.customer_id)].email
+    # $.customers[id == $.orders.customer_id].email
+    return any(token in path for token in ["[?", "==", "[id ", "[@."])
+
+
 def _root_token(path: str) -> str | None:
     if not isinstance(path, str):
         return None
@@ -66,6 +80,13 @@ def validate_references(task: dict[str, Any], plan: dict[str, Any]) -> dict[str,
             if root is None:
                 errors.append(
                     f"field_mappings[{i}].source_paths[{j}] {path!r}: invalid path format"
+                )
+                continue
+
+            if _contains_embedded_join_logic(path):
+                errors.append(
+                    f"field_mappings[{i}].source_paths[{j}] {path!r}: "
+                    "join logic must be declared in joins, not embedded in source_paths"
                 )
                 continue
 

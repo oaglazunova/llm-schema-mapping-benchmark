@@ -1,0 +1,31 @@
+{
+  "records": [
+    {
+      "order_id": "ord-001",
+      "customer_id": "cust-1",
+      "customer_email": "a@example.org",
+      "customer_country": "NL",
+      "customer_tier": "gold",
+      "order_status": "paid",
+      "total_amount": 24.0
+    },
+    {
+      "order_id": "ord-002",
+      "customer_id": "cust-2",
+      "customer_email": "b@example.org",
+      "customer_country": "DE",
+      "customer_tier": "silver",
+      "order_status": "pending",
+      "total_amount": 11.5
+    },
+    {
+      "order_id": "ord-003",
+      "customer_id": "cust-9",
+      "customer_email": null,
+      "customer_country": null,
+      "customer_tier": null,
+      "order_status": "paid",
+      "total_amount": 8.0
+    }
+  ]
+}
